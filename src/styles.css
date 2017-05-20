@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+
+.centered-panel
+{
+  margin: 10% auto 0 auto;
+  max-width: 700px;
+  min-width: 200px;
+  width: 50%;
+}
+
+.input-full
+{
+	width: 100%;
+}
+
+.btns-panel{
+	margin-top: 20px;
+}
+
+.remember-me {
+	margin-top: 10px;
+}
+a, u {
+	text-decoration: none;
+}
+
+.forgot_pwd_lnk{
+	font-size: 12px;
+}
+
+md-card {
+	text-align: center;
+}
