@@ -28,6 +28,37 @@ a, u {
 	font-size: 12px;
 }
 
-md-card {
+.centered-txt {
 	text-align: center;
+}
+
+#home-card {
+	max-width: 1400px;
+	margin: 10px auto auto auto;
+	min-width: 600px;
+	min-height: calc(690px * (90/150));
+	/*height: 80vh;
+	width: 150vh;*/	
+}
+
+#welcome-div {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+#home-panel {
+	padding: 0px;
+	margin-top: 20px;
+}
+
+#home-inner-card{
+	width: 70%
+}
+
+/*#main-panel {
+	height: 50vh;
+}*/
+
+#logout {
+	font-style: italic;
 }

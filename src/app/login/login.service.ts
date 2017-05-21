@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
+import * as Moment from 'moment';
 
 @Injectable()
 export class LoginService {
@@ -35,21 +36,34 @@ export class LoginService {
   }
 
   removeJwt() {
+     console.log('Logging out user');
      localStorage.removeItem('jwt');
      sessionStorage.removeItem('jwt');
+  }
+
+  isAuthenticated(): boolean {
+    const authClaim = this.getAuthenticatedUser();
+    if (authClaim == null) {
+      return false;
+    }
+    const now = new Date().getTime() / 1000; // 'exp' is in seconds
+    return authClaim.exp > now;
   }
 
   /**
    * Gets authenticated user from jwt
    */
   getAuthenticatedUser() {
+    let authClaim: AuthClaim;
     let jwt = localStorage.getItem('jwt');
     if (jwt === null) {
       jwt = sessionStorage.getItem('jwt');
     }
     console.log('The jwt ' + jwt);
-    const jwtArray = jwt.split('.', 3);
-    const authClaim: AuthClaim = JSON.parse(atob(jwtArray[1]));
+    if (jwt != null) {
+      const jwtArray = jwt.split('.', 3);
+       authClaim = JSON.parse(atob(jwtArray[1]));
+    }
     return authClaim;
   }
 

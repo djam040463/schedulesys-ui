@@ -1,0 +1,26 @@
+<md-card id="home-card" class="ui-g">
+	<p-menubar [model]="items"></p-menubar>
+	<div id="welcome-div">
+		<span>Welcome to ScheduleSys, {{profile.sub}} ! <a id="logout"  (click)="logout()">logout</a></span>
+	</div>
+	<div id="home-panel">
+		<div class="ui-g-3">
+			<md-card>
+				<div class="centered-txt">
+					<span class="fa fa-user-circle fa-2x"></span>
+				</div>
+				<div class="centered-txt">
+					<span class="">{{profile.sub}}</span>
+				</div>
+			</md-card>
+		</div>
+		<div class="ui-g-9">
+			<md-card>
+				<div id="main-panel">
+					<router-outlet></router-outlet>
+				</div>
+			</md-card>
+		</div>
+	</div>
+	<div>Footer here</div>
+</md-card>
