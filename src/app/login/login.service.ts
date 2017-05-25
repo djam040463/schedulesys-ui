@@ -11,7 +11,7 @@ import * as Moment from 'moment';
 @Injectable()
 export class LoginService {
 
-   private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+   private options = new RequestOptions({ headers: new Headers([{ 'Content-Type': 'application/json' }, {}]) });
    resourceUrl = environment.apiBaseUrl + '/api/authenticate';
 
   constructor(private http: Http) { }
@@ -55,16 +55,29 @@ export class LoginService {
    */
   getAuthenticatedUser() {
     let authClaim: AuthClaim;
-    let jwt = localStorage.getItem('jwt');
-    if (jwt === null) {
-      jwt = sessionStorage.getItem('jwt');
-    }
-    console.log('The jwt ' + jwt);
+    const jwt = this.getJwt();
     if (jwt != null) {
       const jwtArray = jwt.split('.', 3);
        authClaim = JSON.parse(atob(jwtArray[1]));
     }
     return authClaim;
+  }
+
+  private getJwt(): string {
+    let jwt = localStorage.getItem('jwt');
+    if (jwt === null) {
+      jwt = sessionStorage.getItem('jwt');
+    }
+    return jwt;
+  }
+
+  getRequestOptions(): RequestOptions {
+    const jwt = this.getJwt();
+    return new RequestOptions({ headers: new Headers(
+      { 'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + jwt
+      }
+     ) });
   }
 
   handleError(error: any) {

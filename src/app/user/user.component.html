@@ -1,0 +1,67 @@
+<p-panel header="Users Management" >
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-users fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div class="data-table">
+			<p-messages [(value)]="msgs"></p-messages>
+			<p-dataTable [value]="users" [rows]="20" [paginator]="true" 
+				resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedUser" (onRowDblclick)="onRowDblclick($event)"
+				[contextMenu]="cm" dataKey="username">
+			    <p-header>ScheduleSys Users</p-header>
+			    <p-column field="emailAddress" header="Email"></p-column>
+			    <p-column field="username" header="Username"></p-column>
+			    <p-column field="firstName" header="First Name"></p-column>
+			    <p-column field="lastName" header="Last Name"></p-column>
+			    <p-column field="userRole.name" header="Role"></p-column>
+			    <p-column field="activated" header="Activated"></p-column>
+			</p-dataTable>
+		</div>
+		<md-divider></md-divider>
+		<div class="btns-panel">
+			<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)"></button>
+			<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedUser === undefined" (click)="showDialog(true)"></button>
+			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteUser()" class="ui-button-danger" [disabled]="selectedUser === undefined"></button>
+		</div>
+	</md-list>
+	
+	<p-dialog [(visible)]="display" width="450">
+		 <p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing a User</span>
+        	<span *ngSwitchCase="false"> Adding a User</span>
+   		 </p-header>
+   		 <div>
+   		 	<form (ngSubmit)="createOrUpdateUser()" #userUpdateForm="ngForm">
+				<div>
+					<md-input-container class="input-full">
+						<input mdInput id="username" name="username" placeholder="Username" [(ngModel)]="user.username" required>
+					</md-input-container>
+				</div>
+				<div>
+					<md-input-container class="input-full">
+						<input mdInput id="email" name="email" placeholder="Email" [(ngModel)]="user.emailAddress" required>
+					</md-input-container>
+				</div>
+				<div>
+					<md-input-container class="input-full">
+						<input mdInput id="firstname" name="firstname" placeholder="First Name" [(ngModel)]="user.firstName" required>
+					</md-input-container>
+				</div>
+				<div>
+					<md-input-container class="input-full">
+						<input mdInput id="lastname" name="lastname" placeholder="Last Name" [(ngModel)]="user.lastName" required>
+					</md-input-container>
+				</div>
+				<div class="btns-panel">
+	   		 		<button pButton label="Save" type="submit" icon="fa fa-floppy-o"></button>
+					<button pButton label="Clear" type="reset" icon="fa fa-eraser"></button>
+					<button pButton label="Cancel" type="button" (click)="hideDialog()" icon="fa fa-close"></button>
+   		 		</div>
+			</form>
+   		 </div>
+	</p-dialog>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
+</p-panel>

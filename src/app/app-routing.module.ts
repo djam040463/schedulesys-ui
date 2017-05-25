@@ -6,6 +6,8 @@ import { AuthGuard } from './login/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { PasswordResetRequestComponent } from './passwordresetrequest/passwordresetrequest.component';
+import { ProfileComponent } from './profile/profile.component';
+import { UserComponent } from './user/user.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -13,7 +15,9 @@ import { Routes, RouterModule } from '@angular/router';
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard],
     children: [
-      {path: '', component: DashboardComponent}
+      { path: '', component: DashboardComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'users', component: UserComponent}
     ]
   },
   { path: 'pwd-reset-request', component: PasswordResetRequestComponent },

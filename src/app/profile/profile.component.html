@@ -1,0 +1,69 @@
+<p-panel header="User Profile" *ngIf="userProfile != undefined">
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-user-circle-o fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+			<div class="ui-g">
+			<div class="ui-g-5">
+			<md-list-item class="ui-g">
+				<span class="ui-g-6">Username : </span>
+				<span class="ui-g-6" id="username">{{userProfile.username}}</span>
+			</md-list-item>
+			
+			<md-list-item class="ui-g">
+				<span class="ui-g-6">Email : </span>
+				<span class="ui-g-6">{{userProfile.emailAddress}}</span>
+			</md-list-item>
+			
+			<md-list-item class="ui-g">
+				<span class="ui-g-6">First name : </span>
+				<span class="ui-g-6">{{userProfile.firstName}}</span>
+			</md-list-item>
+			
+			<md-list-item class="ui-g">
+				<span class="ui-g-6">Last name : </span>
+				<span class="ui-g-6">{{userProfile.lastName}}</span>
+			</md-list-item>
+			
+			<md-list-item class="ui-g">
+				<span class="ui-g-6">Role : </span>
+				<span class="ui-g-6">{{userProfile.userRole.name}}</span>
+			</md-list-item>
+			</div>
+			<div class="ui-g-7" *ngIf="displayProfileEditpanel">
+				<p-messages [(value)]="msgs"></p-messages>
+				<p-panel header="Profile Edit">
+					<form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+						<div *ngIf="userProfileVm != undefined">
+							<md-input-container class="input-full">
+								<input  mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfileVm.username"  required>
+							</md-input-container>
+							<md-input-container class="input-full">
+								<input mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfileVm.emailAddress" #email="ngModel" required>
+							</md-input-container>
+							<md-input-container class="input-full">
+								<input mdInput id="firstName" name="firstName" placeholder="FirstName" [(ngModel)]="userProfileVm.firstName" required>
+							</md-input-container>
+							<md-input-container class="input-full">
+								<input mdInput id="lastName" name="lastName" placeholder="LastName" [(ngModel)]="userProfileVm.lastName" required>
+							</md-input-container>
+						</div>
+						<span *ngIf="(userProfile.username != userProfileVm.username) || (userProfile.emailAddress != userProfileVm.emailAddress)">
+							username and/or email address update will require you to sign back in
+						</span>
+						<div class="btns-panel">
+							<button pButton label="Save" icon="fa fa-floppy-o" type="submit"></button>
+							<button pButton label="Cancel" icon="fa fa-close" (click)="onProfileEditCancelbtnClick()"></button>
+						</div>
+					</form>
+				</p-panel>
+			</div>
+			</div>
+		<md-divider></md-divider>
+		<div class="btns-panel">
+			<button pButton label="Edit" icon="fa fa-edit" (click)="onEditBtnClick()"></button>
+		</div>
+	</md-list>
+	
+</p-panel>

@@ -1,12 +1,18 @@
 /**
- * New typescript file
+ * ToolBar
  */
+import { Injectable } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
+
 export class MenuBar  {
 
-  public static items: MenuItem[] = [
+
+  constructor(public isAdmin: boolean) {}
+
+   getMenuItems(): MenuItem[] {
+    return [
      {
-       label: 'Home', icon: 'fa-home',
+       label: 'Home', icon: 'fa-home', routerLink: '../'
      },
      {
        label: 'Companies', icon: 'fa-h-square',
@@ -55,7 +61,8 @@ export class MenuBar  {
        ]
      },
      {
-       label: 'Users', icon: 'fa-users',
+       label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin
      }
-  ];
+     ];
+  }
 }

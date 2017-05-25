@@ -22,6 +22,7 @@
 }
 a, u {
 	text-decoration: none;
+	cursor: hand;
 }
 
 .forgot_pwd_lnk{
@@ -32,11 +33,15 @@ a, u {
 	text-align: center;
 }
 
+.data-table {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 #home-card {
 	max-width: 1400px;
 	margin: 10px auto auto auto;
-	min-width: 600px;
-	min-height: calc(690px * (90/150));
+	min-width: 700px;
 	/*height: 80vh;
 	width: 150vh;*/	
 }
@@ -53,6 +58,10 @@ a, u {
 
 #home-inner-card{
 	width: 70%
+}
+
+.hand-hover {
+	cursor: hand;
 }
 
 /*#main-panel {
