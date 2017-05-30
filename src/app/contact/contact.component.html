@@ -1,0 +1,36 @@
+<p-panel header="{{careCompany.name}}'s Contacts Management" *ngIf="careCompany != undefined">
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-address-book-o fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div >
+			<div class="data-table">
+				<p-messages [(value)]="msgs"></p-messages>
+				<p-dataTable [value]="contacts" [rows]="10" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedContact" [contextMenu]="cm" dataKey="name" [totalRecords]="contactsCount">
+			    <p-header>{{careCompany.name}}'s Contacts</p-header>
+			    <p-column field="firstName" header="First Name"></p-column>
+			    <p-column field="lastName" header="Last Name"></p-column>
+			    <p-column field="title" header="Title"></p-column>
+			    <p-column field="phoneNumber" header="Phone Number">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] | phonenumber}}</span>
+       				</ng-template>
+			    </p-column>
+			    <p-column field="fax" header="Fax">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] | phonenumber}}</span>
+       				</ng-template>
+			    </p-column>
+			</p-dataTable>
+			</div>
+			<md-divider></md-divider>
+			<div class="btns-panel">
+				<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)" class="ui-button-success"></button>
+				<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedCompany === undefined" (click)="showDialog(true)"></button>
+				<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteCareCompany()" class="ui-button-danger" [disabled]="selectedCompany === undefined"></button>
+			</div>
+		</div>
+	</md-list>
+</p-panel>

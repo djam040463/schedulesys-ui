@@ -1,8 +1,11 @@
 import { LoginService } from '../login/login.service';
+import { Common } from '../shared/common';
 import { UserProfileVM } from '../user/userprofilevm';
+import { Validation } from '../user/validation';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './userprofile';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Message } from 'primeng/primeng';
 
@@ -11,43 +14,49 @@ import { Message } from 'primeng/primeng';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent extends Common implements OnInit, AfterViewChecked {
 
+  @ViewChild('profileForm') profileForm: NgForm;
   userProfile: UserProfile;
   userProfileVm: UserProfileVM;
-  displayProfileEditpanel = false;
-   msgs: Message[] = [];
+  display = false;
+  msgs: Message[] = [];
+  validation: Validation;
 
   constructor(
     private profileService: ProfileService,
     private loginService: LoginService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) { super(); }
 
   ngOnInit() {
     this.profileService.getUserProfile()
       .subscribe(
-        response => {this.userProfile = response},
-        error => {console.log('Something Unexpected happenned')});
+        response => {this.userProfile = response});
+    this.validation = new Validation();
   }
 
-  onEditBtnClick(): void {
+  ngAfterViewChecked(): void {
+    if (this.display) {
+      this.formChanged(this.profileForm, this.validation.formErrors,
+         this.validation.validationMessages);
+    }
+  }
+
+  onEdit(): void {
     this.userProfileVm = {... this.userProfile, role: this.userProfile.userRole.name}
-    this.setDisplayProfileEditpanel(true);
+    this.setDisplay(true);
   }
 
-  onProfileEditCancelbtnClick(): void {
-    this.setDisplayProfileEditpanel(false);
+  onEditCancel(): void {
+    this.setDisplay(false);
   }
 
   updateProfile(): void {
     this.profileService.updateUserProfile(this.userProfileVm)
       .subscribe(
         response => {
-         this.msgs = [];
-          this.msgs.push(
-            {severity: 'success', summary: '', detail: response}
-          );
+          this.displayMessage({severity: 'success', summary: '', detail: response}, this.msgs);
           // Set whatever user_role we previously had because it hasn't been updated
           if ((this.userProfile.username !== this.userProfileVm.username)
             || this.userProfile.emailAddress !== this.userProfileVm.emailAddress) {
@@ -55,16 +64,19 @@ export class ProfileComponent implements OnInit {
               this.router.navigate(['../../'], {relativeTo: this.route});
           }
           this.userProfile = {... this.userProfileVm, userRole: this.userProfile.userRole}; // Update the profile UI with the new values
-          setTimeout(() => {this.setDisplayProfileEditpanel(false); this.msgs = []}, 3000);
+          setTimeout(() => {this.setDisplay(false); this.msgs.pop()}, 3000);
         },
         error => {
-          this.msgs.push({severity: 'error', summary: '', detail: 'Unable to update profile'});
-          console.log('Unable to update profile')
+          this.displayMessage({severity: 'error', summary: '', detail: error}, this.msgs);
         });
   }
 
-  private setDisplayProfileEditpanel(value: boolean): void {
-    this.displayProfileEditpanel = value;
+  private setDisplay(value: boolean): void {
+    this.display = value;
+  }
+
+  onDuplicates(event) {
+    this.validation.formErrors[event.field] = event.message;
   }
 
 }

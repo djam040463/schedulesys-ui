@@ -2,6 +2,7 @@ import { AccountService } from './account.service';
 import { KeyAndPasswordVM } from './keyandpasswordvm';
 import {Message} from 'primeng/primeng';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -48,7 +49,15 @@ export class AccountComponent implements OnInit {
     this.navigateToLoginPage();
   }
 
-  resetPassword() {
+  resetOrActivateAccount(form: NgForm) {
+    if (this.action === 'activate') {
+      this.activateAccount(form);
+    } else {
+      this.resetPassword(form);
+    }
+  }
+
+  resetPassword(form: NgForm) {
     this.msgs = [];
     this.accountService
       .resetPassword(new KeyAndPasswordVM(this.key, this.password))
@@ -60,6 +69,7 @@ export class AccountComponent implements OnInit {
               summary: '',
               detail: 'Password successfully updated, redirecting to login ...'
           });
+          form.resetForm();
           setTimeout(() => { this.navigateToLoginPage(); }, 2000)
         },
         error => {
@@ -67,6 +77,30 @@ export class AccountComponent implements OnInit {
               severity: 'error',
               summary: 'Something unexpected happenned',
               detail: 'Unable to update password'
+          });
+        }
+       );
+  }
+
+  activateAccount(form: NgForm) {
+    this.msgs = [];
+    this.accountService
+      .activateAccount(new KeyAndPasswordVM(this.key, this.password))
+      .subscribe(
+        response => {
+          this.msgs.push({
+              severity: 'success',
+              summary: '',
+              detail: 'Account successfully activated, redirecting to login ...'
+          });
+          form.resetForm();
+          setTimeout(() => { this.navigateToLoginPage(); }, 2000)
+        },
+        error => {
+           this.msgs.push({
+              severity: 'error',
+              summary: 'Something unexpected happenned',
+              detail: 'Unable to activate password'
           });
         }
        );

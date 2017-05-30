@@ -31,30 +31,66 @@
 				<span class="ui-g-6">{{userProfile.userRole.name}}</span>
 			</md-list-item>
 			</div>
-			<div class="ui-g-7" *ngIf="displayProfileEditpanel">
+			<div class="ui-g-7" *ngIf="display">
 				<p-messages [(value)]="msgs"></p-messages>
 				<p-panel header="Profile Edit">
 					<form (ngSubmit)="updateProfile()" #profileForm="ngForm">
 						<div *ngIf="userProfileVm != undefined">
-							<md-input-container class="input-full">
-								<input  mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfileVm.username"  required>
-							</md-input-container>
-							<md-input-container class="input-full">
-								<input mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfileVm.emailAddress" #email="ngModel" required>
-							</md-input-container>
-							<md-input-container class="input-full">
-								<input mdInput id="firstName" name="firstName" placeholder="FirstName" [(ngModel)]="userProfileVm.firstName" required>
-							</md-input-container>
-							<md-input-container class="input-full">
-								<input mdInput id="lastName" name="lastName" placeholder="LastName" [(ngModel)]="userProfileVm.lastName" required>
-							</md-input-container>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.username">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.username}}
+								</div>
+								<md-input-container class="input-full">
+									<input #username mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfileVm.username" 
+									usernameInUse [input-value]="userProfileVm.username" [old-value]="userProfile.username" (duplicates)="onDuplicates($event)"
+									minlength="6" maxlength="20" [input-regex]="'^[_\'.@A-Za-z0-9-]*$'" required>
+									<md-hint align="end">{{username.value.length}} / 20</md-hint>
+								</md-input-container>
+							</div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.email">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.email}}
+								</div>
+								<md-input-container class="input-full">
+									<input #email mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfileVm.emailAddress"
+									emailInUse [input-value]="userProfileVm.emailAddress" [old-value]="userProfile.emailAddress" (duplicates)="onDuplicates($event)" maxlength="50"
+									[input-regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'" required>
+									<md-hint align="end">{{email.value.length}} / 50</md-hint>
+								</md-input-container>
+							</div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.firstname">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.firstname}}
+								</div>
+								<md-input-container class="input-full">
+									<input #firstName mdInput id="firstName" name="firstName" placeholder="FirstName" [(ngModel)]="userProfileVm.firstName"
+										minlength="2" maxlength="50" required>
+									<md-hint align="end">{{firstName.value.length}} / 50</md-hint>
+								</md-input-container>
+							</div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastname">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.lastname}}
+								</div>
+								<md-input-container class="input-full">
+									<input #lastName mdInput id="lastName" name="lastName" placeholder="LastName" [(ngModel)]="userProfileVm.lastName"
+										minlength="2" maxlength="50" required>
+									<md-hint align="end">{{lastName.value.length}} / 50</md-hint>
+								</md-input-container>
+							</div>
 						</div>
-						<span *ngIf="(userProfile.username != userProfileVm.username) || (userProfile.emailAddress != userProfileVm.emailAddress)">
+						<span *ngIf="(userProfile.username != userProfileVm.username) || (userProfile.emailAddress != userProfileVm.emailAddress)"
+							class="ui-message ui-messages-warn ui-corner-all">
+							 <i class="fa fa-exclamation-triangle"></i>
 							username and/or email address update will require you to sign back in
 						</span>
 						<div class="btns-panel">
 							<button pButton label="Save" icon="fa fa-floppy-o" type="submit"></button>
-							<button pButton label="Cancel" icon="fa fa-close" (click)="onProfileEditCancelbtnClick()"></button>
+							<button pButton label="Cancel" icon="fa fa-close" (click)="onEditCancel()"></button>
 						</div>
 					</form>
 				</p-panel>
@@ -62,7 +98,7 @@
 			</div>
 		<md-divider></md-divider>
 		<div class="btns-panel">
-			<button pButton label="Edit" icon="fa fa-edit" (click)="onEditBtnClick()"></button>
+			<button pButton label="Edit" icon="fa fa-edit" (click)="onEdit()"></button>
 		</div>
 	</md-list>
 	

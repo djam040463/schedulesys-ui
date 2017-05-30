@@ -15,50 +15,13 @@ export class MenuBar  {
        label: 'Home', icon: 'fa-home', routerLink: '../'
      },
      {
-       label: 'Companies', icon: 'fa-h-square',
-       items: [
-                {
-                  label: 'Facilities',
-                  items: [{ label: 'Placeholder' }, { label: 'Placeholder' }]
-                },
-                {
-                  label: 'Private Cares',
-                  items: [{ label: 'Placeholder' }, { label: 'Placeholder' }]
-                }
-       ]
+       label: 'Companies', icon: 'fa-hospital-o', routerLink: 'companies'
      },
      {
-       label: 'Nurses', icon: 'fa-user-md',
-       items: [
-                {
-                  label: 'New Nurse'
-                },
-                {
-                  label: 'View Nurses'
-                }
-       ]
+       label: 'Employees', icon: 'fa-user-md',
      },
      {
-       label: 'Care Givers', icon: 'fa-user-md',
-       items: [
-                {
-                  label: 'New Care Giver'
-                },
-                {
-                  label: 'View Care Givers'
-                }
-       ]
-     },
-     {
-       label: 'Tests', icon: 'fa-check',
-       items: [
-                {
-                  label: 'New Test'
-                },
-                {
-                  label: 'View All Available Tests'
-                }
-       ]
+       label: 'Tests', icon: 'fa-book',
      },
      {
        label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin

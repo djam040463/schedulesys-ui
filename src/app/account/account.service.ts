@@ -8,13 +8,19 @@ import { Observable } from 'rxjs/Observable';
 export class AccountService {
 
   private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
-  resourceUrl = environment.apiBaseUrl + '/api/account/reset_password/finish';
+  pwdResetUrl = environment.apiBaseUrl + '/api/account/reset_password/finish';
+  acntActivationUrl = environment.apiBaseUrl + '/api/account/activate';
 
   constructor(private http: Http) { }
 
   resetPassword(keyAndPassword: KeyAndPasswordVM): Observable<string> {
-    return this.http.post(this.resourceUrl, keyAndPassword, this.options)
+    return this.http.post(this.pwdResetUrl, keyAndPassword, this.options)
             .map(response => response.toString());
+  }
+
+  activateAccount(keyAndPassword: KeyAndPasswordVM): Observable<string> {
+     return this.http.post(this.acntActivationUrl, keyAndPassword, this.options)
+            .map(response => 'Account successfully activated');
   }
 
 }

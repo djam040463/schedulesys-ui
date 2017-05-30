@@ -1,7 +1,7 @@
 <div class="centered-panel">
 	<p-messages [(value)]="msgs"></p-messages>
 	<p-panel header="{{title}}">
-		<form #accountForm="ngForm" (ngSubmit)="resetPassword()">
+		<form #accountForm="ngForm" (ngSubmit)="resetOrActivateAccount(accountForm)">
 			<div>
 			<md-input-container class="input-full">
 				<input type="password" minlength="8" maxlength="20" mdInput id="password" name="password" placeholder="Password" [(ngModel)]="password"  required>

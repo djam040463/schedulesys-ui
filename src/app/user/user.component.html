@@ -6,10 +6,8 @@
 		<md-divider></md-divider>
 		<div class="data-table">
 			<p-messages [(value)]="msgs"></p-messages>
-			<p-dataTable [value]="users" [rows]="20" [paginator]="true" 
-				resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
-				selectionMode="single" [(selection)]="selectedUser" (onRowDblclick)="onRowDblclick($event)"
-				[contextMenu]="cm" dataKey="username">
+			<p-dataTable [value]="users" [rows]="20" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedUser" [contextMenu]="cm" dataKey="username">
 			    <p-header>ScheduleSys Users</p-header>
 			    <p-column field="emailAddress" header="Email"></p-column>
 			    <p-column field="username" header="Username"></p-column>
@@ -21,7 +19,7 @@
 		</div>
 		<md-divider></md-divider>
 		<div class="btns-panel">
-			<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)"></button>
+			<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)" class="ui-button-success"></button>
 			<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedUser === undefined" (click)="showDialog(true)"></button>
 			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteUser()" class="ui-button-danger" [disabled]="selectedUser === undefined"></button>
 		</div>
@@ -33,35 +31,68 @@
         	<span *ngSwitchCase="false"> Adding a User</span>
    		 </p-header>
    		 <div>
-   		 	<form (ngSubmit)="createOrUpdateUser()" #userUpdateForm="ngForm">
+   		 	<form (ngSubmit)="createOrUpdateUser()" #userForm="ngForm">
 				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.username">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.username}}
+					</div>
 					<md-input-container class="input-full">
-						<input mdInput id="username" name="username" placeholder="Username" [(ngModel)]="user.username" required>
+						<input #username mdInput id="username" name="username" placeholder="Username" [(ngModel)]="user.username"
+							usernameInUse [input-value]="user.username" [old-value]="editing ? selectedUser.username : undefined"
+							(duplicates)="onDuplicates($event)" minlength="6" maxlength="20" [input-regex]="'^[_\'.@A-Za-z0-9-]*$'" required>
+						<md-hint align="end">{{username.value.length}} / 20</md-hint>
 					</md-input-container>
 				</div>
 				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.email">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.email}}
+					</div>
 					<md-input-container class="input-full">
-						<input mdInput id="email" name="email" placeholder="Email" [(ngModel)]="user.emailAddress" required>
+						<input #email mdInput id="email" name="email" type="email" placeholder="Email Address" [(ngModel)]="user.emailAddress"
+							emailInUse [input-value]="user.emailAddress"[old-value]="editing ? selectedUser.emailAddress : undefined"
+							(duplicates)="onDuplicates($event)" maxlength="50" [input-regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'" required>
+						<md-hint align="end">{{email.value.length}} / 50</md-hint>
 					</md-input-container>
 				</div>
 				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.firstname">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.firstname}}
+					</div>
 					<md-input-container class="input-full">
-						<input mdInput id="firstname" name="firstname" placeholder="First Name" [(ngModel)]="user.firstName" required>
+						<input #firstName mdInput id="firstname" name="firstname" placeholder="First Name" [(ngModel)]="user.firstName"
+							minlength="2" maxlength="50" required>
+						<md-hint align="end">{{firstName.value.length}} / 50</md-hint>
 					</md-input-container>
 				</div>
 				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastname">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.lastname}}
+					</div>
 					<md-input-container class="input-full">
-						<input mdInput id="lastname" name="lastname" placeholder="Last Name" [(ngModel)]="user.lastName" required>
+						<input #lastName mdInput id="lastname" name="lastname" placeholder="Last Name" [(ngModel)]="user.lastName"
+							minlength="2" maxlength="50" required>
+						<md-hint align="end">{{lastName.value.length}} / 50</md-hint>
 					</md-input-container>
+				</div>
+				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.role">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.role}}
+					</div>
+					<p-dropdown name="role" [options]="userRoles" [(ngModel)]="user.userRole.name" placeholder="User Role" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
 				</div>
 				<div class="btns-panel">
-	   		 		<button pButton label="Save" type="submit" icon="fa fa-floppy-o"></button>
+	   		 		<button pButton label="Save" type="submit" icon="fa fa-floppy-o" [disabled]="!userForm.form.valid"></button>
 					<button pButton label="Clear" type="reset" icon="fa fa-eraser"></button>
-					<button pButton label="Cancel" type="button" (click)="hideDialog()" icon="fa fa-close"></button>
+					<button pButton label="Cancel" type="button" (click)="hideDialog(userForm)" icon="fa fa-close"></button>
    		 		</div>
 			</form>
    		 </div>
 	</p-dialog>
 	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
-	<p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
 </p-panel>

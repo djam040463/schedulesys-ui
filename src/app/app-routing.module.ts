@@ -1,5 +1,7 @@
 
 import { AccountComponent } from './account/account.component';
+import { CareCompanyComponent } from './company/care-company.component';
+import { ContactComponent } from './contact/contact.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './login/auth-guard.service';
@@ -17,7 +19,9 @@ const appRoutes: Routes = [
     children: [
       { path: '', component: DashboardComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'users', component: UserComponent}
+      { path: 'users', component: UserComponent },
+      { path: 'companies', component: CareCompanyComponent },
+      { path: 'contacts/:companyId', component: ContactComponent }
     ]
   },
   { path: 'pwd-reset-request', component: PasswordResetRequestComponent },

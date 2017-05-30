@@ -1,6 +1,6 @@
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { PanelModule } from 'primeng/primeng';
@@ -15,6 +15,8 @@ import { ContextMenuModule } from 'primeng/primeng';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { GrowlModule } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
+import { DropdownModule } from 'primeng/primeng';
+import { TextMaskModule } from 'angular2-text-mask';
 import { MaterialModule, MdNativeDateModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -26,13 +28,26 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { PasswordResetRequestService } from './passwordresetrequest/passwordresetrequest.service';
 import { AccountComponent } from './account/account.component';
 import { AccountService } from './account/account.service';
+import { CareCompanyTypeService } from './company/care-company-type.service';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './login/auth-guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './profile/profile.service';
+import { EmailAddressInUseValidatorDirective } from './shared/emailaddress-in-use.directive';
+import { GlobalErrorHandler } from './shared/global-error.handler';
+import { InputRegexDirective } from './shared/input-regex.directive';
+import { UsernameInUseValidatorDirective } from './shared/username-in-use.directive';
 import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
+import { UserRoleService } from './user/userrole.service';
+import { CareCompanyComponent } from './company/care-company.component';
+import { CareCompanyService } from './company/care-company.service';
+import { CareCompanyNameInUseDirective } from './shared/care-company-name-in-usedirective';
+import { PhoneNumberPipe } from './shared/phonenumber.pipe';
+import { ContactComponent } from './contact/contact.component';
+import { ContactService } from './contact/contact.service';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +59,14 @@ import { UserService } from './user/user.service';
     HomeComponent,
     DashboardComponent,
     ProfileComponent,
-    UserComponent
+    UserComponent,
+    UsernameInUseValidatorDirective,
+    EmailAddressInUseValidatorDirective,
+    InputRegexDirective,
+    CareCompanyNameInUseDirective,
+    PhoneNumberPipe,
+    CareCompanyComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +86,8 @@ import { UserService } from './user/user.service';
     ConfirmDialogModule,
     GrowlModule,
     DialogModule,
+    DropdownModule,
+    TextMaskModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
@@ -74,7 +98,15 @@ import { UserService } from './user/user.service';
     ProfileService,
     UserService,
     ConfirmationService,
+    UserRoleService,
+    CareCompanyService,
+    CareCompanyTypeService,
+    ContactService,
     PasswordResetRequestService
+//    {
+//      provide: ErrorHandler,
+//      useClass: GlobalErrorHandler
+//    }
     ],
   bootstrap: [AppComponent]
 })
