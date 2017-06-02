@@ -6,8 +6,9 @@
 		<md-divider></md-divider>
 		<div class="data-table">
 			<p-messages [(value)]="msgs"></p-messages>
-			<p-dataTable [value]="users" [rows]="20" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
-				selectionMode="single" [(selection)]="selectedUser" [contextMenu]="cm" dataKey="username">
+			<p-dataTable [value]="users" [rows]="10" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedUser" [contextMenu]="cm" dataKey="username" [totalRecords]="tableItemsCount"
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)">
 			    <p-header>ScheduleSys Users</p-header>
 			    <p-column field="emailAddress" header="Email"></p-column>
 			    <p-column field="username" header="Username"></p-column>
@@ -25,13 +26,13 @@
 		</div>
 	</md-list>
 	
-	<p-dialog [(visible)]="display" width="450">
+	<p-dialog [(visible)]="dialogDisplayed" width="450">
 		 <p-header [ngSwitch]="editing">
         	<span *ngSwitchCase="true"> Editing a User</span>
         	<span *ngSwitchCase="false"> Adding a User</span>
    		 </p-header>
    		 <div>
-   		 	<form (ngSubmit)="createOrUpdateUser()" #userForm="ngForm">
+   		 	<form (ngSubmit)="create()" #userForm="ngForm">
 				<div>
 					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.username">
 						<i class="fa fa-close"></i>

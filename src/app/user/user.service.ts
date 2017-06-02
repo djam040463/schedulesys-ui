@@ -19,22 +19,22 @@ export class UserService extends CommonService {
       this.httpOptions = this.loginService.getRequestOptions();
     }
 
-  createUser(user: UserProfileVM): Observable<string> {
+  createUser(user: UserProfile): Observable<string> {
     return this.http.post(this.resourceUrl, user, this.httpOptions)
               .map(response => 'User successfully created')
               .catch(this.handleError);
   }
 
-  updateUser(user: UserProfileVM): Observable<string> {
+  updateUser(user: UserProfile): Observable<string> {
     return this.http.put(this.resourceUrl, user, this.httpOptions)
               .map(response => 'User successfully updated')
               .catch(this.handleError);
   }
 
-  getAllUsers() {
-    return this.http.get(this.resourceUrl, this.httpOptions)
+  getAll(page: number, size: number): Observable<{'users': UserProfile[], 'count': number}> {
+    return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), this.httpOptions)
               .map(response => {
-                  return UserProfile.toArray(response.json())
+                  return {'users': UserProfile.toArray(response.json()), 'count': response.headers.get(this.countHeaderName)}
               }).catch(this.handleError);
   }
 

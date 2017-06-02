@@ -1,44 +1,47 @@
 /**
  * Validation messages for user form
  */
-export class Validation {
+import { CommonValidation } from '../shared/validation';
+export class Validation extends CommonValidation {
 
-  public validationMessages = {
-      'username': {
-         'required': 'Username is required',
-         'minlength': 'Username must be at least 6 characters long',
-         'input-regex': 'Invalid username'
-       },
+  constructor() { super(); this.initMessages() }
 
-      'email': {
-         'required': 'Email address is required',
-         'emailAddressInUse': 'Email address entered is already in use',
-         'input-regex': 'Invalid email address'
-       },
+  private initMessages(): void {
+      this.validationMessages = {
+        'username': {
+           'required': 'Username is required',
+           'minlength': 'Username must be at least 6 characters long',
+           'input-regex': 'Invalid username'
+         },
 
-      'firstname': {
-         'required': 'First Name is required',
-         'minlength': 'First Name must be at leat 2 characters long'
-       },
+        'email': {
+           'required': 'Email address is required',
+           'emailAddressInUse': 'Email address entered is already in use',
+           'input-regex': 'Invalid email address'
+         },
 
-      'lastname': {
-         'required': 'Last name is required',
-         'minlength': 'Last Name must be at least 2 characters long'
-      },
+        'firstname': {
+           'required': 'First Name is required',
+           'minlength': 'First Name must be at leat 2 characters long'
+         },
 
-      'role': {
-         'required': 'Role is required'
-      }
+        'lastname': {
+           'required': 'Last name is required',
+           'minlength': 'Last Name must be at least 2 characters long'
+        },
+
+        'role': {
+           'required': 'Role is required'
+        }
+       }
+
+    // No errors when the form hasn't been touched
+    this.formErrors = {
+      'username': '',
+      'email': '',
+      'firstname': '',
+      'lastname': '',
+      'role': ''
+    }
   }
-
-  // No errors when the form hasn't been touched
-  public formErrors = {
-    'username': '',
-    'email': '',
-    'firstname': '',
-    'lastname': '',
-    'role': ''
-  }
-
-  constructor() {}
 }

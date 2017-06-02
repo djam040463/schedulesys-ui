@@ -1,55 +1,49 @@
-import { Common } from '../shared/common';
+import { CommonComponent } from '../shared/common';
 import { CareCompany } from './care-company';
 import { CareCompanyTypeService } from './care-company-type.service';
 import { CareCompanyService } from './care-company.service';
-import { Validation } from './validation';
+import { CareCompanyValidation } from './validation';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { MenuItem, ConfirmationService, Message, SelectItem, LazyLoadEvent } from 'primeng/primeng';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'care-company',
   templateUrl: './care-company.component.html',
   styleUrls: ['./care-company.component.css']
 })
-export class CareCompanyComponent extends Common implements OnInit, AfterViewChecked {
+export class CareCompanyComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('companyForm') companyForm: NgForm;
   careCompanies: CareCompany[];
-  msgs: Message[] = [];
   selectedCompany: CareCompany;
-  contextMenuItems: MenuItem[];
-  display: boolean;
-  editing: boolean;
-  validation: Validation;
   careCompany: CareCompany;
   careCompanyTypes: SelectItem[] = [];
-  companiesCount: number;
-  tableCurrentPage = 0;
-  tableCurrentRowCount = 10;
-
-  phoneNumberMask =  ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
   constructor(
       private careCompanyService: CareCompanyService,
       private careCompanyTypeService: CareCompanyTypeService,
       private confirmationService: ConfirmationService,
       private router: Router,
-      private route: ActivatedRoute) { super(); }
+      private route: ActivatedRoute) {
+        super(new CareCompanyValidation());
+      }
 
   ngOnInit() {
     this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
     this.buildContextMenuItems();
     this.getAllCareCompanyTypes();
-    this.validation = new Validation();
     this.careCompany = new CareCompany(null);
   }
 
   ngAfterViewChecked(): void {
-    this.formChanged(this.companyForm, this.validation.formErrors,
-      this.validation.validationMessages);
+    if (this.dialogDisplayed) {
+      this.formChanged(this.companyForm);
+    }
   }
 
   private buildContextMenuItems () {
@@ -59,59 +53,51 @@ export class CareCompanyComponent extends Common implements OnInit, AfterViewChe
             { label: 'Schedules', icon: 'fa-calendar'      , command: (event) => {this.navigateTo('../schedules')}},
             { label: 'Contacts' , icon: 'fa-address-book-o', command: (event) => {this.navigateTo('../contacts')} }
         ];
-  } // TODO Move logic into Common
-
-  createOrUpdateCareCompany() {
+  }
+// TODO Add http wrapper and check 401 errors. If jwt has expired, then redirect to login
+  // TODO 'New' does not refresh data table
+  create() {
     this.careCompany.phoneNumber = this.unmaskNumber(this.careCompany.phoneNumber);
     this.careCompany.fax = this.unmaskNumber(this.careCompany.fax);
-    if (this.editing) {
-      this.update();
-    } else {
-      this.create();
-    }
-  }
-// TODO Use Only one method for creating and updating
-  update() {
-    this.careCompanyService.update(this.careCompany)
-      .subscribe(
-        response => {
-          this.displayMessage({severity: 'success', summary: '', detail: response}, this.msgs);
-           this.hideDialog();
-           this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
-        },
-        error => {
-          this.displayMessage({severity: 'error', summary: '', detail: error}, this.msgs);
-        });
-  }
-
-  create() {
-     this.careCompanyService.update(this.careCompany)
-      .subscribe(
-        response => {
-          this.displayMessage({severity: 'success', summary: '', detail: response}, this.msgs);
-           this.hideDialog();
-           this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
-        },
-        error => {
-          this.displayMessage({severity: 'error', summary: '', detail: error}, this.msgs);
-     });
+    const result: Observable<string> = this.editing ? this.careCompanyService.update(this.careCompany)
+      : this.careCompanyService.create(this.careCompany);
+    result.subscribe(
+       response => {
+         this.displayMessage({severity: 'success', summary: '', detail: response});
+         this.hideDialog();
+         if (!this.editing) {
+            this.careCompanies.push(this.careCompany);
+            // Update number of items so that the paginator displays the correct number of pages
+            this.tableItemsCount++;
+         }
+       },
+       error => {
+        this.displayMessage({severity: 'error', summary: '', detail: error});
+      }
+     );
   }
 
   deleteCareCompany () {
      this.confirmationService.confirm({
        message: 'Are you sure you want to delete this company ?',
-       accept: () => { console.log('Deleting user');
+       accept: () => {
         this.careCompanyService.deleteCareCompany(this.selectedCompany.id)
           .subscribe(
             response  => {
               this.displayMessage(
-                { severity: 'success', summary: '', detail: 'User successfully deleted'}, this.msgs);
+                { severity: 'success', summary: '', detail: 'User successfully deleted'});
+                const selectedCompanyIndex = this.findSelectedCompanyIndex();
+                this.careCompanies = this.careCompanies.filter((val, i) =>  i !== selectedCompanyIndex); // Refreshes dataTable
                 this.selectedCompany = undefined; // Disables 'Edit' and 'Delete' buttons
-                console.log('Row count : ' + this.tableCurrentRowCount);
-                this.getAll(this.tableCurrentPage, this.tableCurrentRowCount) // Refreshes dataTable
+                // Update number of items so that the paginator displays the correct number of pages
+                this.tableItemsCount--;
+                if (this.careCompanies.length === 0) {
+                  // Goes back to first page when the last item in the list is deleted
+                  this.getAll(0, this.tableCurrentRowCount);
+                }
             },
             error => {
-                this.displayMessage({ severity: 'error', summary: '', detail: error}, this.msgs);
+                this.displayMessage({ severity: 'error', summary: '', detail: error });
             }
           );
        }
@@ -119,53 +105,50 @@ export class CareCompanyComponent extends Common implements OnInit, AfterViewChe
   }
 
   showDialog(editing: boolean) {
-     this.display = true;
+     this.dialogDisplayed = true;
      this.editing = editing;
     // When editing, populate form with selected User
-     this.careCompany = editing ? {... this.selectedCompany,
-       careCompanyType: {... this.selectedCompany.careCompanyType}} : new CareCompany(null);
+     this.careCompany = editing ? _.cloneDeep(this.selectedCompany)
+       : new CareCompany(null);
   }
 
    hideDialog() {
-    this.display = false;
+    this.dialogDisplayed = false;
     if (this.editing) {
-      this.selectedCompany = {... this.careCompany,
-          careCompanyType: {... this.careCompany.careCompanyType}}; // Refresh dataTable after user update
+      this.refreshOnEdit(this.careCompany, this.selectedCompany) // Refresh dataTable after company update
     }
     this.companyForm.resetForm();
   }
 
   private getAllCareCompanyTypes() {
-    this.careCompanyTypeService.getAllCareCompanyTypes()
+    this.careCompanyTypeService.getAll()
         .subscribe(
           response => {
-            for (let i = 0; i < response.length; i++) {
-               this.careCompanyTypes.push({label: response[i].name, value: response[i].name});
-            }
+            response.forEach((careCompanyType, i) => {
+              this.careCompanyTypes.push({label: careCompanyType.name, value: careCompanyType.name});
+            });
           });
   }
 
-  private getAll(page: number, size: number) {
+  getAll(page: number, size: number) {
      this.careCompanyService.getAllCareCompanies(page, size)
           .subscribe(response => {
               this.careCompanies = response.companies;
-              this.companiesCount = response.count;
+              this.tableItemsCount = response.count;
           });
   }
-
-  loadCompanyLazy(event: LazyLoadEvent) {
-    this.tableCurrentPage = (event.first / event.rows);
-    this.tableCurrentRowCount = event.rows;
-   // this.selectedCompany = undefined;
-    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
-  }
-
- onDuplicates(event: any) {
-    this.validation.formErrors[event.field] = event.message;
-  } // TODO Move to Common
 
   navigateTo(destionation: string) {
     this.router.navigate([destionation, this.selectedCompany.id], {relativeTo: this.route})
   }
 
+  findSelectedCompanyIndex() {
+     let index = -1;
+     this.careCompanies.forEach((careCompany, i) => {
+      if (this.selectedCompany.id === careCompany.id) {
+        index = i;
+      }
+     });
+    return index;
+  }
 }

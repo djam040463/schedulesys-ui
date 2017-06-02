@@ -14,7 +14,7 @@ export class UserRoleService {
     private http: Http,
     private loginService: LoginService) { }
 
-  getAllUserRoles(): Observable<UserRole[]> {
+  getAll(): Observable<UserRole[]> {
     return this.http.get(this.resourceUrl, this.loginService.getRequestOptions())
               .map(response => {
                   return UserRole.toArray(response.json())

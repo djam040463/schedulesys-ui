@@ -14,7 +14,7 @@ export class CareCompanyTypeService {
     private http: Http,
     private loginService: LoginService) { }
 
-  getAllCareCompanyTypes(): Observable<CareCompanyType[]> {
+  getAll(): Observable<CareCompanyType[]> {
     return this.http.get(this.resourceUrl, this.loginService.getRequestOptions())
             .map(response => CareCompanyType.toArray(response.json()));
   }

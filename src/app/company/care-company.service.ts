@@ -16,7 +16,7 @@ export class CareCompanyService extends CommonService {
     private loginService: LoginService) {super(); }
 
   getAllCareCompanies(page: number, size: number): Observable<{'companies': CareCompany[], 'count': number}> {
-    return this.http.get(this.resourceUrl + '?page=' + page + '&size=' + size, this.loginService.getRequestOptions())
+    return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), this.loginService.getRequestOptions())
           .map(response =>  {
             return {'companies': CareCompany.toArray(response.json()), 'count': response.headers.get(this.countHeaderName)}
             })

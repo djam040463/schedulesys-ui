@@ -28,8 +28,8 @@
 			<md-divider></md-divider>
 			<div class="btns-panel">
 				<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)" class="ui-button-success"></button>
-				<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedCompany === undefined" (click)="showDialog(true)"></button>
-				<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteCareCompany()" class="ui-button-danger" [disabled]="selectedCompany === undefined"></button>
+				<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedContact === undefined" (click)="showDialog(true)"></button>
+				<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteContact()" class="ui-button-danger" [disabled]="selectedContact === undefined"></button>
 			</div>
 		</div>
 	</md-list>

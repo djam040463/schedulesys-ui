@@ -20,4 +20,8 @@ export class CommonService {
     }
     return Observable.throw(errorMsg);
   }
+
+  formatRequestParams(page: number, size: number): string {
+    return '?page=' + page + '&size=' + size;
+  }
 }

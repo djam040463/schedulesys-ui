@@ -1,5 +1,5 @@
 import { LoginService } from '../login/login.service';
-import { Common } from '../shared/common';
+import { CommonComponent } from '../shared/common';
 import { UserProfileVM } from '../user/userprofilevm';
 import { Validation } from '../user/validation';
 import { ProfileService } from './profile.service';
@@ -14,32 +14,30 @@ import { Message } from 'primeng/primeng';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent extends Common implements OnInit, AfterViewChecked {
+export class ProfileComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('profileForm') profileForm: NgForm;
   userProfile: UserProfile;
   userProfileVm: UserProfileVM;
   display = false;
   msgs: Message[] = [];
-  validation: Validation;
 
   constructor(
     private profileService: ProfileService,
     private loginService: LoginService,
     private router: Router,
-    private route: ActivatedRoute) { super(); }
+    private route: ActivatedRoute) {
+      super(new Validation());
+    }
 
   ngOnInit() {
     this.profileService.getUserProfile()
-      .subscribe(
-        response => {this.userProfile = response});
-    this.validation = new Validation();
+      .subscribe(response => {this.userProfile = response});
   }
 
   ngAfterViewChecked(): void {
     if (this.display) {
-      this.formChanged(this.profileForm, this.validation.formErrors,
-         this.validation.validationMessages);
+      this.formChanged(this.profileForm);
     }
   }
 
@@ -53,10 +51,10 @@ export class ProfileComponent extends Common implements OnInit, AfterViewChecked
   }
 
   updateProfile(): void {
-    this.profileService.updateUserProfile(this.userProfileVm)
+    this.profileService.update(this.userProfileVm)
       .subscribe(
         response => {
-          this.displayMessage({severity: 'success', summary: '', detail: response}, this.msgs);
+          this.displayMessage({severity: 'success', summary: '', detail: response});
           // Set whatever user_role we previously had because it hasn't been updated
           if ((this.userProfile.username !== this.userProfileVm.username)
             || this.userProfile.emailAddress !== this.userProfileVm.emailAddress) {
@@ -67,16 +65,12 @@ export class ProfileComponent extends Common implements OnInit, AfterViewChecked
           setTimeout(() => {this.setDisplay(false); this.msgs.pop()}, 3000);
         },
         error => {
-          this.displayMessage({severity: 'error', summary: '', detail: error}, this.msgs);
+          this.displayMessage({severity: 'error', summary: '', detail: error});
         });
   }
 
   private setDisplay(value: boolean): void {
     this.display = value;
-  }
-
-  onDuplicates(event) {
-    this.validation.formErrors[event.field] = event.message;
   }
 
 }
