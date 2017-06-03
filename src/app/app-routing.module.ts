@@ -3,6 +3,7 @@ import { AccountComponent } from './account/account.component';
 import { CareCompanyComponent } from './company/care-company.component';
 import { ContactComponent } from './contact/contact.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EmployeeComponent } from './employee/employee.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './login/auth-guard.service';
 import { LoginComponent } from './login/login.component';
@@ -21,6 +22,7 @@ const appRoutes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'users', component: UserComponent },
       { path: 'companies', component: CareCompanyComponent },
+      { path: 'employees', component: EmployeeComponent },
       { path: 'contacts/:companyId', component: ContactComponent }
     ]
   },

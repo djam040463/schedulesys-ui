@@ -5,7 +5,7 @@ export class UserProfile {
   firstName: string;
   lastName: string;
   username: string;
-  userRole: UserRole;
+  userRole: UserRole = new UserRole();
   activated: boolean;
 
   static toArray(jsons: any[]): UserProfile[] {
@@ -27,8 +27,6 @@ export class UserProfile {
       this.username = json.username;
       this.userRole = json.userRole;
       this.activated = json.activated;
-    } else {
-      this.userRole = new UserRole(null);
     }
   }
 

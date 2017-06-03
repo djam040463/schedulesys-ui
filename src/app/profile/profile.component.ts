@@ -1,6 +1,5 @@
 import { LoginService } from '../login/login.service';
 import { CommonComponent } from '../shared/common';
-import { UserProfileVM } from '../user/userprofilevm';
 import { Validation } from '../user/validation';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './userprofile';
@@ -8,6 +7,7 @@ import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Message } from 'primeng/primeng';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-profile',
@@ -17,8 +17,8 @@ import { Message } from 'primeng/primeng';
 export class ProfileComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('profileForm') profileForm: NgForm;
+  user: UserProfile;
   userProfile: UserProfile;
-  userProfileVm: UserProfileVM;
   display = false;
   msgs: Message[] = [];
 
@@ -32,7 +32,7 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
 
   ngOnInit() {
     this.profileService.getUserProfile()
-      .subscribe(response => {this.userProfile = response});
+      .subscribe(response => {this.user = response});
   }
 
   ngAfterViewChecked(): void {
@@ -42,7 +42,7 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
   }
 
   onEdit(): void {
-    this.userProfileVm = {... this.userProfile, role: this.userProfile.userRole.name}
+    this.userProfile = _.cloneDeep(this.user);
     this.setDisplay(true);
   }
 
@@ -51,17 +51,17 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
   }
 
   updateProfile(): void {
-    this.profileService.update(this.userProfileVm)
+    this.profileService.update(this.userProfile)
       .subscribe(
         response => {
           this.displayMessage({severity: 'success', summary: '', detail: response});
           // Set whatever user_role we previously had because it hasn't been updated
-          if ((this.userProfile.username !== this.userProfileVm.username)
-            || this.userProfile.emailAddress !== this.userProfileVm.emailAddress) {
+          if ((this.userProfile.username !== this.userProfile.username)
+            || this.userProfile.emailAddress !== this.userProfile.emailAddress) {
               this.loginService.logout(); // Users are logged out when username or email address updated
               this.router.navigate(['../../'], {relativeTo: this.route});
           }
-          this.userProfile = {... this.userProfileVm, userRole: this.userProfile.userRole}; // Update the profile UI with the new values
+          this.user = _.cloneDeep(this.userProfile); // Update the profile UI with the new values
           setTimeout(() => {this.setDisplay(false); this.msgs.pop()}, 3000);
         },
         error => {

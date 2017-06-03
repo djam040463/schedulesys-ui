@@ -1,0 +1,27 @@
+<p-panel header="Employees Management" >
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-user-md fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div class="data-table">
+			<p-messages [(value)]="msgs"></p-messages>
+			<p-dataTable [value]="employees" [rows]="10" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedEmployee" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No employees found'">
+			    <p-header>ScheduleSys Users</p-header>
+			    <p-column field="firstName" header="First Name"></p-column>
+			    <p-column field="lastName" header="Last Name"></p-column>
+			    <p-column field="dateOfHire" header="Date Of Hire"></p-column>
+			    <p-column field="lastDayOfWork" header="Last Day Of Work"></p-column>
+			    <p-column field="ebc" header="Ebc"></p-column>
+			    <p-column field="insvc" header="In Service"></p-column>
+			    <p-column field="comment" header="Comment"></p-column>
+			    <p-column field="position.name" header="Position"></p-column>
+			    <p-column field="employeeType.name" header="Employee Type"></p-column>
+			</p-dataTable>
+		</div>
+		<md-divider></md-divider>
+		<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteEmployee()" 
+			[disabled]="selectedEmployee === undefined" (back)="gotToHome()"></data-table-crud>
+	</md-list>

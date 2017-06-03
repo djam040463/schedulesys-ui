@@ -9,7 +9,7 @@
 			<p-messages [(value)]="msgs"></p-messages>
 			<p-dataTable [value]="careCompanies" [rows]="10" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedCompany" [contextMenu]="cm" dataKey="name" [totalRecords]="tableItemsCount"
-				[lazy]="true" (onLazyLoad)="loadDataLazy($event)">
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No care companies found'">
 			    <p-header>Care Companies</p-header>
 			    <p-column field="name" header="Name"></p-column>
 			    <p-column field="address" header="Address"></p-column>
@@ -28,11 +28,8 @@
 		</div>
 		</div>
 		<md-divider></md-divider>
-		<div class="btns-panel">
-			<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)" class="ui-button-success"></button>
-			<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedCompany === undefined" (click)="showDialog(true)"></button>
-			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteCareCompany()" class="ui-button-danger" [disabled]="selectedCompany === undefined"></button>
-		</div>
+		<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteCareCompany()" 
+			[disabled]="selectedCompany === undefined" (back)="gotToHome()"></data-table-crud>
 	</md-list>
 	<p-dialog [(visible)]="dialogDisplayed" width="450">
 		 <p-header [ngSwitch]="editing">
@@ -69,7 +66,8 @@
 						{{validation.formErrors.phoneNumber}}
 					</div>
 					<md-input-container class="input-full">
-						<input #phoneNumber [textMask]="{mask: phoneNumberMask}"  mdInput id="phoneNumber" name="phoneNumber" placeholder="Phone Number" [(ngModel)]="careCompany.phoneNumber" required>
+						<input #phoneNumber [textMask]="{mask: phoneNumberMask}"  mdInput id="phoneNumber" 
+						name="phoneNumber" placeholder="Phone Number" [(ngModel)]="careCompany.phoneNumber" required>
 					</md-input-container>
 				</div>
 				<div>
@@ -89,12 +87,8 @@
 					<p-dropdown name="role" [options]="careCompanyTypes" [(ngModel)]="careCompany.careCompanyType.name" placeholder="Care Company Type"
 						appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
 				</div>
-				<div class="btns-panel">
-	   		 		<button pButton label="Save" type="submit" icon="fa fa-floppy-o" 
-	   		 			[disabled]="!companyForm.form.valid || (unmaskNumber(phoneNumber.value).length != 10) || (unmaskNumber(fax.value).length != 10)"></button>
-					<button pButton label="Clear" type="reset" icon="fa fa-eraser"></button>
-					<button pButton label="Cancel" type="button" (click)="hideDialog()" icon="fa fa-close"></button>
-   		 		</div>
+				<dialog-crud (cancel)="hideDialog()" 
+					[disabled]="!companyForm.form.valid || (unmaskNumber(phoneNumber.value).length != 10) || (unmaskNumber(fax.value).length != 10)"></dialog-crud>
 			</form>
    		 </div>
 	</p-dialog>

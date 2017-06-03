@@ -1,4 +1,4 @@
-<p-panel header="User Profile" *ngIf="userProfile != undefined">
+<p-panel header="User Profile" *ngIf="user != undefined">
 	<md-list>
 		<div style="text-align: center;">
 			<span  class="fa fa-user-circle-o fa-5x" ></span>
@@ -8,42 +8,42 @@
 			<div class="ui-g-5">
 			<md-list-item class="ui-g">
 				<span class="ui-g-6">Username : </span>
-				<span class="ui-g-6" id="username">{{userProfile.username}}</span>
+				<span class="ui-g-6" id="username">{{user.username}}</span>
 			</md-list-item>
 			
 			<md-list-item class="ui-g">
 				<span class="ui-g-6">Email : </span>
-				<span class="ui-g-6">{{userProfile.emailAddress}}</span>
+				<span class="ui-g-6">{{user.emailAddress}}</span>
 			</md-list-item>
 			
 			<md-list-item class="ui-g">
 				<span class="ui-g-6">First name : </span>
-				<span class="ui-g-6">{{userProfile.firstName}}</span>
+				<span class="ui-g-6">{{user.firstName}}</span>
 			</md-list-item>
 			
 			<md-list-item class="ui-g">
 				<span class="ui-g-6">Last name : </span>
-				<span class="ui-g-6">{{userProfile.lastName}}</span>
+				<span class="ui-g-6">{{user.lastName}}</span>
 			</md-list-item>
 			
 			<md-list-item class="ui-g">
 				<span class="ui-g-6">Role : </span>
-				<span class="ui-g-6">{{userProfile.userRole.name}}</span>
+				<span class="ui-g-6">{{user.userRole.name}}</span>
 			</md-list-item>
 			</div>
 			<div class="ui-g-7" *ngIf="display">
 				<p-messages [(value)]="msgs"></p-messages>
 				<p-panel header="Profile Edit">
 					<form (ngSubmit)="updateProfile()" #profileForm="ngForm">
-						<div *ngIf="userProfileVm != undefined">
+						<div *ngIf="userProfile != undefined">
 							<div>
 								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.username">
 									<i class="fa fa-close"></i>
 									{{validation.formErrors.username}}
 								</div>
 								<md-input-container class="input-full">
-									<input #username mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfileVm.username" 
-									usernameInUse [input-value]="userProfileVm.username" [old-value]="userProfile.username" (duplicates)="onDuplicates($event)"
+									<input #username mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfile.username" 
+									usernameInUse [input-value]="userProfile.username" [old-value]="user.username" (duplicates)="onDuplicates($event)"
 									minlength="6" maxlength="20" [input-regex]="'^[_\'.@A-Za-z0-9-]*$'" required>
 									<md-hint align="end">{{username.value.length}} / 20</md-hint>
 								</md-input-container>
@@ -54,8 +54,8 @@
 									{{validation.formErrors.email}}
 								</div>
 								<md-input-container class="input-full">
-									<input #email mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfileVm.emailAddress"
-									emailInUse [input-value]="userProfileVm.emailAddress" [old-value]="userProfile.emailAddress" (duplicates)="onDuplicates($event)" maxlength="50"
+									<input #email mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfile.emailAddress"
+									emailInUse [input-value]="userProfile.emailAddress" [old-value]="user.emailAddress" (duplicates)="onDuplicates($event)" maxlength="50"
 									[input-regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'" required>
 									<md-hint align="end">{{email.value.length}} / 50</md-hint>
 								</md-input-container>
@@ -66,7 +66,7 @@
 									{{validation.formErrors.firstname}}
 								</div>
 								<md-input-container class="input-full">
-									<input #firstName mdInput id="firstName" name="firstName" placeholder="FirstName" [(ngModel)]="userProfileVm.firstName"
+									<input #firstName mdInput id="firstName" name="firstName" placeholder="FirstName" [(ngModel)]="userProfile.firstName"
 										minlength="2" maxlength="50" required>
 									<md-hint align="end">{{firstName.value.length}} / 50</md-hint>
 								</md-input-container>
@@ -77,13 +77,13 @@
 									{{validation.formErrors.lastname}}
 								</div>
 								<md-input-container class="input-full">
-									<input #lastName mdInput id="lastName" name="lastName" placeholder="LastName" [(ngModel)]="userProfileVm.lastName"
+									<input #lastName mdInput id="lastName" name="lastName" placeholder="LastName" [(ngModel)]="userProfile.lastName"
 										minlength="2" maxlength="50" required>
 									<md-hint align="end">{{lastName.value.length}} / 50</md-hint>
 								</md-input-container>
 							</div>
 						</div>
-						<span *ngIf="(userProfile.username != userProfileVm.username) || (userProfile.emailAddress != userProfileVm.emailAddress)"
+						<span *ngIf="(user.username != userProfile.username) || (user.emailAddress != userProfile.emailAddress)"
 							class="ui-message ui-messages-warn ui-corner-all">
 							 <i class="fa fa-exclamation-triangle"></i>
 							username and/or email address update will require you to sign back in

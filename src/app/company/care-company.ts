@@ -5,16 +5,16 @@ export class CareCompany {
   address: string;
   phoneNumber: string;
   fax: string;
-  careCompanyType: CareCompanyType;
+  careCompanyType: CareCompanyType = new CareCompanyType();
 
   static toArray(jsons: any[]): CareCompany[] {
-        const users: CareCompany[] = [];
+        const careCompanies: CareCompany[] = [];
         if (jsons != null) {
             for (const json of jsons) {
-                users.push(new CareCompany(json));
+                careCompanies.push(new CareCompany(json));
             }
         }
-        return users;
+        return careCompanies;
   }
 
   constructor(json?: any) {
@@ -25,8 +25,6 @@ export class CareCompany {
       this.phoneNumber = json.phoneNumber;
       this.fax = json.fax;
       this.careCompanyType = json.careCompanyType;
-    } else {
-      this.careCompanyType = new CareCompanyType(null);
     }
   }
 }

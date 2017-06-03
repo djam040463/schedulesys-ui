@@ -47,6 +47,14 @@ import { CareCompanyNameInUseDirective } from './shared/care-company-name-in-use
 import { PhoneNumberPipe } from './shared/phonenumber.pipe';
 import { ContactComponent } from './contact/contact.component';
 import { ContactService } from './contact/contact.service';
+import { DataTableCrudComponent } from './data-table-crud/data-table-crud.component';
+import { DialogCrudComponent } from './dialog-crud/dialog-crud.component';
+import { EmployeeComponent } from './employee/employee.component';
+import { PositionComponent } from './position/position.component';
+import { EmployeeTypeComponent } from './employee-type/employee-type.component';
+import { EmployeeTypeService } from './employee-type/employee-type.service';
+import { EmployeeService } from './employee/employee.service';
+import { PositionService } from './position/position.service';
 
 
 @NgModule({
@@ -66,7 +74,12 @@ import { ContactService } from './contact/contact.service';
     CareCompanyNameInUseDirective,
     PhoneNumberPipe,
     CareCompanyComponent,
-    ContactComponent
+    ContactComponent,
+    DataTableCrudComponent,
+    DialogCrudComponent,
+    EmployeeComponent,
+    PositionComponent,
+    EmployeeTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -102,11 +115,14 @@ import { ContactService } from './contact/contact.service';
     CareCompanyService,
     CareCompanyTypeService,
     ContactService,
-    PasswordResetRequestService
-//    {
-//      provide: ErrorHandler,
-//      useClass: GlobalErrorHandler
-//    }
+    EmployeeService,
+    EmployeeTypeService,
+    PositionService,
+    PasswordResetRequestService,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    }
     ],
   bootstrap: [AppComponent]
 })

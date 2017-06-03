@@ -4,11 +4,11 @@ import { UserProfile } from '../profile/userprofile';
 import { UserRole } from '../profile/userrole';
 import { CommonComponent } from '../shared/common';
 import { UserService } from './user.service';
-import { UserProfileVM } from './userprofilevm';
 import { UserRoleService } from './userrole.service';
 import { Validation } from './validation';
-import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MenuItem, ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,6 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
 })
 export class UserComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
@@ -28,12 +27,13 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
   userRoles: SelectItem[] = [];
   authClaim: AuthClaim;
 
-  // TODO Use same type for creating and fetching data from server
   constructor(
       private userService: UserService,
       private confirmationService: ConfirmationService,
       private userRoleService: UserRoleService,
-      private loginService: LoginService
+      private loginService: LoginService,
+      private router: Router,
+      private changeDetector: ChangeDetectorRef
     ) {
         super(new Validation());
         this.authClaim = this.loginService.getAuthenticatedUser();
@@ -49,14 +49,16 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
     this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
     this.getAllUserRoles();
     this.buildContextMenuItems();
-    this.user = new UserProfile(null);
+    this.user = new UserProfile();
   }
 
   getAll(page: number, size: number) {
+    this.tableDataLoading = true;
     this.userService.getAll(page, size)
           .subscribe(response => {
             this.users = response.users;
             this.tableItemsCount = response.count;
+            this.tableDataLoading = false;
             });
   }
 
@@ -75,24 +77,26 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
    * Update or Create a new ScheduleSys User
    */
   create() {
-    // Maps UserProfileVM to UserProfile
-    const user  = _.cloneDeep(this.user);
-    const result: Observable<string> = this.editing ? this.userService.updateUser(user)
-      : this.userService.createUser(user);
+    const result = this.editing ? this.userService.update(this.user)
+      : this.userService.create(this.user);
+
     result.subscribe(
       response => {
-         this.displayMessage({ severity: 'success', summary: '', detail: response });
-         this.hideDialog();
+         this.displayMessage({ severity: 'success', summary: '', detail: response.message });
          if (!this.editing) {
-           this.users.push(this.user);
+           this.users.push(response.result);
+           this.users = this.users.slice();
+           this.changeDetector.markForCheck(); // Forces the change detector to run
            this.tableItemsCount ++;
          }
+         this.hideDialog();
       },
       error => {
          this.displayMessage({ severity: 'error', summary: '', detail: error });
       }
     );
   }
+
   deleteUser() {
     if (this.authClaim.sub === this.selectedUser.username) {
       this.displayMessage({ severity: 'error', summary: '',
@@ -113,7 +117,7 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
                 this.tableItemsCount--;
                 if (this.users.length === 0) {
                   // Goes back to first page when the last item in the list is deleted
-                  this.getAll(0, this.tableCurrentRowCount);
+                  this.getAll(this.tableCurrentPage - 1, this.tableCurrentRowCount);
                 }
             },
             error => {
@@ -128,7 +132,7 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
     this.dialogDisplayed = true;
     this.editing = editing;
     // When editing, populate form with selected User
-    this.user = editing ? _.cloneDeep(this.selectedUser) : new UserProfile(null);
+    this.user = editing ? _.cloneDeep(this.selectedUser) : new UserProfile();
   }
 
   hideDialog() {
@@ -154,6 +158,10 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
       }
      });
     return index;
+  }
+
+  gotToHome() {
+    this.router.navigate(['../']);
   }
 
 }

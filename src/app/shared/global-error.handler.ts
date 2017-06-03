@@ -1,24 +1,21 @@
-import { Injectable, ErrorHandler } from '@angular/core';
+import { LoginService } from '../login/login.service';
+import { Injectable, ErrorHandler, Injector } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
 
-  constructor() { }
+  constructor(
+    private injector: Injector) { }
 
   handleError(error: any) {
-    console.log('An error occurred : ' + error);
-    let errorMsg: string;
-    if (error.status === 404) {
-      errorMsg = 'Unable to find resource';
-      console.log('Is 404 ?');
-    } else {
-      const xScheduleSysError = error.headers.get('X-schedulesys-error');
-      console.log('X-schedulesys-error : ' + xScheduleSysError);
-      errorMsg = xScheduleSysError ? xScheduleSysError :
-         (error.body.message ? error.body.message : error.body);
+    const loginService = this.injector.get(LoginService);
+    const router = this.injector.get(Router);
+    if (!loginService.isAuthenticated()) {
+      // 401 and jwt expired then redirect to login
+      console.log('jwt expired, redirecting to login page');
+      router.navigate(['']);
     }
-    return Observable.throw(errorMsg);
   }
-
 }

@@ -2,7 +2,6 @@ import { environment } from '../../environments/environment';
 import { LoginService } from '../login/login.service';
 import { UserProfile } from '../profile/userprofile';
 import { CommonService } from '../shared/commonservice';
-import { UserProfileVM } from './userprofilevm';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -19,15 +18,19 @@ export class UserService extends CommonService {
       this.httpOptions = this.loginService.getRequestOptions();
     }
 
-  createUser(user: UserProfile): Observable<string> {
+  create(user: UserProfile): Observable<{'result': UserProfile, 'message': string}> {
     return this.http.post(this.resourceUrl, user, this.httpOptions)
-              .map(response => 'User successfully created')
+              .map(response =>  {
+                return {'result': new UserProfile(response.json()), 'message': 'User successfully created'}
+              })
               .catch(this.handleError);
   }
 
-  updateUser(user: UserProfile): Observable<string> {
+  update(user: UserProfile): Observable<{'result': UserProfile, 'message': string}> {
     return this.http.put(this.resourceUrl, user, this.httpOptions)
-              .map(response => 'User successfully updated')
+              .map(response =>  {
+                return {'result': new UserProfile(response.json()), 'message': 'User successfully updated'}
+              })
               .catch(this.handleError);
   }
 

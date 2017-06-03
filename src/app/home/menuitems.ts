@@ -12,13 +12,16 @@ export class MenuBar  {
    getMenuItems(): MenuItem[] {
     return [
      {
-       label: 'Home', icon: 'fa-home', routerLink: '../'
+       label: 'Home', icon: 'fa-home', routerLink: './'
      },
      {
        label: 'Companies', icon: 'fa-hospital-o', routerLink: 'companies'
      },
      {
-       label: 'Employees', icon: 'fa-user-md',
+       label: 'Employees', icon: 'fa-user-md', routerLink: 'employees'
+     },
+     {
+       label: 'Schedules', icon: 'fa-clock-o'
      },
      {
        label: 'Tests', icon: 'fa-book',

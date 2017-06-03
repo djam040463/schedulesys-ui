@@ -8,7 +8,7 @@
 			<p-messages [(value)]="msgs"></p-messages>
 			<p-dataTable [value]="users" [rows]="10" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedUser" [contextMenu]="cm" dataKey="username" [totalRecords]="tableItemsCount"
-				[lazy]="true" (onLazyLoad)="loadDataLazy($event)">
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No users found'">
 			    <p-header>ScheduleSys Users</p-header>
 			    <p-column field="emailAddress" header="Email"></p-column>
 			    <p-column field="username" header="Username"></p-column>
@@ -19,11 +19,8 @@
 			</p-dataTable>
 		</div>
 		<md-divider></md-divider>
-		<div class="btns-panel">
-			<button pButton label="New" icon="fa fa-plus-circle" (click)="showDialog(false)" class="ui-button-success"></button>
-			<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedUser === undefined" (click)="showDialog(true)"></button>
-			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteUser()" class="ui-button-danger" [disabled]="selectedUser === undefined"></button>
-		</div>
+		<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteUser()" 
+			[disabled]="selectedUser === undefined" (back)="gotToHome()"></data-table-crud>
 	</md-list>
 	
 	<p-dialog [(visible)]="dialogDisplayed" width="450">
@@ -86,11 +83,7 @@
 					</div>
 					<p-dropdown name="role" [options]="userRoles" [(ngModel)]="user.userRole.name" placeholder="User Role" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
 				</div>
-				<div class="btns-panel">
-	   		 		<button pButton label="Save" type="submit" icon="fa fa-floppy-o" [disabled]="!userForm.form.valid"></button>
-					<button pButton label="Clear" type="reset" icon="fa fa-eraser"></button>
-					<button pButton label="Cancel" type="button" (click)="hideDialog(userForm)" icon="fa fa-close"></button>
-   		 		</div>
+				<dialog-crud (cancel)="hideDialog()" [disabled]="!userForm.form.valid"></dialog-crud>
 			</form>
    		 </div>
 	</p-dialog>

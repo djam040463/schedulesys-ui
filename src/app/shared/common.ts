@@ -15,6 +15,7 @@ export class CommonComponent {
   tableItemsCount: number;
   tableCurrentPage = 0;
   tableCurrentRowCount = 10;
+  tableDataLoading = false;
   phoneNumberMask =  ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/,
      /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -65,13 +66,13 @@ export class CommonComponent {
     this.validation.formErrors[event.field] = event.message;
   }
 
-  loadDataLazy(event: LazyLoadEvent) {
+  loadDataLazy(event: LazyLoadEvent, params?: any) {
     this.tableCurrentPage = (event.first / event.rows);
     this.tableCurrentRowCount = event.rows;
-    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
+    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount, params);
   }
 
-  protected getAll(page: number, size: number) {}
+  protected getAll(page: number, size: number, params?: any) {}
 
   refreshOnEdit(source: any, destination: any) {
     for (const key in source) {

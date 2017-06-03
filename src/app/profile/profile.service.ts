@@ -1,7 +1,6 @@
 import { environment } from '../../environments/environment';
 import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
-import { UserProfileVM } from '../user/userprofilevm';
 import { UserProfile } from './userprofile';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
@@ -27,7 +26,7 @@ export class ProfileService extends CommonService {
       ).map(response => new UserProfile(response.json()))
   }
 
-  update(userProfile: UserProfileVM): Observable<string> {
+  update(userProfile: UserProfile): Observable<string> {
     return this.http.put(this.resourceBaseUrl, userProfile, this.loginService.getRequestOptions())
         .map(response => 'Profile successfully updated')
         .catch(error => this.handleError(error));

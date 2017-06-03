@@ -15,7 +15,7 @@ export class CareCompanyService extends CommonService {
     private http: Http,
     private loginService: LoginService) {super(); }
 
-  getAllCareCompanies(page: number, size: number): Observable<{'companies': CareCompany[], 'count': number}> {
+  getAll(page: number, size: number): Observable<{'companies': CareCompany[], 'count': number}> {
     return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), this.loginService.getRequestOptions())
           .map(response =>  {
             return {'companies': CareCompany.toArray(response.json()), 'count': response.headers.get(this.countHeaderName)}
@@ -23,25 +23,28 @@ export class CareCompanyService extends CommonService {
           .catch(this.handleError);
   }
 
-  create(careCompany: CareCompany): Observable<string> {
+  create(careCompany: CareCompany): Observable<{'result': CareCompany, 'message': string}> {
     return this.http.post(this.resourceUrl, careCompany, this.loginService.getRequestOptions())
-          .map(response => {return 'Care Company successfully created'})
+          .map(response =>  {
+              return {'result': new CareCompany(response.json()), 'message': 'Care Company successfully created'}
+            })
           .catch(this.handleError);
   }
 
-  update(careCompany: CareCompany): Observable<string> {
+  update(careCompany: CareCompany): Observable<{'result': CareCompany, 'message': string}> {
     return this.http.put(this.resourceUrl, careCompany, this.loginService.getRequestOptions())
-          .map(response => {return 'Care Company successfully updated'})
-          .catch(this.handleError);
+          .map(response =>  {
+              return {'result': new CareCompany(response.json()), 'message': 'Care Company successfully updated'}
+            })
   }
 
-  deleteCareCompany(id: number): Observable<string> {
+  deleteOne(id: number): Observable<string> {
     return this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
           .map(response => {return 'Care Company successfully deleted'})
           .catch(this.handleError);
   }
 
-  getCareCompany(idOrname: string): Observable<CareCompany> {
+  getOne(idOrname: string): Observable<CareCompany> {
     return this.http.get(this.resourceUrl + '/' + idOrname, this.loginService.getRequestOptions())
            .map(response => new CareCompany(response.json()))
            .catch(this.handleError);

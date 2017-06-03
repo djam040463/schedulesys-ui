@@ -3,7 +3,7 @@ import { CareCompany } from './care-company';
 import { CareCompanyTypeService } from './care-company-type.service';
 import { CareCompanyService } from './care-company.service';
 import { CareCompanyValidation } from './validation';
-import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -29,7 +29,8 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
       private careCompanyTypeService: CareCompanyTypeService,
       private confirmationService: ConfirmationService,
       private router: Router,
-      private route: ActivatedRoute) {
+      private route: ActivatedRoute,
+      private changeDetector: ChangeDetectorRef) {
         super(new CareCompanyValidation());
       }
 
@@ -37,7 +38,14 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
     this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
     this.buildContextMenuItems();
     this.getAllCareCompanyTypes();
-    this.careCompany = new CareCompany(null);
+    this.careCompany = new CareCompany();
+    this.route.params
+       .subscribe(params => {
+         if (params['id'] != null) {
+           this.careCompanyService.getOne(params['id'])
+             .subscribe(result => {this.selectedCompany = result});
+         }
+       });
   }
 
   ngAfterViewChecked(): void {
@@ -57,19 +65,22 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
 // TODO Add http wrapper and check 401 errors. If jwt has expired, then redirect to login
   // TODO 'New' does not refresh data table
   create() {
+  //  const careCompany = _.cloneDeep(this.careCompany); // care company's reference is set to null on form reset
     this.careCompany.phoneNumber = this.unmaskNumber(this.careCompany.phoneNumber);
     this.careCompany.fax = this.unmaskNumber(this.careCompany.fax);
-    const result: Observable<string> = this.editing ? this.careCompanyService.update(this.careCompany)
+    const result = this.editing ? this.careCompanyService.update(this.careCompany)
       : this.careCompanyService.create(this.careCompany);
     result.subscribe(
        response => {
-         this.displayMessage({severity: 'success', summary: '', detail: response});
-         this.hideDialog();
+         this.displayMessage({severity: 'success', summary: '', detail: response.message});
          if (!this.editing) {
-            this.careCompanies.push(this.careCompany);
+            this.careCompanies.push(response.result);
+            this.careCompanies = this.careCompanies.slice();
+            this.changeDetector.markForCheck();
             // Update number of items so that the paginator displays the correct number of pages
             this.tableItemsCount++;
          }
+         this.hideDialog();
        },
        error => {
         this.displayMessage({severity: 'error', summary: '', detail: error});
@@ -81,7 +92,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
      this.confirmationService.confirm({
        message: 'Are you sure you want to delete this company ?',
        accept: () => {
-        this.careCompanyService.deleteCareCompany(this.selectedCompany.id)
+        this.careCompanyService.deleteOne(this.selectedCompany.id)
           .subscribe(
             response  => {
               this.displayMessage(
@@ -92,8 +103,8 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
                 // Update number of items so that the paginator displays the correct number of pages
                 this.tableItemsCount--;
                 if (this.careCompanies.length === 0) {
-                  // Goes back to first page when the last item in the list is deleted
-                  this.getAll(0, this.tableCurrentRowCount);
+                  // Goes back to adjacent page when the last item in the list is deleted
+                  this.getAll(this.tableCurrentPage - 1, this.tableCurrentRowCount);
                 }
             },
             error => {
@@ -109,7 +120,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
      this.editing = editing;
     // When editing, populate form with selected User
      this.careCompany = editing ? _.cloneDeep(this.selectedCompany)
-       : new CareCompany(null);
+       : new CareCompany();
   }
 
    hideDialog() {
@@ -131,10 +142,12 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
   }
 
   getAll(page: number, size: number) {
-     this.careCompanyService.getAllCareCompanies(page, size)
+     this.tableDataLoading = true;
+     this.careCompanyService.getAll(page, size)
           .subscribe(response => {
               this.careCompanies = response.companies;
               this.tableItemsCount = response.count;
+              this.tableDataLoading = false;
           });
   }
 
@@ -150,5 +163,9 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
       }
      });
     return index;
+  }
+
+  gotToHome() {
+    this.router.navigate(['../']);
   }
 }

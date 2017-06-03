@@ -15,7 +15,7 @@ export class CareCompanyNameInUseDirective {
 
   @HostListener('blur') onBlur() {
     if (this.oldValue !== this.careCompanyName) {
-      this.careCompanyService.getCareCompany(this.careCompanyName)
+      this.careCompanyService.getOne(this.careCompanyName)
         .subscribe(response => {
             this.duplicates.emit(
                 {field: 'name', message: '\'' + this.careCompanyName + '\' is already in use'}

@@ -16,22 +16,26 @@ export class ContactService extends CommonService {
     private http: Http,
     private loginService: LoginService) { super(); }
 
-  getAll(companyId: number): Observable<Contact[]> {
-    return this.http.get(this.companyResourceUrl + '/' + companyId + '/contacts',
+  getAll(page: number, size: number, companyId: number): Observable<{'result': Contact[], 'count': number}> {
+    return this.http.get(this.companyResourceUrl + '/' + companyId + '/contacts' + this.formatRequestParams(page, size),
         this.loginService.getRequestOptions())
-            .map(response => Contact.toArray(response.json()))
+            .map(response => {return {'result': Contact.toArray(response.json()), 'count': response.headers.get(this.countHeaderName)}})
             .catch(this.handleError);
   }
 
-  create(contact: Contact): Observable<string> {
+  create(contact: Contact): Observable<{'result': Contact, 'message': string}> {
     return this.http.post(this.contactResourceUrl, contact, this.loginService.getRequestOptions())
-          .map(response => 'Contact successfully created')
+          .map(response => {
+            return {'result': new Contact(response.json()), 'message': 'Contact successfully created'}
+          })
           .catch(this.handleError);
   }
 
-  update(contact: Contact): Observable<string> {
+  update(contact: Contact): Observable<{'result': Contact, 'message': string}> {
     return this.http.put(this.contactResourceUrl, contact, this.loginService.getRequestOptions())
-          .map(response => 'Contact successfully updated')
+          .map(response => {
+            return {'result': new Contact(response.json()), 'message': 'Contact successfully updated'}
+          })
           .catch(this.handleError);
   }
 

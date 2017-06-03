@@ -7,7 +7,7 @@ export class Contact {
   phoneNumber: string;
   fax: string;
   title: string;
-  careCompany: CareCompany;
+  careCompany: CareCompany = new CareCompany();
 
   static toArray(jsons: any[]): Contact[] {
         const contacts: Contact[] = [];
