@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'care-company',
+  selector: 'app-care-company',
   templateUrl: './care-company.component.html',
   styleUrls: ['./care-company.component.css']
 })

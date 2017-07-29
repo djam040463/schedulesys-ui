@@ -45,18 +45,20 @@ export class CommonComponent {
   /**
    * Presents a notification to the user and removes it after 3 seconds
    */
-  protected displayMessage(msg: Message): void {
-      this.msgs.pop(); // Remove previous messages
-      this.msgs.push(msg);
-      setTimeout(() => {this.msgs.pop()}, 3000); // Messages do not disappear automatically
+  protected displayMessage(msg: Message, msgs?: Message[]): void {
+      if (msgs === undefined) {
+          msgs = this.msgs;
+      }
+      msgs.pop(); // Remove previous messages
+      msgs.push(msg);
+      setTimeout(() => {msgs.pop()}, 3000); // Messages do not disappear automatically
   }
-
   /**
    *  angular2-text-mask does not provide the user's input without the mask
    *  This method removes the mask.
    */
-  protected unmaskNumber(value) {
-      return value === null ? '' : value.replace(/\D+/g, '');
+  protected unmaskNumber(value): string {
+    return (value === null) ? '' : value.replace(/\D+/g, '');
   }
 
  /**
@@ -76,7 +78,7 @@ export class CommonComponent {
 
   refreshOnEdit(source: any, destination: any) {
     for (const key in source) {
-      if (typeof source[key] === 'object') {
+      if (typeof source[key] === 'object' && !(source[key] instanceof Date)) {
         this.refreshOnEdit(source[key], destination[key])
       } else {
         destination[key] = source[key];

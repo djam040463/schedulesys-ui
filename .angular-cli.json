@@ -25,13 +25,15 @@
 	"../node_modules/font-awesome/css/font-awesome.min.css",
 	"../node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-	"../node_modules/fullcalendar/dist/fullcalendar.min.css"
-      ],
+	"../node_modules/fullcalendar/dist/fullcalendar.min.css",
+      	"../node_modules/semantic-ui/dist/semantic.min.css"
+	],
       "scripts": [
 	"../node_modules/moment/min/moment.min.js",
 	"../node_modules/spin/dist/spin.min.js",
 	"../node_modules/jquery/dist/jquery.min.js",
-	"../node_modules/fullcalendar/dist/fullcalendar.min.js"
+	"../node_modules/fullcalendar/dist/fullcalendar.min.js",
+	"../node_modules/semantic-ui/dist/semantic.min.js"
 	],
       "environmentSource": "environments/environment.ts",
       "environments": {

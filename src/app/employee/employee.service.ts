@@ -1,7 +1,9 @@
 import { environment } from '../../environments/environment';
+import { License } from '../license/license';
 import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { Employee } from './employee';
+import { PhoneNumber } from '../phone-number/phone-number';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -32,8 +34,8 @@ export class EmployeeService extends CommonService {
        }).catch(this.handleError);
   }
 
-  update(employee: Employee): Observable<{'result': Employee[], 'message': string}> {
-    return this.http.put(this.resourceUrl, employee, this.loginService.getRequestOptions)
+  update(employee: Employee): Observable<{'result': Employee, 'message': string}> {
+    return this.http.put(this.resourceUrl, employee, this.loginService.getRequestOptions())
         .map(
           response => {
             return {'result': new Employee(response.json()), 'message': 'Employee successfully updated' }
@@ -41,14 +43,26 @@ export class EmployeeService extends CommonService {
   }
 
   deleteOne(id: number) {
-    this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
+    return this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
           .map(response => {return 'Employee successfully deleted'})
           .catch(this.handleError);
   }
 
   getOne(id: number): Observable<Employee> {
     return this.http.get(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
-        .map(response => new Employee(response.json))
+        .map(response => new Employee(response.json()))
         .catch(this.handleError);
+  }
+
+  getPhoneNumbers(id: number): Observable<PhoneNumber[]> {
+    return this.http.get(this.resourceUrl + '/' + id + '/phone-numbers', this.loginService.getRequestOptions())
+      .map(response => PhoneNumber.toArray(response.json()))
+      .catch(this.handleError);
+  }
+
+  getLicenses(id: number): Observable<License[]> {
+     return this.http.get(this.resourceUrl + '/' + id + '/licenses', this.loginService.getRequestOptions())
+      .map(response => License.toArray(response.json()))
+      .catch(this.handleError);
   }
 }

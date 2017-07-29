@@ -3,19 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { PanelModule } from 'primeng/primeng';
-import { ButtonModule } from 'primeng/primeng';
-import { InputTextModule } from 'primeng/primeng';
-import { InputSwitchModule } from 'primeng/primeng';
-import { MessagesModule } from 'primeng/primeng';
-import { MenubarModule } from 'primeng/primeng';
-import { ScheduleModule } from 'primeng/primeng';
-import { DataTableModule, SharedModule } from 'primeng/primeng';
-import { ContextMenuModule } from 'primeng/primeng';
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
-import { GrowlModule } from 'primeng/primeng';
-import { DialogModule } from 'primeng/primeng';
-import { DropdownModule } from 'primeng/primeng';
+
+import { PanelModule, ButtonModule, InputTextModule,
+         InputSwitchModule, MessagesModule, MenubarModule,
+         ScheduleModule, DataTableModule, SharedModule, AccordionModule,
+         ContextMenuModule, ConfirmDialogModule, ConfirmationService,
+         GrowlModule, DialogModule, DropdownModule, StepsModule,
+         CalendarModule, ToggleButtonModule, InputTextareaModule, FieldsetModule
+} from 'primeng/primeng';
+
 import { TextMaskModule } from 'angular2-text-mask';
 import { MaterialModule, MdNativeDateModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,7 +50,16 @@ import { PositionComponent } from './position/position.component';
 import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeeTypeService } from './employee-type/employee-type.service';
 import { EmployeeService } from './employee/employee.service';
+import { PhoneNumberService } from './phone-number/phone-number.service';
 import { PositionService } from './position/position.service';
+import { EmployeeDetailComponent } from './employee/employee-detail/employee-detail.component';
+import { LicenseTypeService } from './license-type/license-type.service';
+import { LicenseService } from './license/license.service';
+import { PhoneNumberComponent } from './phone-number/phone-number.component';
+import { LicenseComponent } from './license/license.component';
+import { TestComponent } from './test/test.component';
+import { EmployeeTestComponent } from './employee-test/employee-test.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 
 @NgModule({
@@ -79,7 +84,13 @@ import { PositionService } from './position/position.service';
     DialogCrudComponent,
     EmployeeComponent,
     PositionComponent,
-    EmployeeTypeComponent
+    EmployeeTypeComponent,
+    EmployeeDetailComponent,
+    PhoneNumberComponent,
+    LicenseComponent,
+    TestComponent,
+    EmployeeTestComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule,
@@ -101,6 +112,12 @@ import { PositionService } from './position/position.service';
     DialogModule,
     DropdownModule,
     TextMaskModule,
+    StepsModule,
+    CalendarModule,
+    ToggleButtonModule,
+    InputTextareaModule,
+    FieldsetModule,
+    AccordionModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
@@ -118,11 +135,15 @@ import { PositionService } from './position/position.service';
     EmployeeService,
     EmployeeTypeService,
     PositionService,
-    PasswordResetRequestService,
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandler
-    }
+    PhoneNumberService,
+    LicenseTypeService,
+    LicenseService,
+    PasswordResetRequestService
+//    ,
+//    {
+//      provide: ErrorHandler,
+//      useClass: GlobalErrorHandler
+//    }
     ],
   bootstrap: [AppComponent]
 })
