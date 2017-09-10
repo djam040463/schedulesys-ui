@@ -8,6 +8,7 @@ import { PhoneNumberService } from '../../phone-number/phone-number.service';
 import { PhoneNumberType } from '../../phone-number/phone-number.type';
 import { PhoneNumberLabel } from '../../phone-number/phone-number.label';
 import { CommonComponent } from '../../shared/common';
+import { TestOccurrenceComponent } from '../../test-occurrence/test-occurrence.component';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
@@ -30,6 +31,9 @@ export class EmployeeDetailComponent extends CommonComponent implements OnInit {
 
   @ViewChild(LicenseComponent)
   licenseComponent: LicenseComponent;
+
+  @ViewChild(TestOccurrenceComponent)
+  testOccurrenceComponent: TestOccurrenceComponent;
 
   constructor(
     private router: Router,
@@ -54,7 +58,10 @@ export class EmployeeDetailComponent extends CommonComponent implements OnInit {
       this.phoneNumberComponent.getPhoneNumbers();
     } else if (e.index === 3 && this.licenseComponent.licenses.length === 0) {// The License component is loaded 3rd
       this.licenseComponent.getLicenses();
+    } else if (e.index === 1 && this.testOccurrenceComponent.testOccurrences.length === 0) {
+      this.testOccurrenceComponent.getTests();
     }
+    console.log('Tab index : ' + e.index);
   }
 
   onEntityEvent(e: Message) {

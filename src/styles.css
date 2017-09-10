@@ -63,6 +63,10 @@ a, u {
 	width: 70%
 }
 
+#main-panel {
+	min-height: 700px;	
+}
+
 .hand-hover {
 	cursor: hand;
 }

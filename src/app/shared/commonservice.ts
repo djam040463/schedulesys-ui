@@ -1,8 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 
-export class CommonService {
+export abstract class CommonService {
 
   protected countHeaderName = 'X-Total-Count';
+
+  getOneByValue(value: string, fieldName?: string): Observable<any> { return; }
+
 
   handleError(error: any) {
     console.log('An error occurred : ' + error);
@@ -23,5 +26,9 @@ export class CommonService {
 
   formatRequestParams(page: number, size: number): string {
     return '?page=' + page + '&size=' + size;
+  }
+
+  formatSearchRequestParam(query: string): string {
+    return '?query=' + query;
   }
 }

@@ -55,8 +55,7 @@
 			    	<app-license [employee]="employee" (entity_events)="onEntityEvent($event)"></app-license>
 			    </p-accordionTab>
 			    <p-accordionTab header="Tests">
-			    </p-accordionTab>
-			    <p-accordionTab header="Schedules">
+			    	<app-test-occurrence [employee]="employee" (entity_events)="onEntityEvent($event)"></app-test-occurrence>
 			    </p-accordionTab>
 			</p-accordion>
 		</div>

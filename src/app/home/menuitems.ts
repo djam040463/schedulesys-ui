@@ -21,10 +21,10 @@ export class MenuBar  {
        label: 'Employees', icon: 'fa-user-md', routerLink: 'employees'
      },
      {
-       label: 'Schedules', icon: 'fa-clock-o'
+       label: 'Schedules', icon: 'fa-clock-o', routerLink: 'schedules'
      },
      {
-       label: 'Tests', icon: 'fa-book',
+       label: 'Tests', icon: 'fa-book', routerLink: 'tests'
      },
      {
        label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin

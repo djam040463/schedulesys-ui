@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { PasswordResetRequestComponent } from './passwordresetrequest/passwordresetrequest.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { TestDetailComponent } from './test/test-detail/test-detail.component';
 import { TestComponent } from './test/test.component';
 import { UserComponent } from './user/user.component';
 import { NgModule } from '@angular/core';
@@ -26,8 +28,10 @@ const appRoutes: Routes = [
       { path: 'companies', component: CareCompanyComponent },
       { path: 'employees', component: EmployeeComponent },
       { path: 'employees/:employeeId', component: EmployeeDetailComponent },
-      { path: 'contacts/:companyId', component: ContactComponent },
-      { path: 'tests', component: TestComponent }
+      { path: 'contacts', component: ContactComponent },
+      { path: 'tests', component: TestComponent },
+      { path: 'tests/:testId', component: TestDetailComponent },
+      { path: 'schedules', component: ScheduleComponent }
     ]
   },
   { path: 'pwd-reset-request', component: PasswordResetRequestComponent },

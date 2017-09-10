@@ -1,5 +1,6 @@
 import { environment } from '../../environments/environment';
 import { LoginService } from '../login/login.service';
+import { Schedule } from '../schedule/schedule';
 import { CommonService } from '../shared/commonservice';
 import { CareCompany } from './care-company';
 import { Injectable } from '@angular/core';
@@ -48,6 +49,13 @@ export class CareCompanyService extends CommonService {
     return this.http.get(this.resourceUrl + '/' + idOrname, this.loginService.getRequestOptions())
            .map(response => new CareCompany(response.json()))
            .catch(this.handleError);
+  }
+
+  getSchedules(id: number, page: number, size: number): Observable<{'schedules': Schedule[], 'count': number}> {
+    return this.http.get(this.resourceUrl + '/' + id + '/schedules' + this.formatRequestParams(page, size),
+       this.loginService.getRequestOptions())
+          .map(response => { return {'schedules': Schedule.toArray(response.json()), 'count': response.headers.get(this.countHeaderName)}
+          }).catch(this.handleError);
   }
 
 

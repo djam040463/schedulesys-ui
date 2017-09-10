@@ -4,12 +4,12 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { PanelModule, ButtonModule, InputTextModule,
+import { PanelModule, ButtonModule, InputTextModule, CheckboxModule,
          InputSwitchModule, MessagesModule, MenubarModule,
          ScheduleModule, DataTableModule, SharedModule, AccordionModule,
          ContextMenuModule, ConfirmDialogModule, ConfirmationService,
-         GrowlModule, DialogModule, DropdownModule, StepsModule,
-         CalendarModule, ToggleButtonModule, InputTextareaModule, FieldsetModule
+         GrowlModule, DialogModule, DropdownModule, StepsModule, AutoCompleteModule,
+         CalendarModule, ToggleButtonModule, InputTextareaModule, FieldsetModule, SpinnerModule
 } from 'primeng/primeng';
 
 import { TextMaskModule } from 'angular2-text-mask';
@@ -60,6 +60,17 @@ import { LicenseComponent } from './license/license.component';
 import { TestComponent } from './test/test.component';
 import { EmployeeTestComponent } from './employee-test/employee-test.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { ValueInUseDirective } from './shared/value-in-use.directive';
+import { TestService } from './test/test.service';
+import { TestDetailComponent } from './test/test-detail/test-detail.component';
+import { TestOccurrenceComponent } from './test-occurrence/test-occurrence.component';
+import { TestOccurrenceService } from './test-occurrence/test-occurrence.service';
+import { TestSubcategoryComponent } from './test-subcategory/test-subcategory.component';
+import { TestSubcategoryService } from './test-subcategory/test-subcategory.service';
+import { CompanyScheduleComponent } from './schedule/company-schedule/company-schedule.component';
+import { SchedulePostStatusService } from './schedule/schedule-post-status.service';
+import { ScheduleStatusService } from './schedule/schedule-status.service';
+import { ScheduleService } from './schedule/schedule.service';
 
 
 @NgModule({
@@ -90,7 +101,12 @@ import { ScheduleComponent } from './schedule/schedule.component';
     LicenseComponent,
     TestComponent,
     EmployeeTestComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    ValueInUseDirective,
+    TestDetailComponent,
+    TestSubcategoryComponent,
+    TestOccurrenceComponent,
+    CompanyScheduleComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +135,9 @@ import { ScheduleComponent } from './schedule/schedule.component';
     FieldsetModule,
     AccordionModule,
     BrowserAnimationsModule,
+    AutoCompleteModule,
+    SpinnerModule,
+    CheckboxModule,
     AppRoutingModule
   ],
   providers: [
@@ -138,7 +157,13 @@ import { ScheduleComponent } from './schedule/schedule.component';
     PhoneNumberService,
     LicenseTypeService,
     LicenseService,
-    PasswordResetRequestService
+    TestService,
+    PasswordResetRequestService,
+    TestSubcategoryService,
+    TestOccurrenceService,
+    ScheduleService,
+    ScheduleStatusService,
+    SchedulePostStatusService
 //    ,
 //    {
 //      provide: ErrorHandler,

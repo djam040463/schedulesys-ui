@@ -1,3 +1,4 @@
+import { ScheduleType } from '../schedule/scheduletype';
 import { CommonComponent } from '../shared/common';
 import { CareCompany } from './care-company';
 import { CareCompanyTypeService } from './care-company-type.service';
@@ -56,10 +57,16 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
 
   private buildContextMenuItems () {
     this.contextMenuItems = [
-            { label: 'Edit'     , icon: 'fa-edit'          , command: (event) => {this.showDialog(true)}       },
-            { label: 'Delete'   , icon: 'fa-close'         , command: (event) => {this.deleteCareCompany()}    },
-            { label: 'Schedules', icon: 'fa-calendar'      , command: (event) => {this.navigateTo('../schedules')}},
-            { label: 'Contacts' , icon: 'fa-address-book-o', command: (event) => {this.navigateTo('../contacts')} }
+
+            { label: 'Edit'     , icon: 'fa-edit'          , command: (event) => { this.showDialog(true)}       },
+
+            { label: 'Delete'   , icon: 'fa-close'         , command: (event) => { this.deleteCareCompany()}    },
+
+            { label: 'Schedules', icon: 'fa-calendar'      , command: (event) => { this.navigateTo('../schedules',
+            { id: this.selectedCompany.id, scheduleType: ScheduleType.CAMPANY} )}},
+
+            { label: 'Contacts' , icon: 'fa-address-book-o', command: (event) => {
+               this.navigateTo('../contacts', {companyId: this.selectedCompany.id})} }
         ];
   }
 // TODO Add http wrapper and check 401 errors. If jwt has expired, then redirect to login
@@ -151,8 +158,12 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
           });
   }
 
-  navigateTo(destionation: string) {
-    this.router.navigate([destionation, this.selectedCompany.id], {relativeTo: this.route})
+//  navigateTo(destionation: string) {
+//    this.router.navigate([destionation, this.selectedCompany.id], {relativeTo: this.route})
+//  }
+
+  navigateTo(destionation: string, navigationExtras: any) {
+    this.router.navigate([destionation,  navigationExtras] , {relativeTo: this.route})
   }
 
   findSelectedCompanyIndex() {

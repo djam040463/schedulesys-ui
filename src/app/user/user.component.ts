@@ -28,7 +28,7 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
   authClaim: AuthClaim;
 
   constructor(
-      private userService: UserService,
+      public userService: UserService,
       private confirmationService: ConfirmationService,
       private userRoleService: UserRoleService,
       private loginService: LoginService,

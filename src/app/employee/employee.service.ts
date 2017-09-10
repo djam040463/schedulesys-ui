@@ -4,6 +4,8 @@ import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { Employee } from './employee';
 import { PhoneNumber } from '../phone-number/phone-number';
+import { TestOccurrence } from '../test-occurrence/testoccurrence';
+import { Test } from '../test/test';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -65,4 +67,17 @@ export class EmployeeService extends CommonService {
       .map(response => License.toArray(response.json()))
       .catch(this.handleError);
   }
+
+   getTests(id: number): Observable<TestOccurrence[]> {
+     return this.http.get(this.resourceUrl + '/' + id + '/tests', this.loginService.getRequestOptions())
+      .map(response => TestOccurrence.toArray(response.json()))
+      .catch(this.handleError);
+  }
+
+  search(query: string): Observable<Employee[]> {
+    return this.http.get(this.resourceUrl + '/search' + this.formatSearchRequestParam(query), this.loginService.getRequestOptions())
+        .map(response => Employee.toArray(response.json()))
+        .catch(this.handleError);
+  }
+
 }

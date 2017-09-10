@@ -59,4 +59,8 @@ export class UserService extends CommonService {
             .catch(this.handleError);
   }
 
+  getOneByValue(value: string, fieldName?: string): Observable<UserProfile> {
+    return (fieldName === 'username' ) ? this.getUserByUsername(value) : this.getUserByEmailAddress(value);
+  }
+
 }

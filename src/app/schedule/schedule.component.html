@@ -1,3 +1,11 @@
-<p>
-  schedule works!
-</p>
+<p-panel header="Scheduling Page" >
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-clock-o fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div *ngIf="careCompany != undefined">
+			<app-company-schedule [careCompany]="careCompany"></app-company-schedule>
+		</div>
+	</md-list>
+</p-panel>
