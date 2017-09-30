@@ -8,16 +8,6 @@ export class UserProfile {
   userRole: UserRole = new UserRole();
   activated: boolean;
 
-  static toArray(jsons: any[]): UserProfile[] {
-        const users: UserProfile[] = [];
-        if (jsons != null) {
-            for (const json of jsons) {
-                users.push(new UserProfile(json));
-            }
-        }
-        return users;
-  }
-
   constructor(json?: any) {
     if (json != null)  {
       this.id = json.id;

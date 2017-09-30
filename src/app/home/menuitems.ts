@@ -1,34 +1,31 @@
 /**
  * ToolBar
  */
-import { Injectable } from '@angular/core';
-import { MenuItem } from 'primeng/primeng';
+import {Injectable} from '@angular/core';
+import {MenuItem} from 'primeng/primeng';
 
-export class MenuBar  {
+export class MenuBar {
 
 
   constructor(public isAdmin: boolean) {}
 
-   getMenuItems(): MenuItem[] {
+  getMenuItems(): MenuItem[] {
     return [
-     {
-       label: 'Home', icon: 'fa-home', routerLink: './'
-     },
-     {
-       label: 'Companies', icon: 'fa-hospital-o', routerLink: 'companies'
-     },
-     {
-       label: 'Employees', icon: 'fa-user-md', routerLink: 'employees'
-     },
-     {
-       label: 'Schedules', icon: 'fa-clock-o', routerLink: 'schedules'
-     },
-     {
-       label: 'Tests', icon: 'fa-book', routerLink: 'tests'
-     },
-     {
-       label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin
-     }
-     ];
+      {
+        label: 'Home', icon: 'fa-home', routerLink: './'
+      },
+      {
+        label: 'Companies', icon: 'fa-hospital-o', routerLink: 'companies'
+      },
+      {
+        label: 'Employees', icon: 'fa-user-md', routerLink: 'employees'
+      },
+      {
+        label: 'Tests', icon: 'fa-book', routerLink: 'tests'
+      },
+      {
+        label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin
+      }
+    ];
   }
 }

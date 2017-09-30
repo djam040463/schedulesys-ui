@@ -20,13 +20,18 @@ import { Observable } from 'rxjs/Observable';
 })
 export class UserComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
-  @ViewChild('userForm') userForm: NgForm;
+  @ViewChild('userForm')
+  userForm: NgForm;
   users: UserProfile[];
   selectedUser: UserProfile;
   user: UserProfile;
   userRoles: SelectItem[] = [];
   authClaim: AuthClaim;
+  editing: boolean; // Indicates whether a record is being edited in the list of users
 
+  // TODO If updated user == logged in user, then logout user
+// TODO Set selected user to undefined when using paginator
+// TODO monitor token validity
   constructor(
       public userService: UserService,
       private confirmationService: ConfirmationService,
@@ -55,11 +60,13 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
   getAll(page: number, size: number) {
     this.tableDataLoading = true;
     this.userService.getAll(page, size)
-          .subscribe(response => {
-            this.users = response.users;
-            this.tableItemsCount = response.count;
-            this.tableDataLoading = false;
-            });
+          .subscribe(
+            response => {
+              this.users = response.users;
+              this.tableItemsCount = response.count;
+              this.tableDataLoading = false;
+            }
+         );
   }
 
   private getAllUserRoles() {
@@ -67,7 +74,7 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
         .subscribe(
           response => {
             const component = this;
-            response.forEach(function(userRole){
+            response.forEach((userRole) => {
               component.userRoles.push({label: userRole.name, value: userRole.name});
             });
           });
@@ -79,7 +86,6 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
   create() {
     const result = this.editing ? this.userService.update(this.user)
       : this.userService.create(this.user);
-
     result.subscribe(
       response => {
          this.displayMessage({ severity: 'success', summary: '', detail: response.message });
@@ -88,8 +94,11 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
            this.users = this.users.slice();
            this.changeDetector.markForCheck(); // Forces the change detector to run
            this.tableItemsCount ++;
+         } else {
+           this.refreshOnEdit(this.user, this.selectedUser);
          }
-         this.hideDialog();
+         this.showDialog(false);
+        // this.loginService.logout();
       },
       error => {
          this.displayMessage({ severity: 'error', summary: '', detail: error });
@@ -110,8 +119,7 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
           .subscribe(
             response  => {
               this.displayMessage({ severity: 'success', summary: '', detail: 'User successfully deleted'});
-                const selectedUserIndex = this.findSelectedUserIndex();
-                this.users = this.users.filter((val, i) =>  i !== selectedUserIndex); // Refreshes dataTable
+                this.users = this.users.filter((val, i) =>  val.id !== this.selectedUser.id); // Refreshes dataTable
                 this.selectedUser = undefined; // Disables 'Edit' and 'Delete' buttons
                 // Update number of items so that the paginator displays the correct number of pages
                 this.tableItemsCount--;
@@ -128,36 +136,18 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
     });
   }
 
-  showDialog(editing: boolean) {
-    this.dialogDisplayed = true;
-    this.editing = editing;
-    // When editing, populate form with selected User
-    this.user = editing ? _.cloneDeep(this.selectedUser) : new UserProfile();
-  }
-
-  hideDialog() {
-    this.dialogDisplayed = false;
-    if (this.editing) {
-      this.refreshOnEdit(this.user, this.selectedUser); // Refresh dataTable after user update
-    }
+  showDialog(display?: boolean) {
+    this.dialogDisplayed = (display == null) ? true : display;
     this.userForm.resetForm();
+    // When editing, populate form with selected User
+    this.user = this.editing ? _.cloneDeep(this.selectedUser) : new UserProfile();
   }
 
   private buildContextMenuItems () {
     this.contextMenuItems = [
-            { label: 'Edit'  , icon: 'fa-edit' , command: (event) => {this.showDialog(true)}},
+            { label: 'Edit'  , icon: 'fa-edit' , command: (event) => { this.editing = true; this.showDialog(true); }},
             { label: 'Delete', icon: 'fa-close', command: (event) => {this.deleteUser()}    }
         ];
-  }
-
-  findSelectedUserIndex() {
-     let index = -1;
-     this.users.forEach((user, i) => {
-      if (this.selectedUser.id === user.id) {
-        index = i;
-      }
-     });
-    return index;
   }
 
   gotToHome() {

@@ -90,8 +90,8 @@
 					</md-input-container>
 				</div>
 				
-				<dialog-crud (cancel)="hideDialog()" 
-					[disabled]="!contactForm.form.valid || (unmaskNumber(phoneNumber.value).length != 10) || (unmaskNumber(fax.value).length != 10)"></dialog-crud>
+				<app-dialog-crud (cancel)="hideDialog()" 
+					[disabled]="!contactForm.form.valid || (unmaskNumber(phoneNumber.value).length != 10) || (unmaskNumber(fax.value).length != 10)"></app-dialog-crud>
 			</form>
    		 </div>
 	</p-dialog>

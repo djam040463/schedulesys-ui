@@ -3,27 +3,29 @@ import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { Schedule } from './schedule';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ScheduleService extends CommonService {
 
   private resourceUrl = environment.apiBaseUrl + '/api/schedules'
-  constructor(
-    private http: Http,
-    private loginService: LoginService
-  ) { super(); }
+
+  constructor(private http: HttpClient) { super(); }
 
   deleteOne(id: number): Observable<string> {
-    return this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
+    return this.http.delete(this.resourceUrl + '/' + id)
         .map(response => 'Schedule Successfully Deleted')
         .catch(this.handleError);
   }
 
   update(schedule: Schedule): Observable<Schedule> {
-    return this.http.put(this.resourceUrl, schedule, this.loginService.getRequestOptions())
-      .map(response => new Schedule(response.json()))
+    return this.http.put(this.resourceUrl, schedule)
+      .map(response => response as Schedule)
       .catch(this.handleError);
+  }
+
+  getAll(scheduleDate: Date): Observable<Schedule[]> {
+    return null;
   }
 }

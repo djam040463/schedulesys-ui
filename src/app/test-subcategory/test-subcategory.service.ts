@@ -3,7 +3,7 @@ import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { TestSubcategory } from './testsubcategory';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -11,19 +11,16 @@ export class TestSubcategoryService extends CommonService {
 
   resourceUrl = environment.apiBaseUrl + '/api/test-sub-categories';
 
-  constructor(
-    private http: Http,
-    private loginService: LoginService
-  ) { super(); }
+  constructor(private http: HttpClient) { super(); }
 
   update(testSubcategory: TestSubcategory): Observable<TestSubcategory> {
-    return this.http.put(this.resourceUrl, testSubcategory, this.loginService.getRequestOptions())
-        .map(response => new TestSubcategory(response.json()))
+    return this.http.put(this.resourceUrl, testSubcategory)
+        .map(response => response as TestSubcategory)
         .catch(this.handleError);
   }
 
   deleteOne(id: number): Observable<string> {
-    return this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
+    return this.http.delete(this.resourceUrl + '/' + id)
         .map(response => 'Test subcategory successfully deleted')
         .catch(this.handleError);
   }

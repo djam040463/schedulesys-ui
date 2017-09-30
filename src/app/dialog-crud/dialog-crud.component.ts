@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
-  selector: 'dialog-crud',
+  selector: 'app-dialog-crud',
   templateUrl: './dialog-crud.component.html',
   styleUrls: ['./dialog-crud.component.css']
 })

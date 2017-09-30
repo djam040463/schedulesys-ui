@@ -82,7 +82,9 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   create() {
   // TODO Add support for schedules that span on multiple days
-    this.validateShiftDates();
+    if (!this.validateShiftDates()) {
+      return;
+    }
     this.schedule.careCompany = this.careCompany;
     this.scheduleService.update(this.schedule)
       .subscribe(
@@ -100,7 +102,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
          this.displayMessage({severity: 'success', summary: '', detail: 'Schedule successfully saved'});
         },
         error => {
-           this.displayMessage({severity: 'error', summary: '', detail: error});
+           this.displayMessage({severity: 'error', summary: '', detail: error}, this.dialogMsgs);
         }
       );
     console.log('Schedule : ' + JSON.stringify(this.schedule));
@@ -155,11 +157,13 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
       });
   }
 
-  validateShiftDates() {
+  validateShiftDates(): boolean {
     if (this.schedule.shiftEndTime.getTime() <= this.schedule.shiftStartTime.getTime()) {
-      this.displayMessage({severity: 'error', summary: 'Invalid shift times', detail: 'Start Time must be before End Time'}
+        this.displayMessage({severity: 'error', summary: 'Invalid shift times', detail: 'Start Time must be before End Time'}
         , this.dialogMsgs);
+      return false;
     }
+    return true;
   }
 
 }

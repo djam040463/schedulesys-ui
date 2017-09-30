@@ -43,8 +43,8 @@
 								</div>
 								<md-input-container class="input-full">
 									<input #username mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfile.username" 
-									usernameInUse [input-value]="userProfile.username" [old-value]="user.username" (duplicates)="onDuplicates($event)"
-									minlength="6" maxlength="20" [input-regex]="'^[_\'.@A-Za-z0-9-]*$'" required>
+									appValueInUse appInputRegex [value]="userProfile.username" [old_value]="user.username" (duplicate)="onDuplicates($event)"
+									minlength="6" maxlength="20" [regex]="'^[_\'.@A-Za-z0-9-]*$'" [field_name]="'username'" required>
 									<md-hint align="end">{{username.value.length}} / 20</md-hint>
 								</md-input-container>
 							</div>
@@ -55,8 +55,8 @@
 								</div>
 								<md-input-container class="input-full">
 									<input #email mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfile.emailAddress"
-									emailInUse [input-value]="userProfile.emailAddress" [old-value]="user.emailAddress" (duplicates)="onDuplicates($event)" maxlength="50"
-									[input-regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'" required>
+									appValueInUse appInputRegex [value]="userProfile.emailAddress" [old_value]="user.emailAddress" (duplicate)="onDuplicates($event)" maxlength="50"
+									[regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'" [field_name]="'emailAddress'" required>
 									<md-hint align="end">{{email.value.length}} / 50</md-hint>
 								</md-input-container>
 							</div>

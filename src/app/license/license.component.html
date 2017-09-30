@@ -1,4 +1,4 @@
-<p-dataTable #licenses_table  [value]="licenses" [rows]="10" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[5,10]"
+<p-dataTable #licenses_table  [value]="licenses" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10]"
 	selectionMode="single" [(selection)]="selectedLicense"  dataKey="id" [emptyMessage]="'No licenses to display'">
     <p-header>Employee's licenses</p-header>
     <p-column field="licenseNumber" header="License Number"></p-column>

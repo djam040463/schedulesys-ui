@@ -6,7 +6,7 @@
 		<md-divider></md-divider>
 		<div class="data-table">
 			<p-messages [(value)]="msgs"></p-messages>
-			<p-dataTable [value]="tests" [rows]="10" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+			<p-dataTable [value]="tests" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedTest" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
 				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No tests to display'">
 			    <p-header>Tests</p-header>

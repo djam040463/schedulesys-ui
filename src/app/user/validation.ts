@@ -11,13 +11,13 @@ export class Validation extends CommonValidation {
         'username': {
            'required': 'Username is required',
            'minlength': 'Username must be at least 6 characters long',
-           'input-regex': 'Invalid username'
+           'regex': 'Invalid username'
          },
 
         'email': {
            'required': 'Email address is required',
            'emailAddressInUse': 'Email address entered is already in use',
-           'input-regex': 'Invalid email address'
+           'regex': 'Invalid email address'
          },
 
         'firstname': {

@@ -5,7 +5,7 @@ import { TestSubcategoryComponent } from '../test-subcategory/test-subcategory.c
 import { TestSubcategory } from '../test-subcategory/testsubcategory';
 import { Test } from './test';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -13,47 +13,42 @@ export class TestService extends CommonService {
 
   resourceUrl = environment.apiBaseUrl + '/api/tests';
 
-  constructor(
-    private http: Http,
-    private loginService: LoginService
-  ) { super(); }
+  constructor(private http: HttpClient) { super(); }
 
-  update(test: Test): Observable<Test> {
-    return this.http.put(this.resourceUrl, test, this.loginService.getRequestOptions())
-      .map(response => new Test(response.json()))
+  update(test: Test): Observable<{'message': string, 'result': Test}> {
+    return this.http.put(this.resourceUrl, test)
+      .map(response =>  {return {'message': 'Test successully saved', 'result': response as Test}})
       .catch(this.handleError);
   }
 
   getAll(page: number, size: number): Observable<{'result': Test[], 'count': number}>  {
-    return this.http.get(this.resourceUrl + this.formatRequestParams(page, size)
-      , this.loginService.getRequestOptions())
+    return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), {observe: 'response'})
       .map(response => {
-         return {'result': Test.toArray(response.json()), 'count': +response.headers.get(this.countHeaderName) }
+         return {'result': response.body as Test[], 'count': + response.headers.get(this.countHeaderName) }
       }).catch(this.handleError)
   }
 
   deleteOne(id: number): Observable<string> {
-    return this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
+    return this.http.delete(this.resourceUrl + '/' + id)
        .map(response => 'Test successfully deleted')
        .catch(this.handleError);
   }
 
   getOne(id: string): Observable<Test> {
-    return this.http.get(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
-      .map(response => new Test(response.json()))
+    return this.http.get(this.resourceUrl + '/' + id)
+      .map(response => response as Test)
       .catch(this.handleError);
   }
 
   search(query: string): Observable<Test[]> {
-   return this.http.get(this.resourceUrl + '/search' + this.formatSearchRequestParam(query), this.loginService.getRequestOptions())
-      .map(response => Test.toArray(response.json()))
+   return this.http.get(this.resourceUrl + '/search' + this.formatSearchRequestParam(query))
+      .map(response => response as Test[])
       .catch(this.handleError);
   }
 
   getAllSubcategories(id: number): Observable<TestSubcategory[]> {
-    return this.http.get(this.resourceUrl + '/' + id + '/subcategories',
-              this.loginService.getRequestOptions())
-           .map(response => TestSubcategory.toArray(response.json()))
+    return this.http.get(this.resourceUrl + '/' + id + '/subcategories')
+           .map(response => response as TestSubcategory[])
            .catch(this.handleError);
   }
 

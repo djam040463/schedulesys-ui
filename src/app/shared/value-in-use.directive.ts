@@ -18,7 +18,7 @@ export class ValueInUseDirective {
       this.entity_service.getOneByValue(this.value, this.field_name)
         .subscribe(response => {
           this.duplicate.emit(
-            {field: this.field_name, message: this.value + ' is already in use'}
+            {field: this.field_name, message: '\'' + this.value + '\' is already in use'}
            );
       })
     }

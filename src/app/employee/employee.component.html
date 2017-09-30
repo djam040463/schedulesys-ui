@@ -6,7 +6,7 @@
 		<md-divider></md-divider>
 		<div class="data-table">
 			<p-messages [(value)]="msgs"></p-messages>
-			<p-dataTable [value]="employees" [rows]="10" [paginator]="true"  resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+			<p-dataTable [value]="employees" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedEmployee" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
 				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No employees found'">
 			    <p-header>Employees</p-header>
@@ -24,7 +24,6 @@
 			    </p-column>
 			    <p-column field="ebc" header="Ebc"></p-column>
 			    <p-column field="insvc" header="In Service"></p-column>
-			    <p-column field="comment" header="Comment"></p-column>
 			    <p-column field="position.name" header="Position"></p-column>
 			    <p-column field="employeeType.name" header="Employee Type"></p-column>
 			</p-dataTable>
@@ -110,18 +109,18 @@
 		   	 			</div>
 		   	 		</div>
 		   	 		
-		   	 			<div class="ui-g-2">
-		   	 				<label> Comment : </label>
-		   	 			</div>
-		   	 			<div class="ui-g-10">
-		   	 				<textarea cols="78" name="comment" pInputTextarea [(ngModel)]="employee.comment"></textarea>
-		   	 			</div>
-		   	 		
-		   	 		<div class="btns-panel">
-		   	 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="employeeForm.form.invalid" class="ui-button-success"></button>
-		   	 			<button pButton label="Clear" icon="fa fa-eraser" type="reset"></button>
-		   	 			<button pButton label="Cancel" type="button" (click)="hideDialog()" icon="fa fa-close"></button>
+		   	 		<div class="ui-g-2">
+		   	 			<label> Comment : </label>
 		   	 		</div>
+		   	 		<div class="ui-g-10">
+		   	 			<textarea cols="78" name="comment" pInputTextarea [(ngModel)]="employee.comment"></textarea>
+		   	 		</div>
+		   	 	</div>
+		   	 	<div class="ui divider"></div>
+		   	 	<div class="btns-panel">
+		   	 		<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="employeeForm.form.invalid" class="ui-button-success"></button>
+		   	 		<button pButton label="Clear" icon="fa fa-eraser" type="reset"></button>
+		   	 		<button pButton label="Cancel" type="button" (click)="hideDialog()" icon="fa fa-close"></button>
 		   	 	</div>
 		   	</form>
    		 </div>

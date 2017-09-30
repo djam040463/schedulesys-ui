@@ -1,5 +1,6 @@
 import { CareCompany } from '../company/care-company';
 import { CareCompanyService } from '../company/care-company.service';
+import { Employee } from '../employee/employee';
 import { EmployeeService } from '../employee/employee.service';
 import { CommonComponent } from '../shared/common';
 import { ScheduleType } from './scheduletype';
@@ -15,6 +16,8 @@ export class ScheduleComponent extends CommonComponent implements OnInit {
 
   scheduleType: string ;
   careCompany: CareCompany;
+  employee: Employee;
+  today = new Date();
 
   constructor(
       private careCompanyService: CareCompanyService,

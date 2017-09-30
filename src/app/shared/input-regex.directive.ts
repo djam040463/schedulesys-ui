@@ -9,22 +9,22 @@ export function inputValidator(value: RegExp): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} => {
     const input = control.value;
     const test = value.test(input);
-    return test ? null : {'input-regex': {input}};
+    return test ? null : {'regex': {input}};
   };
 }
 
 @Directive({
-  selector: '[input-regex]',
+  selector: '[appInputRegex]',
   providers: [{provide: NG_VALIDATORS, useExisting: InputRegexDirective, multi: true}]
 })
 export class InputRegexDirective implements Validator {
 
-  @Input('input-regex') inputRegex: string;
-  @Input('input-value') input: string;
+  @Input('regex') regex: string;
+  @Input('value') value: string;
   private valFn = Validators.nullValidator;
 
   @HostListener('keyup') onKeyUp() {
-    const re = new RegExp(this.inputRegex, 'i');
+    const re = new RegExp(this.regex, 'i');
     this.valFn = inputValidator(re);
   }
 

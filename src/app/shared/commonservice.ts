@@ -8,19 +8,15 @@ export abstract class CommonService {
 
 
   handleError(error: any) {
-    console.log('An error occurred : ' + error);
-    let errorMsg: string;
+    let errorMsg = error.error ? error.error.message : '';
     if (error.status === 404) {
       errorMsg = 'Unable to find resource';
-    } else if (error.status === 400) {
-      errorMsg = error.json().message;
-    } else {
+    } else if (error.status === 500) {
       const xScheduleSysError = error.headers.get('X-schedulesys-error');
-      console.log('X-schedulesys-error : ' + xScheduleSysError);
       errorMsg = xScheduleSysError ? xScheduleSysError :
          (error.message ? error.message : error.toString());
-      console.log('Error message : ' + error);
     }
+    console.log('An error occurred : ' + JSON.stringify(error));
     return Observable.throw(errorMsg);
   }
 

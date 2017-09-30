@@ -1,8 +1,7 @@
 import { environment } from '../../environments/environment';
-import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Position } from './position';
 
@@ -11,10 +10,7 @@ export class PositionService extends CommonService {
 
   resourceUrl = environment.apiBaseUrl + '/api/positions';
 
-  constructor(
-    private http: Http,
-    private loginService: LoginService
-  ) {super(); }
+  constructor(private http: HttpClient) {super(); }
 
   getAll(page: number, size: number): Observable<{'result': Position[], 'count': number}>;
 
@@ -23,14 +19,13 @@ export class PositionService extends CommonService {
   getAll(page?: number, size?: number) {
     const pageable = (page != null && size != null);
     const result: Observable<any> =  pageable ?
-        this.http.get(this.resourceUrl + this.formatRequestParams(page, size)
-      , this.loginService.getRequestOptions()) :
-        this.http.get(this.resourceUrl, this.loginService.getRequestOptions());
+      this.http.get(this.resourceUrl + this.formatRequestParams(page, size), {observe: 'response'}) :
+        this.http.get(this.resourceUrl);
     return result.map(
         response => {
-            return pageable ? {'result': Position.toArray(response.json()),
+            return pageable ? {'result': response.body as Position[],
                    'count': +response.headers.get(this.countHeaderName)}
-                   :  Position.toArray(response.json())
+                   :  response as Position[]
         }
       ).catch(this.handleError);
   }

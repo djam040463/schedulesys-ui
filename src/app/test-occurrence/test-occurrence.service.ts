@@ -3,26 +3,24 @@ import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { TestOccurrence } from '../test-occurrence/testoccurrence';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TestOccurrenceService extends CommonService {
 
   resourceUrl = environment.apiBaseUrl + '/api/test-occurrences'
-  constructor(
-    private http: Http,
-    private loginService: LoginService
-  ) { super(); }
+
+  constructor(private http: HttpClient) { super(); }
 
   update(testOccurrence: TestOccurrence): Observable<TestOccurrence> {
-    return this.http.put(this.resourceUrl, testOccurrence, this.loginService.getRequestOptions())
-        .map(response => new TestOccurrence(response.json()))
+    return this.http.put(this.resourceUrl, testOccurrence)
+        .map(response => response as TestOccurrence)
         .catch(this.handleError);
   }
 
   deleteOne(id: number): Observable<string> {
-    return this.http.delete(this.resourceUrl + '/' + id, this.loginService.getRequestOptions())
+    return this.http.delete(this.resourceUrl + '/' + id)
         .map(response => 'Test Occurrence Successfully Deleted')
         .catch(this.handleError);
   }

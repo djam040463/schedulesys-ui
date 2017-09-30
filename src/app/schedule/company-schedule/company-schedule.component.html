@@ -37,11 +37,10 @@
 			<p-column field="billed" header="Billed"></p-column>
 			<p-column field="comment" header="Comments"></p-column>
 			<p-column field="scheduleSysUser.username" header="Filled By"></p-column>
-			
 		<p-footer>
-			<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success" ></button>
-			<button pButton label="Edit" icon="fa fa-edit"  (click)="showOrHideDialog(true)"></button>
-			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteSchedule()" class="ui-button-danger"></button>
+			<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success"></button>
+			<button pButton label="Edit" icon="fa fa-edit" (click)="showOrHideDialog(true)" [disabled]="selectedSchedule === undefined"></button>
+			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteSchedule()" class="ui-button-danger" [disabled]="selectedSchedule === undefined"></button>
 		</p-footer>
 	</p-dataTable>
 	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

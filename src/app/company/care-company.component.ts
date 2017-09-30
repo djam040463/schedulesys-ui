@@ -26,7 +26,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
   careCompanyTypes: SelectItem[] = [];
 
   constructor(
-      private careCompanyService: CareCompanyService,
+      public careCompanyService: CareCompanyService,
       private careCompanyTypeService: CareCompanyTypeService,
       private confirmationService: ConfirmationService,
       private router: Router,
@@ -72,13 +72,10 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
 // TODO Add http wrapper and check 401 errors. If jwt has expired, then redirect to login
   // TODO 'New' does not refresh data table
   create() {
-  //  const careCompany = _.cloneDeep(this.careCompany); // care company's reference is set to null on form reset
     this.careCompany.phoneNumber = this.unmaskNumber(this.careCompany.phoneNumber);
     this.careCompany.fax = this.unmaskNumber(this.careCompany.fax);
-    const result = this.editing ? this.careCompanyService.update(this.careCompany)
-      : this.careCompanyService.create(this.careCompany);
-    result.subscribe(
-       response => {
+     this.careCompanyService.update(this.careCompany)
+       .subscribe(response => {
          this.displayMessage({severity: 'success', summary: '', detail: response.message});
          if (!this.editing) {
             this.careCompanies.push(response.result);
@@ -104,8 +101,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
             response  => {
               this.displayMessage(
                 { severity: 'success', summary: '', detail: 'User successfully deleted'});
-                const selectedCompanyIndex = this.findSelectedCompanyIndex();
-                this.careCompanies = this.careCompanies.filter((val, i) =>  i !== selectedCompanyIndex); // Refreshes dataTable
+                this.careCompanies = this.careCompanies.filter((val, i) =>  val.id !== this.selectedCompany.id); // Refreshes dataTable
                 this.selectedCompany = undefined; // Disables 'Edit' and 'Delete' buttons
                 // Update number of items so that the paginator displays the correct number of pages
                 this.tableItemsCount--;
@@ -126,8 +122,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
      this.dialogDisplayed = true;
      this.editing = editing;
     // When editing, populate form with selected User
-     this.careCompany = editing ? _.cloneDeep(this.selectedCompany)
-       : new CareCompany();
+     this.careCompany = editing ? _.cloneDeep(this.selectedCompany) : new CareCompany();
   }
 
    hideDialog() {
@@ -158,22 +153,8 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
           });
   }
 
-//  navigateTo(destionation: string) {
-//    this.router.navigate([destionation, this.selectedCompany.id], {relativeTo: this.route})
-//  }
-
   navigateTo(destionation: string, navigationExtras: any) {
     this.router.navigate([destionation,  navigationExtras] , {relativeTo: this.route})
-  }
-
-  findSelectedCompanyIndex() {
-     let index = -1;
-     this.careCompanies.forEach((careCompany, i) => {
-      if (this.selectedCompany.id === careCompany.id) {
-        index = i;
-      }
-     });
-    return index;
   }
 
   gotToHome() {

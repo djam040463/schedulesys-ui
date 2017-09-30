@@ -3,7 +3,8 @@ import { AuthClaim } from './authclaim';
 import { JWT } from './jwt';
 import { LoginVM } from './loginvm';
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Headers} from '@angular/http';
+
+import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import * as Moment from 'moment';
@@ -11,14 +12,14 @@ import * as Moment from 'moment';
 @Injectable()
 export class LoginService {
 
-   private options = new RequestOptions({ headers: new Headers([{ 'Content-Type': 'application/json' }, {}]) });
+  // private options = new RequestOptions({ headers: new Headers([{ 'Content-Type': 'application/json' }, {}]) });
    resourceUrl = environment.apiBaseUrl + '/api/authenticate';
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   login(loginVM: LoginVM): Observable<boolean> {
-     return this.http.post(this.resourceUrl, loginVM, this.options)
-      .map(response => this.storeJwt(new JWT(response.json()), loginVM.rememberMe))
+     return this.http.post(this.resourceUrl, loginVM)
+      .map(response => this.storeJwt( new JWT(response), loginVM.rememberMe))
       .catch(this.handleError);
   }
 
@@ -71,13 +72,11 @@ export class LoginService {
     return jwt;
   }
 
-  getRequestOptions(): RequestOptions {
+
+  getAuthorizationHeader(): string {
+    console.log('Getting Auth header');
     const jwt = this.getJwt();
-    return new RequestOptions({ headers: new Headers(
-      { 'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + jwt
-      }
-     ) });
+    return 'Bearer ' + jwt;
   }
 
   handleError(error: any) {

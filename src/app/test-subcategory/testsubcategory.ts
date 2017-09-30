@@ -4,16 +4,6 @@ export class TestSubcategory {
   name: string;
   test: Test = new Test();
 
-  static toArray(jsons: any[]): TestSubcategory[] {
-      const testSubcategories: TestSubcategory[] = [];
-      if (jsons != null) {
-          for (const json of jsons) {
-              testSubcategories.push(new TestSubcategory(json));
-          }
-      }
-      return testSubcategories;
-   }
-
   constructor(json?: any) {
     if (json != null) {
       this.id = json.id;

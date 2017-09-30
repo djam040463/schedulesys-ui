@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { PanelModule, ButtonModule, InputTextModule, CheckboxModule,
          InputSwitchModule, MessagesModule, MenubarModule,
@@ -30,16 +32,13 @@ import { AuthGuard } from './login/auth-guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './profile/profile.service';
-import { EmailAddressInUseValidatorDirective } from './shared/emailaddress-in-use.directive';
 import { GlobalErrorHandler } from './shared/global-error.handler';
 import { InputRegexDirective } from './shared/input-regex.directive';
-import { UsernameInUseValidatorDirective } from './shared/username-in-use.directive';
 import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
 import { UserRoleService } from './user/userrole.service';
 import { CareCompanyComponent } from './company/care-company.component';
 import { CareCompanyService } from './company/care-company.service';
-import { CareCompanyNameInUseDirective } from './shared/care-company-name-in-usedirective';
 import { PhoneNumberPipe } from './shared/phonenumber.pipe';
 import { ContactComponent } from './contact/contact.component';
 import { ContactService } from './contact/contact.service';
@@ -71,6 +70,9 @@ import { CompanyScheduleComponent } from './schedule/company-schedule/company-sc
 import { SchedulePostStatusService } from './schedule/schedule-post-status.service';
 import { ScheduleStatusService } from './schedule/schedule-status.service';
 import { ScheduleService } from './schedule/schedule.service';
+import { ScheduleSummaryComponent } from './schedule/schedule-summary/schedule-summary.component';
+import { ScheduleSummaryService } from './schedule/schedule-summary/schedule-summary.service';
+import { AuthInterceptor } from './shared/auth.intercepter';
 
 
 @NgModule({
@@ -84,10 +86,7 @@ import { ScheduleService } from './schedule/schedule.service';
     DashboardComponent,
     ProfileComponent,
     UserComponent,
-    UsernameInUseValidatorDirective,
-    EmailAddressInUseValidatorDirective,
     InputRegexDirective,
-    CareCompanyNameInUseDirective,
     PhoneNumberPipe,
     CareCompanyComponent,
     ContactComponent,
@@ -106,12 +105,14 @@ import { ScheduleService } from './schedule/schedule.service';
     TestDetailComponent,
     TestSubcategoryComponent,
     TestOccurrenceComponent,
-    CompanyScheduleComponent
+    CompanyScheduleComponent,
+    ScheduleSummaryComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     PanelModule,
     InputSwitchModule,
     ButtonModule,
@@ -163,13 +164,13 @@ import { ScheduleService } from './schedule/schedule.service';
     TestOccurrenceService,
     ScheduleService,
     ScheduleStatusService,
-    SchedulePostStatusService
-//    ,
-//    {
-//      provide: ErrorHandler,
-//      useClass: GlobalErrorHandler
-//    }
-    ],
+    SchedulePostStatusService,
+    ScheduleSummaryService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

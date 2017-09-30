@@ -47,7 +47,7 @@ export class TestComponent extends CommonComponent implements OnInit, AfterViewC
     this.testService.update(this.test)
       .subscribe(response => {
          if (!this.editing) {
-              this.tests.push(response);
+              this.tests.push(response.result);
               this.tests = this.tests.slice();
               this.changeDetector.markForCheck();
               this.tableItemsCount++;
@@ -55,7 +55,7 @@ export class TestComponent extends CommonComponent implements OnInit, AfterViewC
               this.refreshOnEdit(this.test, this.selectedTest);
             }
             this.dialogDisplayed = false;
-            this.displayMessage({severity: 'success', summary: '', detail: 'Phone number successfully saved'});
+            this.displayMessage({severity: 'success', summary: '', detail: response.message});
         },
         error => {
             this.displayMessage({severity: 'error', summary: '', detail: error});
@@ -71,7 +71,7 @@ export class TestComponent extends CommonComponent implements OnInit, AfterViewC
           .subscribe(
             response  => {
               this.displayMessage(
-                { severity: 'success', summary: '', detail: 'User successfully deleted'});
+                { severity: 'success', summary: '', detail: response});
                 this.tests = this.tests.filter((val, i) =>  val.id !== this.selectedTest.id); // Refreshes dataTable
                 this.selectedTest = undefined; // Disables 'Edit' and 'Delete' buttons
                 // Update number of items so that the paginator displays the correct number of pages

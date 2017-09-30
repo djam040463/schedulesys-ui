@@ -3,31 +3,29 @@ import { LoginService } from '../login/login.service';
 import { CommonService } from '../shared/commonservice';
 import { UserProfile } from './userprofile';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ProfileService extends CommonService {
 
-  resourceBaseUrl: string;
+  resourceBaseUrl = environment.apiBaseUrl + '/api/users/';
   // TODO Redirect back to login when token expires
   constructor(
-    private loginService: LoginService,
-    private http: Http) {
-    super();
-    this.resourceBaseUrl = environment.apiBaseUrl + '/api/users/'
-  }
+    private http: HttpClient,
+    private loginService: LoginService
+  ) { super(); }
 
   getUserProfile(): Observable<UserProfile> {
     const authClaim = this.loginService.getAuthenticatedUser();
     return this.http.get(
         this.resourceBaseUrl + authClaim.sub,
-        this.loginService.getRequestOptions()
-      ).map(response => new UserProfile(response.json()))
+      ).map(response => response as UserProfile)
   }
 
   update(userProfile: UserProfile): Observable<string> {
-    return this.http.put(this.resourceBaseUrl, userProfile, this.loginService.getRequestOptions())
+    return this.http.put(this.resourceBaseUrl, userProfile)
         .map(response => 'Profile successfully updated')
         .catch(error => this.handleError(error));
   }
