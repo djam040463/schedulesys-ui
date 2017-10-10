@@ -6,5 +6,5 @@
 import { ApiEndpoint } from '../app/apiendpoint';
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:8080'
+  apiBaseUrl: 'https://ec2-34-235-55-200.compute-1.amazonaws.com:8080'
 };
