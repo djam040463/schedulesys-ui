@@ -1,36 +1,30 @@
 <p-panel header="User Profile" *ngIf="user != undefined">
-	<md-list>
 		<div style="text-align: center;">
 			<span  class="fa fa-user-circle-o fa-5x" ></span>
 		</div>
-		<md-divider></md-divider>
+		<div class="ui divider"></div>
 			<div class="ui-g">
-			<div class="ui-g-5">
-			<md-list-item class="ui-g">
-				<span class="ui-g-6">Username : </span>
-				<span class="ui-g-6" id="username">{{user.username}}</span>
-			</md-list-item>
+		
+				<div class="ui card">
+					<div class="image">
+				    	<img src="../../assets/images/users.svg">
+					</div>
+					<div class="content">
+				    	<a class="header">{{user.firstName + ' ' + user.lastName}}</a>
+					    <div class="meta">
+					      <span class="date">{{user.emailAddress}}</span>
+					    </div>
+				  	</div>
+					<div class="extra content ui-g">
+					    <div class="ui-g-6">
+					      <label>Role : {{user.userRole.name}}</label>
+					    </div>
+					    <div class="ui-g-6">
+					    	<label>Username : {{user.username}}</label>
+					    </div>
+				 	</div>
+				</div>
 			
-			<md-list-item class="ui-g">
-				<span class="ui-g-6">Email : </span>
-				<span class="ui-g-6">{{user.emailAddress}}</span>
-			</md-list-item>
-			
-			<md-list-item class="ui-g">
-				<span class="ui-g-6">First name : </span>
-				<span class="ui-g-6">{{user.firstName}}</span>
-			</md-list-item>
-			
-			<md-list-item class="ui-g">
-				<span class="ui-g-6">Last name : </span>
-				<span class="ui-g-6">{{user.lastName}}</span>
-			</md-list-item>
-			
-			<md-list-item class="ui-g">
-				<span class="ui-g-6">Role : </span>
-				<span class="ui-g-6">{{user.userRole.name}}</span>
-			</md-list-item>
-			</div>
 			<div class="ui-g-7" *ngIf="display">
 				<p-messages [(value)]="msgs"></p-messages>
 				<p-panel header="Profile Edit">
@@ -95,11 +89,10 @@
 					</form>
 				</p-panel>
 			</div>
-			</div>
-		<md-divider></md-divider>
+		</div>
+		<div class="ui divider"></div>
 		<div class="btns-panel">
 			<button pButton label="Edit" icon="fa fa-edit" (click)="onEdit()"></button>
 		</div>
-	</md-list>
 	
 </p-panel>
