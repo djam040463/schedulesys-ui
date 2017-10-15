@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ScheduleSummaryService extends CommonService {
 
-  resourceUrl = environment.apiBaseUrl + '/api/schedules/summary';
+  resourceUrl = environment.apiBaseUrl + '/api/schedules/company-summary';
 
   constructor(private http: HttpClient) { super(); }
 

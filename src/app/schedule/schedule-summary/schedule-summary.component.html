@@ -1,7 +1,22 @@
 <p-dataTable #summary_table [value]="scheduleSummaries"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,15,20]"
-	selectionMode="single"  [emptyMessage]="'No schedule to display'" (onRowDblclick)="onRowDblclick($event)">
+	selectionMode="single"  [emptyMessage]="'No schedule to display'" (onRowDblclick)="onRowDblclick($event)" *ngIf="showByCompany">
     <p-header>Shifts summary</p-header>
     <p-column field="careCompanyName"  header="Care Company"></p-column>
     <p-column field="shiftsScheduled" header="Shifts Scheduled"></p-column>
     <p-column field="careCompanyType" header="Type Of Company"></p-column>
+    <p-footer>
+    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()"></button>
+    </p-footer>
 </p-dataTable>
+
+
+<p-dataTable #summary_table [value]="employeeScheduleSummaries"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,15,20]"
+	selectionMode="single"  [emptyMessage]="'No schedule to display'" (onRowDblclick)="onRowDblclick($event)" *ngIf="!showByCompany">
+    <p-header>Shifts summary</p-header>
+    <p-column field="employee.firstName"  header="First Name"></p-column>
+    <p-column field="employee.lastName" header="Last Name"></p-column>
+    <p-footer>
+    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()"></button>
+    </p-footer>
+</p-dataTable>
+

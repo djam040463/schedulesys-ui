@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 export class ScheduleService extends CommonService {
 
   private resourceUrl = environment.apiBaseUrl + '/api/schedules'
+  private employeeScheduleSummariesUrl = environment.apiBaseUrl + '/api/schedules/employee-summary';
 
   constructor(private http: HttpClient) { super(); }
 
@@ -22,6 +23,12 @@ export class ScheduleService extends CommonService {
   update(schedule: Schedule): Observable<Schedule> {
     return this.http.put(this.resourceUrl, schedule)
       .map(response => response as Schedule)
+      .catch(this.handleError);
+  }
+
+  getEmployeeScheduleSummaries(scheduleDate: Date): Observable<Schedule[]> {
+    return this.http.get(this.employeeScheduleSummariesUrl + '?scheduleDate=' + scheduleDate)
+      .map(response => response as Schedule[])
       .catch(this.handleError);
   }
 

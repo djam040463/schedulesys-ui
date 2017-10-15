@@ -1,3 +1,5 @@
+import { Schedule } from '../schedule';
+import { ScheduleService } from '../schedule.service';
 import { ScheduleType } from '../scheduletype';
 import { ScheduleSummaryService } from './schedule-summary.service';
 import { ScheduleSummary } from './schedulesummary.model';
@@ -13,10 +15,14 @@ export class ScheduleSummaryComponent implements OnInit {
 
   today = new Date();
   scheduleSummaries: ScheduleSummary[];
+  employeeScheduleSummaries: Schedule[];
+  showByCompany = true;
+  displayPreferenceBtnLabel = 'Show By Employee';
 
   constructor(
     private scheduleSummaryService: ScheduleSummaryService,
-     private route: ActivatedRoute,
+    private scheduleService: ScheduleService,
+    private route: ActivatedRoute,
     private router: Router,
   ) { }
 
@@ -28,8 +34,23 @@ export class ScheduleSummaryComponent implements OnInit {
       );
   }
 
+  getEmployeeSheduleSummary() {
+    this.scheduleService.getEmployeeScheduleSummaries(this.today)
+     .subscribe(response => {this.employeeScheduleSummaries = response});
+  }
+
   onRowDblclick(event) {
      this.router.navigate(['schedules', { id: event.data.careCompanyId, scheduleType: ScheduleType.CAMPANY}], {relativeTo: this.route});
+  }
+
+  onDisplayPreferenceChange() {
+    this.showByCompany = !this.showByCompany;
+    if (this.showByCompany) {
+      this.displayPreferenceBtnLabel = 'Show By Employee';
+    } else {
+      this.getEmployeeSheduleSummary();
+      this.displayPreferenceBtnLabel = 'Show By Company';
+    }
   }
 
 }
