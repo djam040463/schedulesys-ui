@@ -6,7 +6,7 @@
 	<div class="ui-g">
 		<div class="ui card ui-g-4" >
 			<div class="image">
-				<img src="../../../assets/images/user-profile-male.svg">
+				<img src="../../../assets/images/employee.svg">
 			</div>
 			<div class="content">
 				<a class="header">{{employee.firstName + ' ' + employee.lastName}}</a>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="ui-g-8">
-			<p-accordion [multiple]="true" (onOpen)="onTabOpen($event)">
+			<p-accordion (onOpen)="onTabOpen($event)">
 				<p-messages [(value)]="msgs"></p-messages>
 				<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
     			<p-accordionTab header="Phone Numbers">

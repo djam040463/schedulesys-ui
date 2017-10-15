@@ -63,7 +63,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
             { label: 'Delete'   , icon: 'fa-close'         , command: (event) => { this.deleteCareCompany()}    },
 
             { label: 'Schedules', icon: 'fa-calendar'      , command: (event) => { this.navigateTo('../schedules',
-            { id: this.selectedCompany.id, scheduleType: ScheduleType.CAMPANY} )}},
+            { id: this.selectedCompany.id, scheduleType: ScheduleType.COMPANY} )}},
 
             { label: 'Contacts' , icon: 'fa-address-book-o', command: (event) => {
                this.navigateTo('../contacts', {companyId: this.selectedCompany.id})} }

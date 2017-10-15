@@ -32,7 +32,7 @@ export class ScheduleComponent extends CommonComponent implements OnInit {
       .subscribe(params => {
         if (params['id'] != null) {
           this.scheduleType = params['scheduleType'];
-          if (this.scheduleType === ScheduleType.CAMPANY) {
+          if (this.scheduleType === ScheduleType.COMPANY) {
             // Get schedules for company
             this.getCareCompany(params['id']);
           } else {

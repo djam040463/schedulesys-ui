@@ -40,7 +40,7 @@ export class ScheduleSummaryComponent implements OnInit {
   }
 
   onRowDblclick(event) {
-     this.router.navigate(['schedules', { id: event.data.careCompanyId, scheduleType: ScheduleType.CAMPANY}], {relativeTo: this.route});
+     this.router.navigate(['schedules', { id: event.data.careCompanyId, scheduleType: ScheduleType.COMPANY}], {relativeTo: this.route});
   }
 
   onDisplayPreferenceChange() {

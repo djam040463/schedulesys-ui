@@ -57,7 +57,6 @@ import { LicenseService } from './license/license.service';
 import { PhoneNumberComponent } from './phone-number/phone-number.component';
 import { LicenseComponent } from './license/license.component';
 import { TestComponent } from './test/test.component';
-import { EmployeeTestComponent } from './employee-test/employee-test.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ValueInUseDirective } from './shared/value-in-use.directive';
 import { TestService } from './test/test.service';
@@ -73,6 +72,7 @@ import { ScheduleService } from './schedule/schedule.service';
 import { ScheduleSummaryComponent } from './schedule/schedule-summary/schedule-summary.component';
 import { ScheduleSummaryService } from './schedule/schedule-summary/schedule-summary.service';
 import { AuthInterceptor } from './shared/auth.intercepter';
+import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-detail.component';
 
 
 @NgModule({
@@ -99,14 +99,14 @@ import { AuthInterceptor } from './shared/auth.intercepter';
     PhoneNumberComponent,
     LicenseComponent,
     TestComponent,
-    EmployeeTestComponent,
     ScheduleComponent,
     ValueInUseDirective,
     TestDetailComponent,
     TestSubcategoryComponent,
     TestOccurrenceComponent,
     CompanyScheduleComponent,
-    ScheduleSummaryComponent
+    ScheduleSummaryComponent,
+    ScheduleDetailComponent
   ],
   imports: [
     BrowserModule,

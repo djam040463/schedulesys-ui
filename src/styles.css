@@ -79,6 +79,10 @@ a, u {
 	font-style: italic;
 }
 
+#schedule_detail {
+	padding-left: 10px;
+}
+
 .ui-steps .ui-steps-item {
    width: 50%;
 }

@@ -9,6 +9,7 @@ import { ScheduleStatusService } from '../schedule-status.service';
 import { ScheduleService } from '../schedule.service';
 import { SchedulePostStatus } from '../schedulepoststatus';
 import { ScheduleStatus } from '../schedulestatus';
+import { ScheduleType } from '../scheduletype';
 import { Component, OnInit, Input, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MenuItem, ConfirmationService, Message, SelectItem, LazyLoadEvent } from 'primeng/primeng';
@@ -26,12 +27,14 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   schedule: Schedule;
   editing = false;
   displayDialog = false;
+  showScheduleDetail = false
   employees: Employee[] = [];
   scheduleStatuses: SelectItem[] = [];
   schedulePostStatuses: SelectItem[] = [];
   dialogMsgs: Message[] = [];
   minSelectableDate = new Date();
   defaultDate = new Date();
+  scheduleType = ScheduleType.COMPANY;
 
   @ViewChild(NgForm)
   scheduleForm: NgForm;
@@ -143,6 +146,18 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
         this.schedule = new Schedule();
         this.scheduleForm.resetForm();
       }
+  }
+
+  onRowDblClick() {
+    this.changeDisplayPreference();
+  }
+
+  onBackBtnClick() {
+    this.changeDisplayPreference();
+  }
+
+  private changeDisplayPreference() {
+    this.showScheduleDetail = !this.showScheduleDetail;
   }
 
   searchEmployees(event) {

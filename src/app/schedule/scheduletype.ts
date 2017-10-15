@@ -1,4 +1,4 @@
 export class ScheduleType {
-  static CAMPANY = 'COMPANY';
+  static COMPANY = 'COMPANY';
   static EMPLOYEE = 'EMPLOYEE';
 }
