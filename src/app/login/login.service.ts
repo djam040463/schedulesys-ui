@@ -74,7 +74,6 @@ export class LoginService {
 
 
   getAuthorizationHeader(): string {
-    console.log('Getting Auth header');
     const jwt = this.getJwt();
     return 'Bearer ' + jwt;
   }

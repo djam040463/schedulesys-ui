@@ -23,7 +23,7 @@ export class ScheduleService extends CommonService {
 
   update(schedule: Schedule): Observable<Schedule> {
     return this.http.put(this.resourceUrl, schedule)
-      .map(response => response as Schedule)
+      .map(response => new Schedule(response))
       .catch(this.handleError);
   }
 

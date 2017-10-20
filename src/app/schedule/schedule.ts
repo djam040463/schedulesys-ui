@@ -20,6 +20,17 @@ export class Schedule {
   paid: boolean;
   billed: boolean;
 
+
+  static toArray(jsons: any[]): Schedule[] {
+      const schedules: Schedule[] = [];
+      if (jsons != null) {
+          for (const json of jsons) {
+              schedules.push(new Schedule(json));
+          }
+      }
+      return schedules;
+  }
+
   constructor(json?: any) {
     if (json != null) {
       this.id = json.id;

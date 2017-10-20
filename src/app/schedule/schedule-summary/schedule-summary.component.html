@@ -18,7 +18,7 @@
     	<input #gf type="text" pInputText size="50" placeholder="Global Filter">
 	</div>
 	<p-dataTable #summary_table [value]="employeeScheduleSummaries"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,15,20]"
-		selectionMode="single"  [emptyMessage]="'No schedule to display'" (onRowDblclick)="onRowDblclick($event)" [globalFilter]="gf" #dt>
+		selectionMode="single"  [emptyMessage]="'No schedule to display'" [globalFilter]="gf" #dt>
 	    <p-header>Shifts summary</p-header>
 	    <p-column field="employee.firstName"  header="First Name"></p-column>
 	    <p-column field="employee.lastName" header="Last Name"></p-column>

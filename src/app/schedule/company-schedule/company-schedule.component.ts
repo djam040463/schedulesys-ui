@@ -32,7 +32,6 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   scheduleStatuses: SelectItem[] = [];
   schedulePostStatuses: SelectItem[] = [];
   dialogMsgs: Message[] = [];
-  minSelectableDate = new Date();
   defaultDate = new Date();
   scheduleType = ScheduleType.COMPANY;
 
@@ -99,7 +98,8 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
             // Update number of items so that the paginator displays the correct number of pages
             this.tableItemsCount++;
          } else {
-            this.refreshOnEdit(this.schedule, this.selectedSchedule);
+            this.refreshOnEdit(response, this.selectedSchedule);
+            this.schedule = new Schedule
          }
          this.displayDialog = false;
          this.displayMessage({severity: 'success', summary: '', detail: 'Schedule successfully saved'});
@@ -108,8 +108,6 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
            this.displayMessage({severity: 'error', summary: '', detail: error}, this.dialogMsgs);
         }
       );
-    console.log('Schedule : ' + JSON.stringify(this.schedule));
-    console.log('Hours : ' + new Date(this.schedule.shiftEndTime));
   }
 
    deleteSchedule () {
@@ -142,6 +140,10 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
       this.displayDialog = !this.displayDialog;
       if (editing) {
         this.schedule = _.cloneDeep(this.selectedSchedule);
+        this.schedule.shiftStartTime = new Date (this.selectedSchedule.shiftStartTime);
+        this.schedule.shiftEndTime = new Date(this.selectedSchedule.shiftEndTime);
+        // Auto completion operates on a single field. Combining 'firstName' and 'lastName' for better display
+        this.schedule.employee.firstName += ' ' + this.schedule.employee.lastName;
       } else {
         this.schedule = new Schedule();
         this.scheduleForm.resetForm();
@@ -174,8 +176,15 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   validateShiftDates(): boolean {
     if (this.schedule.shiftEndTime.getTime() <= this.schedule.shiftStartTime.getTime()) {
-        this.displayMessage({severity: 'error', summary: 'Invalid shift times', detail: 'Start Time must be before End Time'}
-        , this.dialogMsgs);
+      this.displayMessage(
+        {severity: 'error', summary: 'Invalid shift times', detail: 'Start Time must be before End Time'}, this.dialogMsgs);
+      return false;
+    }
+    let startTime = new Date(this.schedule.shiftStartTime);
+    startTime.setHours(0, 0, 0, 0);
+    if (startTime.getTime() !== this.schedule.scheduleDate.getTime()) {
+      this.displayMessage(
+        {severity: 'error', summary: 'Invalid start time', detail: 'Shift must start on schedule\'s date'}, this.dialogMsgs);
       return false;
     }
     return true;

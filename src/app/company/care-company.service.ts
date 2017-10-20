@@ -43,7 +43,8 @@ export class CareCompanyService extends CommonService {
   getSchedules(id: number, page: number, size: number): Observable<{'schedules': Schedule[], 'count': number}> {
     return this.http.get(this.resourceUrl + '/' + id + '/schedules' + this.formatRequestParams(page, size),
        {observe: 'response'})
-          .map(response => { return {'schedules': response.body as Schedule[], 'count': response.headers.get(this.countHeaderName)}
+          .map(response => {
+            return {'schedules': Schedule.toArray(response.body as Schedule[]), 'count': response.headers.get(this.countHeaderName)}
           }).catch(this.handleError);
   }
 

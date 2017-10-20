@@ -11,12 +11,12 @@
 			</p-column>
 			<p-column field="shiftStartTime" header="Start Time">
 				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] | date: 'shortTime'}}</span>
+					<span>{{row[col.field] | date: 'short'}}</span>
 				</ng-template>
 			</p-column>
 			<p-column field="shiftEndTime" header="End Time">
 				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] | date: 'shortTime'}}</span>
+					<span>{{row[col.field] | date: 'short'}}</span>
 				</ng-template>
 			</p-column>
 			 
@@ -32,9 +32,23 @@
 			
 			<p-column field="scheduleStatus.name" header="Status"></p-column>
 			<p-column field="schedulePostStatus.name" header="Post Status"></p-column>
-			<p-column field="timeSheetReceived" header="TimeSheet Received"></p-column>
-			<p-column field="paid" header="Paid"></p-column>
-			<p-column field="billed" header="Billed"></p-column>
+			
+			<p-column field="timeSheetReceived" header="TimeSheet Received">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="paid" header="Paid">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="billed" header="Billed">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+				</ng-template>
+			</p-column>
+			
 			<p-column field="comment" header="Comments"></p-column>
 			<p-column field="scheduleSysUser.username" header="Filled By"></p-column>
 		<p-footer>
@@ -74,22 +88,23 @@
 		   	 			</div>
 		   	 			<div class="ui-g-3">
    	 						<p-calendar [showIcon]="true" id="scheduleDate" name="scheduleDate" appendTo="body" [(ngModel)]="schedule.scheduleDate" 
-   	 							[minDate]="minSelectableDate" [readonlyInput]="true"></p-calendar>
+   	 							[readonlyInput]="true" required></p-calendar>
    	 					</div>
    	 					<!--  -->
    	 					<div class="ui-g-3">
    	 						<label>Start Time : </label>
    	 					</div>
    	 					<div class="ui-g-3">
-   	 						<p-calendar  id="shiftStartTime" [hourFormat]="12" name="shiftStartTime" [timeOnly]="true" 
-   	 							appendTo="body" [(ngModel)]="schedule.shiftStartTime" [stepMinute]="30" [readonlyInput]="true" [defaultDate]="defaultDate"></p-calendar>
+   	 						<p-calendar  id="shiftStartTime" name="shiftStartTime" [showTime]="true" 
+   	 							appendTo="body" [(ngModel)]="schedule.shiftStartTime" [stepMinute]="30" [readonlyInput]="true"
+   	 							[defaultDate]="defaultDate"></p-calendar>
    	 					</div>
    	 					<!--  -->
    	 					<div class="ui-g-3">
    	 						<label>End Time : </label>
    	 					</div>
    	 					<div class="ui-g-3">
-   	 						<p-calendar  id="shiftEndTime" [hourFormat]="12" name="shiftEndTime" [timeOnly]="true" 
+   	 						<p-calendar  id="shiftEndTime" name="shiftEndTime" [showTime]="true" 
    	 							appendTo="body" [(ngModel)]="schedule.shiftEndTime" [stepMinute]="30" [readonlyInput]="true" [defaultDate]="defaultDate"></p-calendar>
    	 					</div>
    	 					<!--  -->
@@ -113,14 +128,14 @@
    	 						<label>Hours Worked : </label>
    	 					</div>
    	 					<div class="ui-g-3" *ngIf="editing">
-   	 						<p-spinner [(ngModel)]="schedule.hoursWorked" [step]="0.5" name="hoursWorked"></p-spinner>
+   	 						<p-spinner [(ngModel)]="schedule.hoursWorked" [step]="0.5" [min]="0" name="hoursWorked"></p-spinner>
    	 					</div>
    	 					<!--  -->
    	 					<div class="ui-g-3" *ngIf="editing">
    	 						<label>Overtime : </label>
    	 					</div>
    	 					<div class="ui-g-3" *ngIf="editing">
-   	 						<p-spinner [(ngModel)]="schedule.overtime" [step]="0.5" name="overtime"></p-spinner>
+   	 						<p-spinner [(ngModel)]="schedule.overtime" [step]="0.5" [min]="0" name="overtime"></p-spinner>
    	 					</div>
    	 					<!--  -->
    	 					<div class="ui-g-4" *ngIf="editing">
