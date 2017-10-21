@@ -129,9 +129,9 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
     this.employeeForm.resetForm();
   }
 
-  getAll(page: number, size: number) {
+  getAll(page: number, size: number, params?: any, filters?: any) {
     this.tableDataLoading = true;
-    this.employeeService.getAll(page, size)
+    this.employeeService.getAll(page, size, filters)
         .subscribe(
             response => {
               this.employees = response.result;

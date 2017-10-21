@@ -24,6 +24,9 @@ export class MenuBar {
         label: 'Tests', icon: 'fa-book', routerLink: 'tests'
       },
       {
+        label: 'Service Requests', icon: 'fa-ambulance', routerLink: ''
+      },
+      {
         label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin
       }
     ];

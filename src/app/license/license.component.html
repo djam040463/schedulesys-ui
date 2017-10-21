@@ -23,7 +23,7 @@
 	<form (ngSubmit)="create()" #licenseForm="ngForm">
 		<div class="ui-g">
  			<div class="ui-g-12">
-   	 			<div class="ui-g-3">
+   	 			<div class="ui-g-4">
    	 				<label>Number : </label>
    	 			</div>
    	 			<div class="ui-g-7">
@@ -31,7 +31,7 @@
    	 			</div>
  			</div>
  			<div class="ui-g-12">
-   	 			<div class="ui-g-3">
+   	 			<div class="ui-g-4">
    	 				<label>Expiry Date : </label>
    	 			</div>
    	 			<div class="ui-g-7">
@@ -39,12 +39,21 @@
    	 			</div>
  			</div>
  			<div class="ui-g-12">
-   	 			<div class="ui-g-3">
+   	 			<div class="ui-g-4">
    	 				<label>Type : </label>
    	 			</div>
    	 			<div class="ui-g-7">
-   	 				<p-dropdown name="pLicenseType" [(ngModel)]="license.licenseType.name"  [options]="licenseTypes" placeholder="License Type"
+   	 				<p-dropdown name="pLicenseType" [(ngModel)]="license.licenseType.name"  [options]="licenseTypes" placeholder="Select Type"
    	 					 appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+   	 			</div>
+ 			</div>
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-4">
+   	 				<label>Employee Type : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<p-dropdown name="pEmployeeType" [(ngModel)]="employeeType" [options]="employeeTypes"
+   	 					 appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
    	 			</div>
  			</div>
 		</div>

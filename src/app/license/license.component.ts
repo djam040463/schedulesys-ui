@@ -1,3 +1,4 @@
+import { EmployeeTypeService } from '../employee-type/employee-type.service';
 import { Employee } from '../employee/employee';
 import { EmployeeService } from '../employee/employee.service';
 import { LicenseTypeService } from '../license-type/license-type.service';
@@ -22,13 +23,17 @@ export class LicenseComponent extends CommonComponent implements OnInit {
   selectedLicense: License;
   editing= false;
   displayDialog = false;
+  employeeType: string;
+  employeeTypeFiltered = 'care giver';
   licenseTypes: SelectItem[] = [];
+  employeeTypes: SelectItem[] = [];
   @ViewChild('licenseForm') licenseForm: NgForm;
   dialogMsgs: Message[] = [];
   @Output() entity_events = new EventEmitter();
 
   constructor(
     private employeeService: EmployeeService,
+    private employeeTypeService: EmployeeTypeService,
     private changeDetector: ChangeDetectorRef,
     private confirmationService: ConfirmationService,
     private licenseTypeService: LicenseTypeService,
@@ -37,6 +42,8 @@ export class LicenseComponent extends CommonComponent implements OnInit {
 
   ngOnInit() {
     this.license = new License();
+    this.getEmployeeTypes();
+    this.getLicenses();
   }
 
   getLicenses() {
@@ -55,8 +62,19 @@ export class LicenseComponent extends CommonComponent implements OnInit {
       });
   }
 
+  getEmployeeTypes() {
+    this.employeeTypeService.getAll()
+      .subscribe(response => {
+        response.filter((employeeType, i) => employeeType.name.toLowerCase() !== this.employeeTypeFiltered)
+          .forEach(employeeType => {
+            this.employeeTypes.push({label: employeeType.name, value: employeeType.name});
+          });
+      });
+  }
+
   create() {
-    this.license.employee = this.employee;
+    this.license.employee = _.cloneDeep(this.employee);
+    this.license.employee.employeeType.name = this.employeeType; // Update employee type when the license requires it
     this.licenseService.update(this.license)
       .subscribe(
         response => {
@@ -65,10 +83,11 @@ export class LicenseComponent extends CommonComponent implements OnInit {
             this.licenses = this.licenses.slice();
             this.changeDetector.markForCheck();
           } else {
-            this.refreshOnEdit(this.license, this.selectedLicense);
+            this.refreshOnEdit(response, this.selectedLicense);
           }
           this.displayDialog = false;
-          this.entity_events.emit({severity: 'success', summary: '', detail: 'License successfully saved'});
+          this.entity_events.emit({'employee': response.employee,
+             'message': {severity: 'success', summary: '', detail: 'License successfully saved'}});
         },
         error => {
           this.displayMessage({severity: 'error', summary: '', detail: error}, this.dialogMsgs);
@@ -105,6 +124,7 @@ export class LicenseComponent extends CommonComponent implements OnInit {
       this.licenseForm.resetForm();
       this.getLicenseTypes();
     }
+    this.employeeType = this.employee.employeeType.name;
   }
 
 }

@@ -15,7 +15,7 @@ export class TestOccurrenceService extends CommonService {
 
   update(testOccurrence: TestOccurrence): Observable<TestOccurrence> {
     return this.http.put(this.resourceUrl, testOccurrence)
-        .map(response => response as TestOccurrence)
+        .map(response => new TestOccurrence(response))
         .catch(this.handleError);
   }
 

@@ -73,10 +73,19 @@ export class CommonComponent {
   loadDataLazy(event: LazyLoadEvent, params?: any) {
     this.tableCurrentPage = (event.first / event.rows);
     this.tableCurrentRowCount = event.rows;
-    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount, params);
+    let filterParams = this.parseFilterParams(event);
+    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount, params, filterParams);
   }
 
-  protected getAll(page: number, size: number, params?: any) {}
+  protected getAll(page: number, size: number, params?: any, filters?: any) {}
+
+  parseFilterParams(event: LazyLoadEvent): string {
+    let params = '';
+    for (let key in event.filters) {
+      params += '&' + key + '=' + event.filters[key].value;
+    }
+    return params;
+  }
 
   refreshOnEdit(source: any, destination: any) {
     for (const key in source) {

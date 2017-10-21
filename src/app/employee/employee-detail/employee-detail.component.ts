@@ -35,6 +35,8 @@ export class EmployeeDetailComponent extends CommonComponent implements OnInit {
   @ViewChild(TestOccurrenceComponent)
   testOccurrenceComponent: TestOccurrenceComponent;
 
+  showLicenceTab: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -49,6 +51,8 @@ export class EmployeeDetailComponent extends CommonComponent implements OnInit {
           .subscribe(
             result => {
               this.employee = result;
+              this.showLicenceTab = this.employee.employeeType.name.toLowerCase() === 'nurse' ||
+                    this.employee.employeeType.name.toLowerCase() === 'aide';
           });
       });
   }
@@ -61,11 +65,15 @@ export class EmployeeDetailComponent extends CommonComponent implements OnInit {
     } else if (e.index === 1 && this.testOccurrenceComponent.testOccurrences.length === 0) {
       this.testOccurrenceComponent.getTests();
     }
-    console.log('Tab index : ' + e.index);
   }
 
-  onEntityEvent(e: Message) {
-    this.displayMessage(e);
+  onEntityEvent(e: any) {
+    if (e.employee === undefined) {
+      this.displayMessage(e);
+    } else {
+      this.employee = _.cloneDeep(e.employee);
+      this.displayMessage(e.message);
+    }
   }
 
   onBackClick(): void {

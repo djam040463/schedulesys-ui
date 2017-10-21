@@ -16,10 +16,10 @@ export class EmployeeService extends CommonService {
 
   constructor(private http: HttpClient) { super(); }
 
-  getAll(page: number, size: number): Observable<{'result': Employee[], 'count': number}> {
-    return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), {observe: 'response'})
+  getAll(page: number, size: number, filters?: any): Observable<{'result': Employee[], 'count': number}> {
+    return this.http.get(this.resourceUrl + this.formatParams(page, size, filters), {observe: 'response'})
         .map(response => {
-          return {'result': response.body as Employee[], 'count': +response.headers.get(this.countHeaderName) }
+          return {'result': Employee.toArray(response.body as Employee[]), 'count': +response.headers.get(this.countHeaderName) }
         }).catch(this.handleError);
   }
 
@@ -27,7 +27,7 @@ export class EmployeeService extends CommonService {
     return this.http.post(this.resourceUrl, employee)
        .map(
           response => {
-            return {'result': response as Employee, 'message': 'Employee successfully created' }
+            return {'result': new Employee(response), 'message': 'Employee successfully created' }
        }).catch(this.handleError);
   }
 
@@ -35,7 +35,7 @@ export class EmployeeService extends CommonService {
     return this.http.put(this.resourceUrl, employee)
         .map(
           response => {
-            return {'result': response as Employee, 'message': 'Employee successfully updated' }
+            return {'result': new Employee(response), 'message': 'Employee successfully updated' }
        }).catch(this.handleError);
   }
 
@@ -47,7 +47,7 @@ export class EmployeeService extends CommonService {
 
   getOne(id: number): Observable<Employee> {
     return this.http.get(this.resourceUrl + '/' + id)
-        .map(response => response as Employee)
+        .map(response => new Employee(response))
         .catch(this.handleError);
   }
 
@@ -59,19 +59,19 @@ export class EmployeeService extends CommonService {
 
   getLicenses(id: number): Observable<License[]> {
      return this.http.get(this.resourceUrl + '/' + id + '/licenses')
-      .map(response => response as License[])
+      .map(response => License.toArray(response as License[]))
       .catch(this.handleError);
   }
 
-   getTests(id: number): Observable<TestOccurrence[]> {
+  getTests(id: number): Observable<TestOccurrence[]> {
      return this.http.get(this.resourceUrl + '/' + id + '/tests')
-      .map(response => response as TestOccurrence[])
+      .map(response => TestOccurrence.toArray(response as TestOccurrence[]))
       .catch(this.handleError);
   }
 
   search(query: string): Observable<Employee[]> {
     return this.http.get(this.resourceUrl + '/search' + this.formatSearchRequestParam(query))
-        .map(response => response as Employee[])
+        .map(response => Employee.toArray(response as Employee[]))
         .catch(this.handleError);
   }
 

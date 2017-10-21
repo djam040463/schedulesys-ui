@@ -14,7 +14,7 @@ export class LicenseService extends CommonService {
 
   update(license: License): Observable<License> {
     return this.http.put(this.resourceUrl, license)
-      .map(response => response as License)
+      .map(response => new License(response))
       .catch(this.handleError);
   }
 

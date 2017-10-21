@@ -51,7 +51,7 @@
     			<p-accordionTab header="Phone Numbers">
     				<app-phone-number [employee]="employee" (entity_events)="onEntityEvent($event)"></app-phone-number>
     			</p-accordionTab>
-			    <p-accordionTab header="Licenses" *ngIf="employee.employeeType.name.toLowerCase() === 'nurse'">
+			    <p-accordionTab header="Licenses" *ngIf="showLicenceTab">
 			    	<app-license [employee]="employee" (entity_events)="onEntityEvent($event)"></app-license>
 			    </p-accordionTab>
 			    <p-accordionTab header="Tests">

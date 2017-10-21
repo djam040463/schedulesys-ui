@@ -6,12 +6,12 @@
     <p-column field="testSubcategory.name" header="Sub-category Name"></p-column>
     <p-column field="completionDate" header="Completion Date">
 		<ng-template let-col let-row="rowData" pTemplate="body">
-        	<span>{{row[col.field] | date: 'shortDate'}}</span>
+        	<span>{{row[col.field] === undefined ? 'NONE' : row[col.field] | date: 'shortDate'}}</span>
        	</ng-template>
 	</p-column>
 	<p-column field="expirationDate" header="Expiration Date">
 		<ng-template let-col let-row="rowData" pTemplate="body">
-        	<span>{{row[col.field] | date: 'shortDate'}}</span>
+        	<span>{{row[col.field] === undefined ? 'NONE' : row[col.field] | date: 'shortDate'}}</span>
        	</ng-template>
 	</p-column>
      <p-column field="applicable" header="Status">
@@ -39,7 +39,7 @@
    	 			</div>
    	 			<div class="ui-g-7">
    	 				<p-autoComplete [(ngModel)]="testOccurrence.test" [suggestions]="tests" (completeMethod)="searchTests($event)" field="name"
-   	 					 id="testName" name="testName" (onSelect)="onTestSelect()" required></p-autoComplete>
+   	 					 id="testName" name="testName" (onSelect)="onTestSelect()" appendTo="body" required></p-autoComplete>
    	 			</div>
    	 			<div class="ui-g-5" *ngIf="testSubcategories.length != 0">
    	 				<label>Category : </label>

@@ -24,6 +24,10 @@ export abstract class CommonService {
     return '?page=' + page + '&size=' + size;
   }
 
+  formatParams(page: number, size: number, filters: any) {
+    return this.formatRequestParams(page, size) + filters;
+  }
+
   formatSearchRequestParam(query: string): string {
     return '?query=' + query;
   }

@@ -14,6 +14,8 @@ export class ScheduleSummaryService extends CommonService {
   constructor(private http: HttpClient) { super(); }
 
   getSchedulesSummary(scheduleDate: Date): Observable<ScheduleSummary[]> {
+    console.log('ScheduleDate : ' + scheduleDate);
+    scheduleDate.setHours(0, 0, 0, 0);
     return this.http.get(this.resourceUrl + '?scheduleDate=' + scheduleDate)
       .map(response => response as ScheduleSummary[])
       .catch(this.handleError);
