@@ -73,6 +73,9 @@ import { ScheduleSummaryComponent } from './schedule/schedule-summary/schedule-s
 import { ScheduleSummaryService } from './schedule/schedule-summary/schedule-summary.service';
 import { AuthInterceptor } from './shared/auth.intercepter';
 import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-detail.component';
+import { ServiceRequestComponent } from './service-request/service-request.component';
+import { ServiceRequestService } from './service-request/service-request.service';
+import { RequestDetailComponent } from './service-request/request-detail/request-detail.component';
 
 
 @NgModule({
@@ -106,7 +109,9 @@ import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-det
     TestOccurrenceComponent,
     CompanyScheduleComponent,
     ScheduleSummaryComponent,
-    ScheduleDetailComponent
+    ScheduleDetailComponent,
+    ServiceRequestComponent,
+    RequestDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -166,6 +171,7 @@ import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-det
     ScheduleStatusService,
     SchedulePostStatusService,
     ScheduleSummaryService,
+    ServiceRequestService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

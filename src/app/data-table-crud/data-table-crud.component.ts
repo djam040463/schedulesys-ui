@@ -9,9 +9,9 @@ export class DataTableCrudComponent implements OnInit {
 
   @Input('disabled') disabled = true;
   @Output('new') newRecord: EventEmitter<any> = new EventEmitter();
-  @Output('edit') editRecord: EventEmitter<any> = new EventEmitter();
+  @Output('edit') edit = new EventEmitter();
   @Output('delete') deleteRecord: EventEmitter<any> = new EventEmitter();
-  @Output('back') backNavigation: EventEmitter<any> = new EventEmitter();
+  @Output('back') back = new EventEmitter();
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class DataTableCrudComponent implements OnInit {
   }
 
   onEditRecord() {
-    this.editRecord.emit();
+    this.edit.emit();
   }
 
   onDeleteRecord() {
@@ -31,7 +31,7 @@ export class DataTableCrudComponent implements OnInit {
   }
 
   onBackNavigation() {
-    this.backNavigation.emit();
+    this.back.emit();
   }
 
 }
