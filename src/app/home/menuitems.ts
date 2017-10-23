@@ -27,7 +27,7 @@ export class MenuBar {
         label: 'Service Requests', icon: 'fa-ambulance', routerLink: 'service-requests'
       },
       {
-        label: 'Insurance Companies', icon: 'fa-info', routerLink: ''
+        label: 'Insurance Companies', icon: 'fa-info', routerLink: 'insurance-companies'
       },
       {
         label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin

@@ -153,6 +153,10 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
           });
   }
 
+  log(test: any) {
+    console.log(JSON.stringify(test));
+  }
+
   navigateTo(destionation: string, navigationExtras: any) {
     this.router.navigate([destionation,  navigationExtras] , {relativeTo: this.route})
   }

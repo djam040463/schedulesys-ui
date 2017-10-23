@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { EmployeeDetailComponent } from './employee/employee-detail/employee-detail.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { HomeComponent } from './home/home.component';
+import { InsuranceCompanyComponent } from './insurance-company/insurance-company.component';
 import { AuthGuard } from './login/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
@@ -33,7 +34,8 @@ const appRoutes: Routes = [
       { path: 'tests', component: TestComponent },
       { path: 'tests/:testId', component: TestDetailComponent },
       { path: 'schedules', component: ScheduleComponent },
-      { path: 'service-requests', component: ServiceRequestComponent }
+      { path: 'service-requests', component: ServiceRequestComponent },
+      {path: 'insurance-companies', component: InsuranceCompanyComponent }
     ]
   },
   { path: 'pwd-reset-request', component: PasswordResetRequestComponent },

@@ -16,7 +16,7 @@ export class CareCompanyService extends CommonService {
   getAll(page: number, size: number): Observable<{'companies': CareCompany[], 'count': number}> {
     return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), {observe: 'response'})
           .map(response =>  {
-            return {'companies': response.body as CareCompany[], 'count': response.headers.get(this.countHeaderName)}
+            return {'companies': CareCompany.toArray(response.body as CareCompany[]), 'count': response.headers.get(this.countHeaderName)}
             })
           .catch(this.handleError);
   }

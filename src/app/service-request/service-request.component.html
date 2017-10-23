@@ -39,5 +39,11 @@
 	<div [hidden]="!showRequestDetail">
 		<app-request-detail [serviceRequest]="selectedServiceRequest" (back)="onBackBtnClick()"></app-request-detail>
 	</div>
-
+	<div class="ui divider"></div>
+	<div class="ui-g">
+		<div class="ui-g-11"></div>
+		<div class="ui-g-1">
+			<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="gotToHome()"></button>
+		</div>
+	</div>
 </p-panel>

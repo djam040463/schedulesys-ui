@@ -1,3 +1,4 @@
+import { InsuranceCompany } from '../insurance-company/insurancecompany';
 import { CareCompanyType } from './care-company-type';
 export class CareCompany {
   id: number;
@@ -6,6 +7,7 @@ export class CareCompany {
   phoneNumber: string;
   fax: string;
   careCompanyType: CareCompanyType = new CareCompanyType();
+  insuranceCompany: InsuranceCompany = new InsuranceCompany();
 
   static toArray(jsons: any[]): CareCompany[] {
         const careCompanies: CareCompany[] = [];
@@ -24,7 +26,8 @@ export class CareCompany {
       this.address = json.address;
       this.phoneNumber = json.phoneNumber;
       this.fax = json.fax;
-      this.careCompanyType = json.careCompanyType;
+      this.careCompanyType = new CareCompanyType(json.careCompanyType);
+      this.insuranceCompany = new InsuranceCompany(json.insuranceCompany);
     }
   }
 }

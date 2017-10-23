@@ -2,6 +2,7 @@ import { CommonComponent } from '../shared/common';
 import { ServiceRequestService } from './service-request.service';
 import { ServiceRequest } from './servicerequest';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-service-request',
@@ -15,7 +16,8 @@ export class ServiceRequestComponent extends CommonComponent implements OnInit {
   showRequestDetail = false;
 
   constructor(
-    private serviceRequestService: ServiceRequestService
+    private serviceRequestService: ServiceRequestService,
+    private router: Router
   ) { super(null); }
 
   ngOnInit() {
@@ -37,6 +39,10 @@ export class ServiceRequestComponent extends CommonComponent implements OnInit {
 
   private changeDisplayPreference() {
     this.showRequestDetail = !this.showRequestDetail;
+  }
+  
+  gotToHome() {
+    this.router.navigate(['../']);
   }
 
 }

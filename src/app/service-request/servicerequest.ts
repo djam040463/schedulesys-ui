@@ -25,13 +25,13 @@ export class ServiceRequest {
   comment: string;
 
    static toArray(jsons: any[]): ServiceRequest[] {
-      const schedules: ServiceRequest[] = [];
+      const serviceRequests: ServiceRequest[] = [];
       if (jsons != null) {
           for (const json of jsons) {
-              schedules.push(new ServiceRequest(json));
+              serviceRequests.push(new ServiceRequest(json));
           }
       }
-      return schedules;
+      return serviceRequests;
   }
 
   constructor(json?: any) {
