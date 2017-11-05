@@ -8,7 +8,7 @@
 			<p-messages [(value)]="msgs"></p-messages>
 			<p-dataTable [value]="careCompanies" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedCompany" [contextMenu]="cm" dataKey="name" [totalRecords]="tableItemsCount"
-				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No care companies found'">
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" (onRowSelect)="onRowSelect()" [loading]="tableDataLoading" [emptyMessage]="'No care companies found'">
 			    <p-header>Care Companies</p-header>
 			    <p-column field="name" header="Name"></p-column>
 			    <p-column field="address" header="Address"></p-column>
@@ -33,7 +33,7 @@
 		</div>
 		<div class="ui divider"></div>
 		<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteCareCompany()" 
-			[disabled]="selectedCompany === undefined" (back)="gotToHome()">
+			[disabled]="editAndDeleteDisabled" (back)="gotToHome()">
 		</data-table-crud>
 	</div>
 	<p-dialog [(visible)]="dialogDisplayed" width="450">
@@ -102,8 +102,23 @@
 							<label>Company Type : </label>
 						</div>
 						<div class="ui-g-6">
-							<p-dropdown name="role" [options]="careCompanyTypes" [(ngModel)]="careCompany.careCompanyType.name" placeholder="Company Type"
+							<p-dropdown name="companyType" [options]="careCompanyTypes" [(ngModel)]="careCompany.careCompanyType.name" placeholder="Company Type"
 								appendTo="body" [style]="{'width':'100%'}" required>
+							</p-dropdown>
+						</div>
+					</div>
+					
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.careCompanyType">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.careCompanyType}}
+						</div>
+						<div class="ui-g-4">
+							<label>Insurance : </label>
+						</div>
+						<div class="ui-g-6">
+							<p-dropdown name="insurance" [options]="insuranceCompanies" [(ngModel)]="careCompany.insuranceCompany.name" placeholder="Insurance"
+								appendTo="body" [style]="{'width':'100%'}">
 							</p-dropdown>
 						</div>
 					</div>

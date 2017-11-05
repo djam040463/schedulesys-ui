@@ -117,12 +117,13 @@
 		   	 				<p-dropdown name="position" [(ngModel)]="employee.position.name" [options]="positions" placeholder="Position" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
 		   	 			</div>
 		   	 		</div>
-		   	 		
-		   	 		<div class="ui-g-2">
-		   	 			<label> Comment : </label>
-		   	 		</div>
-		   	 		<div class="ui-g-10">
-		   	 			<textarea cols="78" name="comment" pInputTextarea [(ngModel)]="employee.comment"></textarea>
+		   	 		<div class="ui-g-12">
+			   	 		<div class="ui-g-2">
+			   	 			<label> Comment : </label>
+			   	 		</div>
+			   	 		<div class="ui-g-10">
+			   	 			<textarea cols="78" name="comment" pInputTextarea [(ngModel)]="employee.comment"></textarea>
+			   	 		</div>
 		   	 		</div>
 		   	 	</div>
 		   	 	<div class="ui divider"></div>

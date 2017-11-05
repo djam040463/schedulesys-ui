@@ -29,6 +29,7 @@ export class CareCompanyService extends CommonService {
   }
 
   deleteOne(id: number): Observable<string> {
+    console.log(`Deleting care company with ID :  ${id}: `);
     return this.http.delete(this.resourceUrl + '/' + id)
           .map(response => {return 'Care Company successfully deleted'})
           .catch(this.handleError);

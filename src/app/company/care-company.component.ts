@@ -1,3 +1,5 @@
+import { InsuranceCompanyService } from '../insurance-company/insurance-company.service';
+import { InsuranceCompany } from '../insurance-company/insurancecompany';
 import { ScheduleType } from '../schedule/scheduletype';
 import { CommonComponent } from '../shared/common';
 import { CareCompany } from './care-company';
@@ -25,10 +27,14 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
   careCompany: CareCompany;
   careCompanyTypes: SelectItem[] = [];
 
+  insuranceCompanies: SelectItem[] = [];
+  editAndDeleteDisabled = true;
+
   constructor(
       public careCompanyService: CareCompanyService,
       private careCompanyTypeService: CareCompanyTypeService,
       private confirmationService: ConfirmationService,
+      private insuranceCompanyService: InsuranceCompanyService,
       private router: Router,
       private route: ActivatedRoute,
       private changeDetector: ChangeDetectorRef) {
@@ -39,6 +45,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
     this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
     this.buildContextMenuItems();
     this.getAllCareCompanyTypes();
+    this.getInsuranceCompanies();
     this.careCompany = new CareCompany();
     this.route.params
        .subscribe(params => {
@@ -74,7 +81,10 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
   create() {
     this.careCompany.phoneNumber = this.unmaskNumber(this.careCompany.phoneNumber);
     this.careCompany.fax = this.unmaskNumber(this.careCompany.fax);
-     this.careCompanyService.update(this.careCompany)
+    if (this.careCompany.insuranceCompany.name === 'None') {
+      this.careCompany.insuranceCompany.name = null;
+    }
+    this.careCompanyService.update(this.careCompany)
        .subscribe(response => {
          this.displayMessage({severity: 'success', summary: '', detail: response.message});
          if (!this.editing) {
@@ -102,7 +112,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
               this.displayMessage(
                 { severity: 'success', summary: '', detail: 'User successfully deleted'});
                 this.careCompanies = this.careCompanies.filter((val, i) =>  val.id !== this.selectedCompany.id); // Refreshes dataTable
-                this.selectedCompany = undefined; // Disables 'Edit' and 'Delete' buttons
+                this.editAndDeleteDisabled = true; // Disables 'Edit' and 'Delete' buttons
                 // Update number of items so that the paginator displays the correct number of pages
                 this.tableItemsCount--;
                 if (this.careCompanies.length === 0) {
@@ -121,14 +131,19 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
   showDialog(editing: boolean) {
      this.dialogDisplayed = true;
      this.editing = editing;
-    // When editing, populate form with selected User
-     this.careCompany = editing ? _.cloneDeep(this.selectedCompany) : new CareCompany();
+    if (editing) {
+      this.careCompany = _.cloneDeep(this.selectedCompany);
+    } else {
+      this.careCompany = new CareCompany();
+    }
   }
 
    hideDialog() {
     this.dialogDisplayed = false;
     if (this.editing) {
       this.refreshOnEdit(this.careCompany, this.selectedCompany) // Refresh dataTable after company update
+      this.selectedCompany.insuranceCompany.name = this.careCompany.insuranceCompany.name === null ?
+        'None' : this.careCompany.insuranceCompany.name;
     }
     this.companyForm.resetForm();
   }
@@ -153,8 +168,18 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
           });
   }
 
-  log(test: any) {
-    console.log(JSON.stringify(test));
+  getInsuranceCompanies() {
+    return this.insuranceCompanyService.getAll()
+      .subscribe(response => {
+        this.insuranceCompanies.push({label: 'None', value: 'None'});
+        response.forEach(insuranceCompany => {
+          this.insuranceCompanies.push({label: insuranceCompany.name, value: insuranceCompany.name});
+        });
+      });
+  }
+
+  onRowSelect() {
+    this.editAndDeleteDisabled = false;
   }
 
   navigateTo(destionation: string, navigationExtras: any) {

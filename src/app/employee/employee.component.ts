@@ -1,4 +1,7 @@
+import { EmployeeType } from '../employee-type/employee-type';
 import { EmployeeTypeService } from '../employee-type/employee-type.service';
+import { InsuranceCompanyService } from '../insurance-company/insurance-company.service';
+import { InsuranceCompany } from '../insurance-company/insurancecompany';
 import { PositionService } from '../position/position.service';
 import { CommonComponent } from '../shared/common';
 import { Employee } from './employee';
@@ -29,7 +32,6 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
   positions: SelectItem[] = [];
   employeeTypes: SelectItem[] = [];
   detailView = false;
- // saveBtnDisabled = true;
 
   constructor(
     private employeeService: EmployeeService,
@@ -44,8 +46,8 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
 
   ngOnInit() {
     this.employee = new Employee();
-    this.getAllEmployeeTypes();
-    this.getAllPositions();
+    this.getEmployeeTypes();
+    this.getPositions();
     this.buildContextMenuItems();
     this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
   }
@@ -141,7 +143,7 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
         );
   }
 
-  getAllEmployeeTypes() {
+  getEmployeeTypes() {
     this.employeeTypeService.getAll()
         .subscribe(
           response => {
@@ -151,7 +153,7 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
           })
   }
 
-  getAllPositions() {
+  getPositions() {
     this.positionService.getAll()
          .subscribe(
             response => {

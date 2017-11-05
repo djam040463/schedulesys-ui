@@ -93,6 +93,7 @@ export class CommonComponent {
         this.refreshOnEdit(source[key], destination[key])
       } else {
         destination[key] = source[key];
+        console.log('key :' + key + ' Source[key] ' + source[key]);
       }
     }
   }

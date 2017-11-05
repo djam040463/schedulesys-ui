@@ -16,6 +16,8 @@ export class InsuranceCompany {
     if (json != null) {
       this.id = json.id;
       this.name = json.name;
+    } else {
+       this.name = 'None';
     }
   }
 }
