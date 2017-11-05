@@ -4,8 +4,11 @@
 		<div class="content">
 			Schedule Details
 			<div class="sub header" *ngIf="scheduleType == companySchedule">
-				Company : {{schedule.careCompany.name + ', type : ' + schedule.careCompany.careCompanyType.name}}</div>
-			<div class="sub header" *ngIf="scheduleType == employeeSchedule"></div>
+				Company : {{schedule.careCompany.name + ', type : ' + schedule.careCompany.careCompanyType.name}}
+			</div>
+			<div class="sub header" *ngIf="scheduleType == employeeSchedule">
+				Employee : {{schedule.employee.firstName + ' ' + schedule.employee.lastName +', type : ' + schedule.employee.employeeType.name}}
+			</div>
 		</div>
 	</h2>
 	<div class="ui-g">
@@ -15,8 +18,8 @@
 				<div class="content">Filled by : {{schedule.scheduleSysUser.username}}</div>
 			</div>
 			<div class="item">
-				<i class="doctor icon"></i>
-				<div class="content">Employee : {{schedule.employee.firstName + ' ' + schedule.employee.lastName}}</div>
+				<i class="hospital icon"></i>
+				<div class="content">Company : {{schedule.careCompany.name}}</div>
 			</div>
 			<div class="item">
 				<i class="calendar icon"></i>

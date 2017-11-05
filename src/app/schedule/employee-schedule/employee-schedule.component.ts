@@ -33,6 +33,14 @@ export class EmployeeScheduleComponent extends CommonComponent implements OnInit
   }
 
   onRowDblClick() {
-    
+    this.changeDisplayPreference();
+  }
+
+  onBackBtnClick() {
+    this.changeDisplayPreference();
+  }
+
+  private changeDisplayPreference() {
+    this.showScheduleDetail = !this.showScheduleDetail;
   }
 }
