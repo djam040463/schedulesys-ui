@@ -78,6 +78,7 @@ import { ServiceRequestService } from './service-request/service-request.service
 import { RequestDetailComponent } from './service-request/request-detail/request-detail.component';
 import { InsuranceCompanyComponent } from './insurance-company/insurance-company.component';
 import { InsuranceCompanyService } from './insurance-company/insurance-company.service';
+import { EmployeeScheduleComponent } from './schedule/employee-schedule/employee-schedule.component';
 
 
 @NgModule({
@@ -114,7 +115,8 @@ import { InsuranceCompanyService } from './insurance-company/insurance-company.s
     ScheduleDetailComponent,
     ServiceRequestComponent,
     RequestDetailComponent,
-    InsuranceCompanyComponent
+    InsuranceCompanyComponent,
+    EmployeeScheduleComponent
   ],
   imports: [
     BrowserModule,

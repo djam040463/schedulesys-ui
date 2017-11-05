@@ -3,6 +3,7 @@ import { License } from '../license/license';
 import { CommonService } from '../shared/commonservice';
 import { Employee } from './employee';
 import { PhoneNumber } from '../phone-number/phone-number';
+import { Schedule } from '../schedule/schedule';
 import { TestOccurrence } from '../test-occurrence/testoccurrence';
 import { Test } from '../test/test';
 import { Injectable } from '@angular/core';
@@ -49,6 +50,12 @@ export class EmployeeService extends CommonService {
     return this.http.get(this.resourceUrl + '/' + id)
         .map(response => new Employee(response))
         .catch(this.handleError);
+  }
+
+  getSchedules(id: number): Observable<Schedule[]> {
+    return this.http.get(this.resourceUrl + '/' + id + '/schedules')
+      .map(response => Schedule.toArray(response as Schedule[]))
+      .catch(this.handleError);
   }
 
   getPhoneNumbers(id: number): Observable<PhoneNumber[]> {

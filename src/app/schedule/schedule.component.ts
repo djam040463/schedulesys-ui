@@ -37,6 +37,7 @@ export class ScheduleComponent extends CommonComponent implements OnInit {
             this.getCareCompany(params['id']);
           } else {
             // Get schedule for employee
+            this.getEmployee(params['id']);
           }
         } else {
           // Get schedule for all companies;
@@ -47,6 +48,11 @@ export class ScheduleComponent extends CommonComponent implements OnInit {
   getCareCompany(id: string) {
     this.careCompanyService.getOne(id)
     .subscribe(response => {this.careCompany = response});
+  }
+
+  getEmployee(id: number) {
+    this.employeeService.getOne(id)
+    .subscribe(response => {this.employee = response});
   }
 
 }

@@ -10,6 +10,7 @@ import { EmployeeService } from './employee.service';
 import { PhoneNumber } from '../phone-number/phone-number';
 import { PhoneNumberService } from '../phone-number/phone-number.service';
 import { PhoneNumberType } from '../phone-number/phone-number.type';
+import { ScheduleType } from '../schedule/scheduletype';
 import { Component, OnInit, ViewChild, AfterViewChecked, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -111,8 +112,8 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
             { label: 'View'     , icon: 'fa-eye'     , command: (event) => {this.navigateTo('../employees')}},
             { label: 'Edit'     , icon: 'fa-edit'    , command: (event) => {this.showDialog(true)}},
             { label: 'Delete'   , icon: 'fa-close'   , command: (event) => {this.deleteOne()}},
-            { label: 'Schedules', icon: 'fa-clock-o' , command: (event) => {this.navigateTo('../schedules')}},
-            { label: 'Licenses' , icon: 'fa-book'    , command: (event) => {this.navigateTo('../licenses')} }
+             { label: 'Schedules', icon: 'fa-calendar'      , command: (event) => { this.navigateTo('../schedules',
+            { id: this.selectedEmployee.id, scheduleType: ScheduleType.EMPLOYEE} )}}
         ];
   }
 
@@ -168,8 +169,12 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
     this.router.navigate(['../']);
   }
 
-  navigateTo(destionation: string) {
-    this.router.navigate([destionation, this.selectedEmployee.id], {relativeTo: this.route})
+  navigateTo(destionation: string, navigationExtras?: any) {
+    if (navigationExtras === undefined) {
+      this.router.navigate([destionation, this.selectedEmployee.id] , {relativeTo: this.route});
+    } else {
+      this.router.navigate([destionation,  navigationExtras] , {relativeTo: this.route});
+    }
   }
 
 
