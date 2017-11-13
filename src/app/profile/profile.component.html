@@ -4,32 +4,12 @@
 		</div>
 		<div class="ui divider"></div>
 			<div class="ui-g">
-		
-				<div class="ui card">
-					<div class="image">
-				    	<img src="../../assets/images/users.svg">
-					</div>
-					<div class="content">
-				    	<a class="header">{{user.firstName + ' ' + user.lastName}}</a>
-					    <div class="meta">
-					      <span class="date">{{user.emailAddress}}</span>
-					    </div>
-				  	</div>
-					<div class="extra content ui-g">
-					    <div class="ui-g-6">
-					      <label>Role : {{user.userRole.name}}</label>
-					    </div>
-					    <div class="ui-g-6">
-					    	<label>Username : {{user.username}}</label>
-					    </div>
-				 	</div>
-				</div>
 			
-			<div class="ui-g-7" *ngIf="display">
+			<div class="ui-g-7" *ngIf="userProfile != undefined">
 				<p-messages [(value)]="msgs"></p-messages>
 				<p-panel header="Profile Edit">
 					<form (ngSubmit)="updateProfile()" #profileForm="ngForm">
-						<div *ngIf="userProfile != undefined">
+						<div>
 							<div>
 								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.username">
 									<i class="fa fa-close"></i>
@@ -84,15 +64,18 @@
 						</span>
 						<div class="btns-panel">
 							<button pButton label="Save" icon="fa fa-floppy-o" type="submit"></button>
-							<button pButton label="Cancel" icon="fa fa-close" (click)="onEditCancel()"></button>
+							<button pButton label="Cancel" icon="fa fa-close" (click)="onCancel()"></button>
 						</div>
 					</form>
 				</p-panel>
 			</div>
 		</div>
 		<div class="ui divider"></div>
-		<div class="btns-panel">
-			<button pButton label="Edit" icon="fa fa-edit" (click)="onEdit()"></button>
+		<div class="btns-panel ui-g">
+			<div class="ui-g-11"></div>
+			<div class="ui-g-1">
+				<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBack()"></button>
+			</div>
 		</div>
 	
 </p-panel>

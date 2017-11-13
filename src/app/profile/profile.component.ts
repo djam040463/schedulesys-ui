@@ -1,5 +1,6 @@
 import { LoginService } from '../login/login.service';
 import { CommonComponent } from '../shared/common';
+import { EventBusService } from '../shared/event-bus.service';
 import { Validation } from '../user/validation';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './userprofile';
@@ -25,6 +26,7 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
   constructor(
     private profileService: ProfileService,
     private loginService: LoginService,
+    private eventBusService: EventBusService,
     private router: Router,
     private route: ActivatedRoute) {
       super(new Validation());
@@ -32,7 +34,7 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
 
   ngOnInit() {
     this.profileService.getUserProfile()
-      .subscribe(response => {this.user = response});
+      .subscribe(response => {this.user = response; this.userProfile = _.cloneDeep(response); });
   }
 
   ngAfterViewChecked(): void {
@@ -41,13 +43,12 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
     }
   }
 
-  onEdit(): void {
-    this.userProfile = _.cloneDeep(this.user);
-    this.setDisplay(true);
+  onBack(): void {
+    this.gotToHome();
   }
 
-  onEditCancel(): void {
-    this.setDisplay(false);
+  onCancel(): void {
+    this.gotToHome();
   }
 
   updateProfile(): void {
@@ -61,16 +62,17 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
               this.loginService.logout(); // Users are logged out when username or email address updated
               this.router.navigate(['../../'], {relativeTo: this.route});
           }
-          this.user = _.cloneDeep(this.userProfile); // Update the profile UI with the new values
-          setTimeout(() => {this.setDisplay(false); this.msgs.pop()}, 3000);
+          // TODO BroadCast here
+          this.eventBusService.broadcastUserUpdate(this.userProfile);
+          setTimeout(() => {this.msgs.pop()}, 3000);
         },
         error => {
           this.displayMessage({severity: 'error', summary: '', detail: error});
         });
   }
 
-  private setDisplay(value: boolean): void {
-    this.display = value;
+ gotToHome() {
+    this.router.navigate(['../']);
   }
 
 }

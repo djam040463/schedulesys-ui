@@ -158,9 +158,9 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
           });
   }
 
-  getAll(page: number, size: number) {
+  getAll(page: number, size: number, params?: any, filters?: any) {
      this.tableDataLoading = true;
-     this.careCompanyService.getAll(page, size)
+     this.careCompanyService.getAll(page, size, filters)
           .subscribe(response => {
               this.careCompanies = response.companies;
               this.tableItemsCount = response.count;

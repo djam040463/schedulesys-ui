@@ -13,8 +13,8 @@ export class CareCompanyService extends CommonService {
 
   constructor(private http: HttpClient) {super(); }
 
-  getAll(page: number, size: number): Observable<{'companies': CareCompany[], 'count': number}> {
-    return this.http.get(this.resourceUrl + this.formatRequestParams(page, size), {observe: 'response'})
+  getAll(page: number, size: number, filters?: any): Observable<{'companies': CareCompany[], 'count': number}> {
+    return this.http.get(this.resourceUrl + this.formatParams(page, size, filters), {observe: 'response'})
           .map(response =>  {
             return {'companies': CareCompany.toArray(response.body as CareCompany[]), 'count': response.headers.get(this.countHeaderName)}
             })

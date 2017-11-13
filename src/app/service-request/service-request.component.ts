@@ -40,7 +40,7 @@ export class ServiceRequestComponent extends CommonComponent implements OnInit {
   private changeDisplayPreference() {
     this.showRequestDetail = !this.showRequestDetail;
   }
-  
+
   gotToHome() {
     this.router.navigate(['../']);
   }

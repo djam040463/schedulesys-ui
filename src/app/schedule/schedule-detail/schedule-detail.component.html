@@ -17,9 +17,13 @@
 				<i class="user icon"></i>
 				<div class="content">Filled by : {{schedule.scheduleSysUser.username}}</div>
 			</div>
-			<div class="item">
+			<div class="item" *ngIf="scheduleType == employeeSchedule">
 				<i class="hospital icon"></i>
 				<div class="content">Company : {{schedule.careCompany.name}}</div>
+			</div>
+			<div class="item" *ngIf="scheduleType == companySchedule">
+				<i class="doctor icon"></i>
+				<div class="content">Employee : {{schedule.employee.firstName + ' ' + schedule.employee.lastName}}</div>
 			</div>
 			<div class="item">
 				<i class="calendar icon"></i>

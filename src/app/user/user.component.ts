@@ -95,9 +95,9 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
            this.changeDetector.markForCheck(); // Forces the change detector to run
            this.tableItemsCount ++;
          } else {
-           this.refreshOnEdit(this.user, this.selectedUser);
+           this.refreshOnEdit(response.result, this.selectedUser);
          }
-         this.showDialog(false);
+         this.showDialog(false, false);
         // this.loginService.logout();
       },
       error => {
@@ -136,11 +136,12 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
     });
   }
 
-  showDialog(display?: boolean) {
+  showDialog(editing: boolean, display?: boolean) {
     this.dialogDisplayed = (display == null) ? true : display;
+    this.editing = editing;
     this.userForm.resetForm();
     // When editing, populate form with selected User
-    this.user = this.editing ? _.cloneDeep(this.selectedUser) : new UserProfile();
+    this.user = editing ? _.cloneDeep(this.selectedUser) : new UserProfile();
   }
 
   private buildContextMenuItems () {
