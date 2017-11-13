@@ -1,5 +1,7 @@
+import { CommonComponent } from '../shared/common';
 import { PasswordResetRequestService } from './passwordresetrequest.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import {Message} from 'primeng/primeng';
 
@@ -8,15 +10,16 @@ import {Message} from 'primeng/primeng';
   templateUrl: './passwordresetrequest.component.html',
   styleUrls: ['./passwordresetrequest.component.css']
 })
-export class PasswordResetRequestComponent implements OnInit {
+export class PasswordResetRequestComponent extends CommonComponent implements OnInit {
 
-  email: string;
+  email = '';
   msgs: Message[] = [];
+  @ViewChild('resetForm') resetForm: NgForm
 
   constructor(
     private passwordResetRequestService: PasswordResetRequestService,
     private router: Router
-  ) { }
+  ) { super(null); }
 
   ngOnInit() {
   }
@@ -28,8 +31,8 @@ export class PasswordResetRequestComponent implements OnInit {
           response => {
                this.msgs.push({severity: 'success',
                    summary: '',
-                   detail: 'Password reset email successfully sent'});
-               this.email = '';
+                   detail: 'Password reset email successfully sent. Please check your emails'});
+            this.resetForm.resetForm('');
           },
           error => {
                 this.msgs.push({severity: 'error',

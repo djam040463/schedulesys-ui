@@ -64,7 +64,7 @@ export class TestOccurrenceComponent extends CommonComponent implements OnInit {
               this.changeDetector.markForCheck();
             } else {
               console.log('Response after update : ' + JSON.stringify(this.testOccurrence));
-              this.refreshOnEdit(this.testOccurrence, this.selectedTestOccurrence);
+              this.refreshOnEdit(response, this.selectedTestOccurrence);
             }
             this.displayDialog = false;
             this.entity_events.emit({severity: 'success', summary: '', detail: 'Test Successfully Saved'});
@@ -119,6 +119,9 @@ export class TestOccurrenceComponent extends CommonComponent implements OnInit {
 
   onTestSelect() {
     this.testSubcategories = [];
+    if (!this.testOccurrence.test.canBeWaived) {
+      this.testOccurrence.applicable = true;
+    }
     this.testService.getAllSubcategories(this.testOccurrence.test.id)
         .subscribe(response => {
             response.forEach((v, i) => {this.testSubcategories.push({label: v.name, value: v.name})});

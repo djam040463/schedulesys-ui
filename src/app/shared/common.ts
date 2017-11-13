@@ -65,8 +65,6 @@ export class CommonComponent {
  * Pushes error in errors array on when duplicates are detected in users input
  */
  onDuplicates(event: any) {
-    console.log('Field : ' + event.field);
-   console.log('Message : ' + event.message);
     this.validation.formErrors[event.field] = event.message;
   }
 
@@ -95,5 +93,12 @@ export class CommonComponent {
         destination[key] = source[key];
       }
     }
+  }
+
+   markFormPristine(form: NgForm): void {
+    Object.keys(form.controls).forEach(control => {
+      console.log(control)
+        form.controls[control].markAsPristine();
+    });
   }
 }

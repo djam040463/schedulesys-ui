@@ -30,4 +30,20 @@ export class ProfileService extends CommonService {
         .catch(error => this.handleError(error));
   }
 
+  getUserByUsername(username: string): Observable<UserProfile> {
+    return this.http.get(this.resourceBaseUrl + username)
+            .map(response => new UserProfile(response))
+            .catch(this.handleError);
+  }
+
+  getUserByEmailAddress(emailAddress: string): Observable<UserProfile> {
+    return this.http.get(this.resourceBaseUrl + emailAddress + '?by=email')
+            .map(response => new UserProfile(response))
+            .catch(this.handleError);
+  }
+
+  getOneByValue(value: string, fieldName?: string): Observable<UserProfile> {
+    return (fieldName === 'username' ) ? this.getUserByUsername(value) : this.getUserByEmailAddress(value);
+  }
+
 }

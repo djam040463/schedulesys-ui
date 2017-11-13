@@ -1,17 +1,17 @@
 import { environment } from '../../environments/environment';
+import { CommonService } from '../shared/commonservice';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 
 @Injectable()
-export class PasswordResetRequestService {
+export class PasswordResetRequestService extends CommonService {
+
   private resourceUrl = environment.apiBaseUrl + '/api/account/reset_password/init';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { super(); }
 
   sendPasswordResetRequest(email: string): Observable<string> {
-    return this.http.post(this.resourceUrl, email)
-        .map(response => response.toString());
+    return this.http.post(this.resourceUrl, email);
   }
 }

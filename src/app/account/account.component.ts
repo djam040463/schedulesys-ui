@@ -1,7 +1,8 @@
+import { CommonComponent } from '../shared/common';
 import { AccountService } from './account.service';
 import { KeyAndPasswordVM } from './keyandpasswordvm';
 import {Message} from 'primeng/primeng';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent extends CommonComponent implements OnInit {
 
   private key: string;
   private action: string;
@@ -21,12 +22,14 @@ export class AccountComponent implements OnInit {
   password: string;
   pwdConfirmation: string;
 
+  @ViewChild('accountForm') accountForm: NgForm;
+
   msgs: Message[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService) { }
+    private accountService: AccountService) { super(null); }
 
   ngOnInit() {
     this.route.params
@@ -49,15 +52,15 @@ export class AccountComponent implements OnInit {
     this.navigateToLoginPage();
   }
 
-  resetOrActivateAccount(form: NgForm) {
+  resetOrActivateAccount() {
     if (this.action === 'activate') {
-      this.activateAccount(form);
+      this.activateAccount();
     } else {
-      this.resetPassword(form);
+      this.resetPassword();
     }
   }
 
-  resetPassword(form: NgForm) {
+  resetPassword() {
     this.msgs = [];
     this.accountService
       .resetPassword(new KeyAndPasswordVM(this.key, this.password))
@@ -69,7 +72,7 @@ export class AccountComponent implements OnInit {
               summary: '',
               detail: 'Password successfully updated, redirecting to login ...'
           });
-          form.resetForm();
+          this.markFormPristine(this.accountForm);
           setTimeout(() => { this.navigateToLoginPage(); }, 2000)
         },
         error => {
@@ -80,9 +83,10 @@ export class AccountComponent implements OnInit {
           });
         }
        );
+
   }
 
-  activateAccount(form: NgForm) {
+  activateAccount() {
     this.msgs = [];
     this.accountService
       .activateAccount(new KeyAndPasswordVM(this.key, this.password))
@@ -93,7 +97,7 @@ export class AccountComponent implements OnInit {
               summary: '',
               detail: 'Account successfully activated, redirecting to login ...'
           });
-          form.resetForm();
+         this.markFormPristine(this.accountForm);
           setTimeout(() => { this.navigateToLoginPage(); }, 2000)
         },
         error => {
@@ -109,5 +113,6 @@ export class AccountComponent implements OnInit {
   private navigateToLoginPage() {
      this.router.navigate(['']);
   }
+
 }
 

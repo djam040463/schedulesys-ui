@@ -48,6 +48,7 @@
 		   	 		<p-dropdown name="sub_category" [(ngModel)]="testOccurrence.testSubcategory.name" [options]="testSubcategories" placeholder="Sub Category"
 		   	 			appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
 				</div>
+				
 				<div class="ui-g-5" *ngIf="testOccurrence.test != undefined && testOccurrence.test.hasCompletionDate">
    	 				<label>Completion Date : </label>
    	 			</div>
@@ -55,6 +56,7 @@
    	 				<p-calendar [showIcon]="true" id="completion_date" name="completion_date" 
    	 					appendTo="body" [(ngModel)]="testOccurrence.completionDate" [disabled]="!testOccurrence.applicable" required></p-calendar>
    	 			</div>
+   	 			
    	 			<div class="ui-g-5" *ngIf="testOccurrence.test != undefined && testOccurrence.test.hasExpiryDate">
    	 				<label>Expiration Date : </label>
    	 			</div>
@@ -62,6 +64,7 @@
    	 				<p-calendar [showIcon]="true" id="expiration_date" name="expiration_date"  
    	 					appendTo="body" [(ngModel)]="testOccurrence.expirationDate" [disabled]="!testOccurrence.applicable" required></p-calendar>
    	 			</div>
+   	 			
    	 			<div class="ui-g-5" *ngIf="testOccurrence.test != undefined && testOccurrence.test.canBeWaived">
 		   	 		<p-toggleButton name="isApplicable"  [(ngModel)]="testOccurrence.applicable" onIcon="fa-check-square" offIcon="fa-square" 
 		   	 			onLabel="Applicable" offLabel="Not Applicable"></p-toggleButton>

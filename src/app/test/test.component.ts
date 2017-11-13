@@ -52,7 +52,7 @@ export class TestComponent extends CommonComponent implements OnInit, AfterViewC
               this.changeDetector.markForCheck();
               this.tableItemsCount++;
             } else {
-              this.refreshOnEdit(this.test, this.selectedTest);
+              this.refreshOnEdit(response.result, this.selectedTest);
             }
             this.dialogDisplayed = false;
             this.displayMessage({severity: 'success', summary: '', detail: response.message});
@@ -115,7 +115,6 @@ export class TestComponent extends CommonComponent implements OnInit, AfterViewC
 
      if (this.editing) {
         this.test = _.cloneDeep(this.selectedTest);
-       console.log('Test : ' + JSON.stringify(this.test));
      } else {
         this.test = new Test();
         this.testForm.resetForm();

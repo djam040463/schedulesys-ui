@@ -14,7 +14,7 @@ export class AccountService {
 
   resetPassword(keyAndPassword: KeyAndPasswordVM): Observable<string> {
     return this.http.post(this.pwdResetUrl, keyAndPassword)
-            .map(response => response.toString());
+            .map(response => 'Password successfully reset');
   }
 
   activateAccount(keyAndPassword: KeyAndPasswordVM): Observable<string> {

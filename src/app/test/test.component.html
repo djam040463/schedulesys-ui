@@ -1,9 +1,8 @@
 <p-panel header="Tests Management" >
-	<md-list>
 		<div style="text-align: center;">
 			<span  class="fa fa-book fa-5x" ></span>
 		</div>
-		<md-divider></md-divider>
+		<div class="ui divider"></div>
 		<div class="data-table">
 			<p-messages [(value)]="msgs"></p-messages>
 			<p-dataTable [value]="tests" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
@@ -13,25 +12,24 @@
 			    <p-column field="name" header="Name"></p-column>
 			    <p-column field="hasCompletionDate" header="Has Completion Date">
 			    	<ng-template let-col let-row="rowData" pTemplate="body">
-            			<span>{{row[col.field] == true ? 'YES' : 'NO'}}</span>
+            			<span>{{row[col.field] == true ? 'yes' : 'no'}}</span>
        				</ng-template>
 			    </p-column>
 			 	 <p-column field="hasExpiryDate" header="Has Expiration Date">
 			    	<ng-template let-col let-row="rowData" pTemplate="body">
-            			<span>{{row[col.field] == true ? 'YES' : 'NO'}}</span>
+            			<span>{{row[col.field] == true ? 'yes' : 'no'}}</span>
        				</ng-template>
 			    </p-column>
 			     <p-column field="canBeWaived" header="Can Be Waived">
 			    	<ng-template let-col let-row="rowData" pTemplate="body">
-            			<span>{{row[col.field] == true ? 'YES' : 'NO'}}</span>
+            			<span>{{row[col.field] == true ? 'yes' : 'no'}}</span>
        				</ng-template>
 			    </p-column>
 			</p-dataTable>
 		</div>
-		<md-divider></md-divider>
+		<div class="ui divider"></div>
 		<data-table-crud (new)="showOrHideDialog(false)" (edit)="showOrHideDialog(true)" (delete)="deleteOne()" 
 			[disabled]="selectedTest === undefined" (back)="gotToHome()"></data-table-crud>
-	</md-list>
 	
 	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
@@ -82,12 +80,12 @@
 			   	 			<p-toggleButton name="can_be_waived" [(ngModel)]="test.canBeWaived" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
 			   	 		</div>
 		   	 		</div>
-		   	 		
-		   	 		<div class="btns-panel">
-		   	 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="testForm.form.invalid" class="ui-button-success"></button>
-		   	 			<button pButton label="Clear" icon="fa fa-eraser" type="reset"></button>
-		   	 			<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
-		   	 		</div>
+		   	 	</div>
+		   	 	<div class="ui divider"></div>
+		   	 	<div class="btns-panel">
+		   	 		<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="testForm.form.invalid" class="ui-button-success"></button>
+		   	 		<button pButton label="Clear" icon="fa fa-eraser" type="reset"></button>
+		   	 		<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
 		   	 	</div>
 		   	</form>
    		 </div>

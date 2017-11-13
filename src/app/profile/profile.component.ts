@@ -20,11 +20,10 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
   @ViewChild('profileForm') profileForm: NgForm;
   user: UserProfile;
   userProfile: UserProfile;
-  display = false;
   msgs: Message[] = [];
 
   constructor(
-    private profileService: ProfileService,
+    public profileService: ProfileService,
     private loginService: LoginService,
     private eventBusService: EventBusService,
     private router: Router,
@@ -38,7 +37,7 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
   }
 
   ngAfterViewChecked(): void {
-    if (this.display) {
+    if (this.profileForm !== undefined) {
       this.formChanged(this.profileForm);
     }
   }
@@ -57,8 +56,8 @@ export class ProfileComponent extends CommonComponent implements OnInit, AfterVi
         response => {
           this.displayMessage({severity: 'success', summary: '', detail: response});
           // Set whatever user_role we previously had because it hasn't been updated
-          if ((this.userProfile.username !== this.userProfile.username)
-            || this.userProfile.emailAddress !== this.userProfile.emailAddress) {
+          if ((this.user.username !== this.userProfile.username)
+            || this.user.emailAddress !== this.userProfile.emailAddress) {
               this.loginService.logout(); // Users are logged out when username or email address updated
               this.router.navigate(['../../'], {relativeTo: this.route});
           }

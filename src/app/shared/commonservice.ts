@@ -25,7 +25,8 @@ export abstract class CommonService {
   }
 
   formatParams(page: number, size: number, filters: any) {
-    return this.formatRequestParams(page, size) + filters;
+    return filters === undefined ? this.formatRequestParams(page, size)
+      : this.formatRequestParams(page, size) + filters;
   }
 
   formatSearchRequestParam(query: string): string {
