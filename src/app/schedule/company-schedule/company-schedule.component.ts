@@ -61,7 +61,10 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   getSchedules() {
     this.careCompanyService.getSchedules(this.careCompany.id, this.tableCurrentPage, this.tableCurrentRowCount)
-        .subscribe(response => {this.schedules = response.schedules, this.tableItemsCount = response.count});
+        .subscribe(response => {
+          this.schedules = response.schedules;
+          this.tableItemsCount = response.count
+        }, error => {this.schedules = []} /* Prevent the spinner from indefinitely spinning*/ );
   }
 
   getScheduleStatuses() {

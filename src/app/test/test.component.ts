@@ -97,7 +97,7 @@ export class TestComponent extends CommonComponent implements OnInit, AfterViewC
               this.tests = response.result;
               this.tableItemsCount = response.count;
               this.tableDataLoading = false;
-            }
+            }, error => { this.tests = [] }
         );
   }
 

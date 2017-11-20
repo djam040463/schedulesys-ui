@@ -165,7 +165,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
               this.careCompanies = response.companies;
               this.tableItemsCount = response.count;
               this.tableDataLoading = false;
-          });
+          }, error => {this.careCompanies = [] /*Prevents spinner from indefinitely spinning*/});
   }
 
   getInsuranceCompanies() {

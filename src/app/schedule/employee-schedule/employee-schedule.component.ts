@@ -29,7 +29,7 @@ export class EmployeeScheduleComponent extends CommonComponent implements OnInit
 
    getSchedules() {
     this.employeeService.getSchedules(this.employee.id)
-        .subscribe(response => {this.schedules = response});
+        .subscribe(response => {this.schedules = response}, error => { this.schedules = [] });
   }
 
   onRowDblClick() {

@@ -65,7 +65,7 @@ export class UserComponent extends CommonComponent implements OnInit, AfterViewC
               this.users = response.users;
               this.tableItemsCount = response.count;
               this.tableDataLoading = false;
-            }
+            }, error => { this.users = [] }
          );
   }
 

@@ -140,7 +140,7 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
               this.employees = response.result;
               this.tableItemsCount = response.count;
               this.tableDataLoading = false;
-            }
+            }, error => { this.employees = [] }
         );
   }
 
