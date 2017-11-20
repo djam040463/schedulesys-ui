@@ -27,8 +27,8 @@ export class Employee {
       this.id = json.id;
       this.firstName = json.firstName;
       this.lastName = json.lastName;
-      this.dateOfHire = new Date(json.dateOfHire);
-      this.lastDayOfWork = new Date(json.lastDayOfWork);
+      this.dateOfHire = json.dateOfHire !== null ? new Date(json.dateOfHire) : null;
+      this.lastDayOfWork = json.lastDayOfWork !== null ? new Date(json.lastDayOfWork) : null;
       this.ebc = json.ebc;
       this.insvc = json.insvc;
       this.comment = json.comment;
