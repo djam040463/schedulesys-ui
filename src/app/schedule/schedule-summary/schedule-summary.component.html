@@ -20,8 +20,7 @@
 	<p-dataTable #summary_table [value]="employeeScheduleSummaries"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,15,20]"
 		selectionMode="single"  [emptyMessage]="'No schedule to display'" [globalFilter]="gf" #dt>
 	    <p-header>Shifts summary</p-header>
-	    <p-column field="employee.firstName"  header="First Name"></p-column>
-	    <p-column field="employee.lastName" header="Last Name"></p-column>
+	    <p-column field="careCompany.name" header="Facility"></p-column>
 	    <p-column field="employee.position.name" header="Job"></p-column>
 	    <p-column field="shiftStartTime" header="Start Time">
 			<ng-template let-col let-row="rowData" pTemplate="body">
@@ -33,7 +32,8 @@
 				<span>{{row[col.field] | date: 'shortTime'}}</span>
 			</ng-template>
 		</p-column>
-	    <p-column field="careCompany.name" header="Facility"></p-column>
+		<p-column field="employee.firstName"  header="First Name"></p-column>
+	    <p-column field="employee.lastName" header="Last Name"></p-column>
 	    <p-footer>
 	    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()"></button>
 	    </p-footer>
