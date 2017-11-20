@@ -26,7 +26,7 @@
 			    
 			   	<p-column field="insuranceCompany" header="Insurance">
 					<ng-template let-col let-row="rowData" pTemplate="body">
-			    		<span>{{row[col.field].name === undefined ? 'None' : row[col.field].name}}</span>
+			    		<span>{{row[col.field] === undefined ? 'None' : row[col.field].name}}</span>
 					</ng-template>
 				</p-column>
 			</p-dataTable>
