@@ -81,9 +81,6 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
   create() {
     this.careCompany.phoneNumber = this.unmaskNumber(this.careCompany.phoneNumber);
     this.careCompany.fax = this.unmaskNumber(this.careCompany.fax);
-    if (this.careCompany.insuranceCompany.name === 'None') {
-      this.careCompany.insuranceCompany.name = null;
-    }
     this.careCompanyService.update(this.careCompany)
        .subscribe(response => {
          this.displayMessage({severity: 'success', summary: '', detail: response.message});
