@@ -24,7 +24,7 @@
 			    </p-column>
 			    <p-column field="careCompanyType.name" header="Type" filter = "true" filterField = "typeName"></p-column>
 			    
-			   	<p-column field="insuranceCompany" header="Insurance">
+			   	<p-column field="insuranceCompany" header="Insurance" filter="true" filterField="insuranceName">
 					<ng-template let-col let-row="rowData" pTemplate="body">
 			    		<span>{{(row[col.field] === undefined || row[col.field] === null)? 'None' : row[col.field].name}}</span>
 					</ng-template>
