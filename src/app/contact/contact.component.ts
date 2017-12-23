@@ -145,7 +145,7 @@ export class ContactComponent extends CommonComponent implements OnInit, AfterVi
   }
 
   goToCareCompanies() {
-   this.router.navigate(['../../companies', {'id': this.careCompany.id}], {relativeTo: this.route});
+   this.router.navigate(['../companies', {'id': this.careCompany.id}], {relativeTo: this.route});
   }
 
 }
