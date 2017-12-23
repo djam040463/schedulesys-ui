@@ -33,7 +33,7 @@
 			<p-column field="scheduleStatus.name" header="Status"></p-column>
 			<p-column field="schedulePostStatus.name" header="Post Status"></p-column>
 			
-			<p-column field="timeSheetReceived" header="TimeSheet Received">
+			<p-column field="timeSheetReceived" header="TSR">
 				<ng-template let-col let-row="rowData" pTemplate="body">
 					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
 				</ng-template>
@@ -139,7 +139,7 @@
    	 					</div>
    	 					<!--  -->
    	 					<div class="ui-g-4" *ngIf="editing">
-   	 						<p-checkbox name="timeSheetReceived" value="TimeSheet Received" label="TimeSheet Received" [(ngModel)]="schedule.timeSheetReceived" 
+   	 						<p-checkbox name="timeSheetReceived" value="TSR" label="TSR" [(ngModel)]="schedule.timeSheetReceived" 
    	 							[binary]="true"></p-checkbox>
    	 					</div>
    	 					<div class="ui-g-4" *ngIf="editing">
