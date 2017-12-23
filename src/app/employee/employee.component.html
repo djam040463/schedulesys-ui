@@ -19,7 +19,7 @@
 			    </p-column>
 			    <p-column field="lastDayOfWork" header="Last Day Of Work">
 			    	<ng-template let-col let-row="rowData" pTemplate="body">
-            			<span>{{row[col.field] === null ? 'No provided' : row[col.field] | date: 'shortDate'}}</span>
+            			<span>{{row[col.field] === null ? 'Not provided' : row[col.field] | date: 'shortDate'}}</span>
        				</ng-template>
 			    </p-column>
 			    <p-column field="ebc" header="Ebc">
@@ -27,7 +27,7 @@
             			<span>{{row[col.field] ? 'yes' : 'no'}}</span>
        				</ng-template>
 			    </p-column>
-			    <p-column field="insvc" header="In Service">
+			    <p-column field="insvc" header="Active">
 			    	<ng-template let-col let-row="rowData" pTemplate="body">
             			<span>{{row[col.field] ? 'yes' : 'no'}}</span>
        				</ng-template>
@@ -107,7 +107,7 @@
 		   	 				<p-toggleButton name="ebc" [(ngModel)]="employee.ebc" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
 		   	 			</div>
 		   	 			<div class="ui-g-3">
-		   	 				<label>In Service : </label>
+		   	 				<label>Active : </label>
 		   	 				<p-toggleButton name="insvc" [(ngModel)]="employee.insvc" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
 		   	 			</div>
 		   	 			<div class="ui-g-2">
