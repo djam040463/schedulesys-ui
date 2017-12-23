@@ -11,6 +11,7 @@ import { AuthGuard } from './login/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { PasswordResetRequestComponent } from './passwordresetrequest/passwordresetrequest.component';
+import { PositionComponent } from './position/position.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ServiceRequestComponent } from './service-request/service-request.component';
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
       { path: 'employees/:employeeId', component: EmployeeDetailComponent },
       { path: 'contacts', component: ContactComponent },
       { path: 'tests', component: TestComponent },
+      { path: 'positions', component: PositionComponent },
       { path: 'tests/:testId', component: TestDetailComponent },
       { path: 'schedules', component: ScheduleComponent },
       { path: 'service-requests', component: ServiceRequestComponent },

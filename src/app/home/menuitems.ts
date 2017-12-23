@@ -24,6 +24,9 @@ export class MenuBar {
         label: 'Tests', icon: 'fa-book', routerLink: 'tests'
       },
       {
+        label: 'Positions', icon: 'fa-medkit', routerLink: 'positions'
+      },
+      {
         label: 'Service Requests', icon: 'fa-ambulance', routerLink: 'service-requests'
       },
       {
