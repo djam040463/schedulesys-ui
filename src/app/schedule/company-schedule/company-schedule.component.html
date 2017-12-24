@@ -11,12 +11,12 @@
 			</p-column>
 			<p-column field="shiftStartTime" header="Start Time">
 				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] | date: 'short'}}</span>
+					<span>{{row[col.field] | date: 'shortTime'}}</span>
 				</ng-template>
 			</p-column>
 			<p-column field="shiftEndTime" header="End Time">
 				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] | date: 'short'}}</span>
+					<span>{{row[col.field] | date: 'shortTime'}}</span>
 				</ng-template>
 			</p-column>
 			 
@@ -68,7 +68,7 @@
 		   	 				<label>Schedule Date : </label>
 		   	 			</div>
 		   	 			<div class="ui-g-3">
-   	 						<p-calendar [showIcon]="true" id="scheduleDate" name="scheduleDate" appendTo="body" [(ngModel)]="schedule.scheduleDate" 
+   	 						<p-calendar [showIcon]="true" [showButtonBar]="true" id="scheduleDate" name="scheduleDate" appendTo="body" [(ngModel)]="schedule.scheduleDate" 
    	 							[readonlyInput]="true" required></p-calendar>
    	 					</div>
    	 					<!--  -->
@@ -76,7 +76,7 @@
    	 						<label>Start Time : </label>
    	 					</div>
    	 					<div class="ui-g-3">
-   	 						<p-calendar  id="shiftStartTime" name="shiftStartTime" [showTime]="true" 
+   	 						<p-calendar  id="shiftStartTime" name="shiftStartTime" [timeOnly]="true"
    	 							appendTo="body" [(ngModel)]="schedule.shiftStartTime" [stepMinute]="30" [readonlyInput]="true"
    	 							[defaultDate]="defaultDate"></p-calendar>
    	 					</div>
@@ -85,7 +85,7 @@
    	 						<label>End Time : </label>
    	 					</div>
    	 					<div class="ui-g-3">
-   	 						<p-calendar  id="shiftEndTime" name="shiftEndTime" [showTime]="true" 
+   	 						<p-calendar  id="shiftEndTime" name="shiftEndTime" [timeOnly]="true"
    	 							appendTo="body" [(ngModel)]="schedule.shiftEndTime" [stepMinute]="30" [readonlyInput]="true" [defaultDate]="defaultDate"></p-calendar>
    	 					</div>
    	 					<!--  -->

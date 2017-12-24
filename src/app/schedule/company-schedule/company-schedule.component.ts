@@ -184,13 +184,6 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
         {severity: 'error', summary: 'Invalid shift times', detail: 'Start Time must be before End Time'}, this.dialogMsgs);
       return false;
     }
-    let startTime = new Date(this.schedule.shiftStartTime);
-    startTime.setHours(0, 0, 0, 0);
-    if (startTime.getTime() !== this.schedule.scheduleDate.getTime()) {
-      this.displayMessage(
-        {severity: 'error', summary: 'Invalid start time', detail: 'Shift must start on schedule\'s date'}, this.dialogMsgs);
-      return false;
-    }
     return true;
   }
 
