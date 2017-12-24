@@ -27,29 +27,10 @@
 				 <span>{{row[col.field].firstName + ' ' +row[col.field].lastName}}</span>
 				</ng-template>
 			</p-column> 
-			<p-column field="hoursWorked" header="Hours"></p-column>
-			<p-column field="overtime" header="OT"></p-column>
 			
 			<p-column field="scheduleStatus.name" header="Status"></p-column>
 			<p-column field="schedulePostStatus.name" header="Post Status"></p-column>
 			
-			<p-column field="timeSheetReceived" header="TSR">
-				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
-				</ng-template>
-			</p-column>
-			<p-column field="paid" header="Paid">
-				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
-				</ng-template>
-			</p-column>
-			<p-column field="billed" header="Billed">
-				<ng-template let-col let-row="rowData" pTemplate="body">
-					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
-				</ng-template>
-			</p-column>
-			
-			<p-column field="comment" header="Comments"></p-column>
 			<p-column field="scheduleSysUser.username" header="Filled By"></p-column>
 		<p-footer>
 			<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success"></button>

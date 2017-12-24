@@ -99,6 +99,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
             this.schedules = this.schedules.slice();
             this.changeDetector.markForCheck();
             // Update number of items so that the paginator displays the correct number of pages
+            this.schedules.sort((a, b) => (a.scheduleDate > b.scheduleDate) ? 1 : -1);
             this.tableItemsCount++;
          } else {
             this.refreshOnEdit(response, this.selectedSchedule);
