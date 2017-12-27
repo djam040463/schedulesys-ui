@@ -41,8 +41,8 @@ export class CareCompanyService extends CommonService {
            .catch(this.handleError);
   }
 
-  getSchedules(id: number, page: number, size: number): Observable<{'schedules': Schedule[], 'count': number}> {
-    return this.http.get(this.resourceUrl + '/' + id + '/schedules' + this.formatRequestParams(page, size),
+  getSchedules(id: number, page: number, size: number, archived: boolean): Observable<{'schedules': Schedule[], 'count': number}> {
+    return this.http.get(this.resourceUrl + '/' + id + '/schedules' + this.formatRequestParams(page, size) + '&archived=' + archived,
        {observe: 'response'})
           .map(response => {
             return {'schedules': Schedule.toArray(response.body as Schedule[]), 'count': response.headers.get(this.countHeaderName)}

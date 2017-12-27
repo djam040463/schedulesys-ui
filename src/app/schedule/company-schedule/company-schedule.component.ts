@@ -28,6 +28,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   editing = false;
   displayDialog = false;
   showScheduleDetail = false
+  showArchived = false;
   employees: Employee[] = [];
   scheduleStatuses: SelectItem[] = [];
   schedulePostStatuses: SelectItem[] = [];
@@ -52,15 +53,15 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   ) { super(null); }
 
   ngOnInit() {
-    this.getSchedules();
+    this.getSchedules(false);
     this.schedule = new Schedule();
     this.getScheduleStatuses();
     this.getSchedulePostStatuses();
     this.defaultDate.setMinutes(0); // Reset minutes of current date so that shift times are 30 minutes apart
   }
 
-  getSchedules() {
-    this.careCompanyService.getSchedules(this.careCompany.id, this.tableCurrentPage, this.tableCurrentRowCount)
+  getSchedules(archived: boolean) {
+    this.careCompanyService.getSchedules(this.careCompany.id, this.tableCurrentPage, this.tableCurrentRowCount, archived)
         .subscribe(response => {
           this.schedules = response.schedules;
           this.tableItemsCount = response.count
@@ -90,6 +91,13 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
     if (!this.validateShiftDates()) {
       return;
     }
+
+    let startTime = new Date(this.schedule.scheduleDate.getTime());
+    let endTime = new Date(this.schedule.scheduleDate.getTime());
+    startTime.setHours(this.schedule.shiftStartTime.getHours(), this.schedule.shiftStartTime.getMinutes(), 0, 0);
+    endTime.setHours(this.schedule.shiftEndTime.getHours(), this.schedule.shiftEndTime.getMinutes(), 0, 0);
+    this.schedule.shiftStartTime = startTime;
+    this.schedule.shiftEndTime = endTime;
     this.schedule.careCompany = this.careCompany;
     this.scheduleService.update(this.schedule)
       .subscribe(
@@ -164,6 +172,16 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   private changeDisplayPreference() {
     this.showScheduleDetail = !this.showScheduleDetail;
+  }
+
+  onShowArchived() {
+    this.showArchived = true;
+    this.getSchedules(true);
+  }
+
+  onHideArchived() {
+    this.showArchived = false;
+    this.getSchedules(false);
   }
 
   searchEmployees(event) {

@@ -14,6 +14,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ScheduleSummaryComponent implements OnInit {
 
   today = new Date();
+  startDate: Date = null;
+  endDate: Date = null;
   scheduleSummaries: ScheduleSummary[];
   employeeScheduleSummaries: Schedule[];
   showByCompany = true;
@@ -27,16 +29,20 @@ export class ScheduleSummaryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.scheduleSummaryService.getSchedulesSummary(this.today)
-      .subscribe(
-        response => {this.scheduleSummaries = response; },
-        error => {console.log('Something unexpected happened')}
-      );
+    this.getCompanyScheduleSummary(this.today, this.today);
   }
 
   getEmployeeSheduleSummary() {
     this.scheduleService.getEmployeeScheduleSummaries(this.today)
      .subscribe(response => {this.employeeScheduleSummaries = response});
+  }
+
+  getCompanyScheduleSummary(startDate: Date, endDate: Date) {
+     this.scheduleSummaryService.getSchedulesSummary(startDate, endDate)
+      .subscribe(
+        response => {this.scheduleSummaries = response; },
+        error => {console.log('Something unexpected happened')}
+      );
   }
 
   onRowDblclick(event) {
@@ -51,6 +57,24 @@ export class ScheduleSummaryComponent implements OnInit {
       this.getEmployeeSheduleSummary();
       this.displayPreferenceBtnLabel = 'Show By Company';
     }
+  }
+
+  onLeftBtnClick() {
+    this.startDate = new Date(this.today.getTime() - 604800000);
+    this.endDate = this.today;
+    this.getCompanyScheduleSummary(this.startDate, this.endDate);
+  }
+
+  onRightBtnClick() {
+    this.startDate = this.today;
+    this.endDate = new Date(this.today.getTime() + 604800000);
+    this.getCompanyScheduleSummary(this.startDate, this.endDate);
+  }
+
+  onTodayBtnClick() {
+    this.startDate = null;
+    this.endDate = null;
+    this.getCompanyScheduleSummary(this.today, this.today);
   }
 
 }

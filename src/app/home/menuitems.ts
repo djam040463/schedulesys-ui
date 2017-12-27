@@ -34,6 +34,9 @@ export class MenuBar {
       },
       {
         label: 'Users', icon: 'fa-users', routerLink: 'users', disabled: !this.isAdmin
+      },
+      {
+        label: 'Preferences', icon: 'fa-wrench', routerLink: 'preferences'
       }
     ];
   }

@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { PasswordResetRequestComponent } from './passwordresetrequest/passwordresetrequest.component';
 import { PositionComponent } from './position/position.component';
+import { PreferenceComponent } from './preference/preference.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ServiceRequestComponent } from './service-request/service-request.component';
@@ -37,7 +38,8 @@ const appRoutes: Routes = [
       { path: 'tests/:testId', component: TestDetailComponent },
       { path: 'schedules', component: ScheduleComponent },
       { path: 'service-requests', component: ServiceRequestComponent },
-      {path: 'insurance-companies', component: InsuranceCompanyComponent }
+      { path: 'insurance-companies', component: InsuranceCompanyComponent },
+      { path: 'preferences', component: PreferenceComponent }
     ]
   },
   { path: 'pwd-reset-request', component: PasswordResetRequestComponent },

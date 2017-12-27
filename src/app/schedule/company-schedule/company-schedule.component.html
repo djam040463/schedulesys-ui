@@ -1,4 +1,8 @@
 <div class="data-table" [hidden]="showScheduleDetail">
+	<div class="btn-panel">
+		<button pButton icon="fa fa-archive" label="Show Archived" [disabled]="showArchived" (click)="onShowArchived()"></button>
+		<button pButton icon="fa fa-undo" [disabled]="!showArchived" (click)="onHideArchived()"></button>
+	</div>
 	<p-messages [(value)]="msgs"></p-messages>
 	<p-dataTable [value]="schedules" [rows]="10" [paginator]="true" resizableColumns="true" [rowsPerPageOptions]="[10,20]"
 		selectionMode="single" dataKey="id" [totalRecords]="tableItemsCount" [(selection)]="selectedSchedule"

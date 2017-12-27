@@ -79,6 +79,8 @@ import { RequestDetailComponent } from './service-request/request-detail/request
 import { InsuranceCompanyComponent } from './insurance-company/insurance-company.component';
 import { InsuranceCompanyService } from './insurance-company/insurance-company.service';
 import { EmployeeScheduleComponent } from './schedule/employee-schedule/employee-schedule.component';
+import { PreferenceComponent } from './preference/preference.component';
+import { PreferenceService } from './preference/preference.service';
 
 
 @NgModule({
@@ -116,7 +118,8 @@ import { EmployeeScheduleComponent } from './schedule/employee-schedule/employee
     ServiceRequestComponent,
     RequestDetailComponent,
     InsuranceCompanyComponent,
-    EmployeeScheduleComponent
+    EmployeeScheduleComponent,
+    PreferenceComponent
   ],
   imports: [
     BrowserModule,
@@ -178,6 +181,7 @@ import { EmployeeScheduleComponent } from './schedule/employee-schedule/employee
     ScheduleSummaryService,
     ServiceRequestService,
     InsuranceCompanyService,
+    PreferenceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
