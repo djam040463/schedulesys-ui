@@ -1,8 +1,15 @@
 
 <div class="date-control">
-	<button pButton icon="fa fa-chevron-circle-left" (click)="onLeftBtnClick()" [disabled]="endDate === today"></button>
-	<button pButton icon="fa fa-chevron-circle-right" (click)="onRightBtnClick()" [disabled]="startDate === today"></button>
-	<button pButton icon="fa fa-undo" label="Today" [disabled]="startDate === null && endDate === null" (click)="onTodayBtnClick()"></button>
+	<div class="ui-g">
+		<div class="ui-g-4">
+			<button pButton icon="fa fa-chevron-circle-left" (click)="onLeftBtnClick()" [disabled]="endDate === today"></button>
+			<button pButton icon="fa fa-chevron-circle-right" (click)="onRightBtnClick()" [disabled]="startDate === today"></button>
+			<button pButton icon="fa fa-undo" label="Today" [disabled]="startDate === null && endDate === null" (click)="onTodayBtnClick()"></button>
+		</div>
+		<div class="ui-g-8" *ngIf="startDate !== null && endDate !== null">
+			<label>Showing schedules for dates ranging from {{startDate | date: 'shortDate'}} to {{endDate | date: 'shortDate'}}</label>
+		</div>
+	</div>
 </div>
 
 <div *ngIf="showByCompany">
@@ -41,7 +48,7 @@
 		<p-column field="employee.firstName"  header="First Name"></p-column>
 	    <p-column field="employee.lastName" header="Last Name"></p-column>
 	    <p-footer>
-	    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()"></button>
+	    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()" [disabled]="startDate !== null || endDate !== null"></button>
 	    </p-footer>
 	</p-dataTable>
 </div>

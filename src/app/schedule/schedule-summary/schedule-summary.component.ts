@@ -62,11 +62,13 @@ export class ScheduleSummaryComponent implements OnInit {
   onLeftBtnClick() {
     this.startDate = new Date(this.today.getTime() - 604800000);
     this.endDate = this.today;
+    this.showByCompany = true;
     this.getCompanyScheduleSummary(this.startDate, this.endDate);
   }
 
   onRightBtnClick() {
     this.startDate = this.today;
+    this.showByCompany = true;
     this.endDate = new Date(this.today.getTime() + 604800000);
     this.getCompanyScheduleSummary(this.startDate, this.endDate);
   }

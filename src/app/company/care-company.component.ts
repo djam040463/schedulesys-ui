@@ -64,7 +64,6 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
 
   private buildContextMenuItems () {
     this.contextMenuItems = [
-
             { label: 'Edit'     , icon: 'fa-edit'          , command: (event) => { this.showDialog(true)}       },
 
             { label: 'Delete'   , icon: 'fa-close'         , command: (event) => { this.deleteCareCompany()}    },
@@ -76,8 +75,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
                this.navigateTo('../contacts', {companyId: this.selectedCompany.id})} }
         ];
   }
-// TODO Add http wrapper and check 401 errors. If jwt has expired, then redirect to login
-  // TODO 'New' does not refresh data table
+
   create() {
     this.careCompany.phoneNumber = this.unmaskNumber(this.careCompany.phoneNumber);
     this.careCompany.fax = this.unmaskNumber(this.careCompany.fax);
@@ -87,6 +85,7 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
          if (!this.editing) {
             this.careCompanies.push(response.result);
             this.careCompanies = this.careCompanies.slice();
+            this.careCompanies.sort((a, b) => (a.name > b.name) ? 1 : -1);
             this.changeDetector.markForCheck();
             // Update number of items so that the paginator displays the correct number of pages
             this.tableItemsCount++;
