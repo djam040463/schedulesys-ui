@@ -2,8 +2,8 @@
 <div class="date-control">
 	<div class="ui-g">
 		<div class="ui-g-4">
-			<button pButton icon="fa fa-chevron-circle-left" (click)="onLeftBtnClick()" [disabled]="endDate === today"></button>
-			<button pButton icon="fa fa-chevron-circle-right" (click)="onRightBtnClick()" [disabled]="startDate === today"></button>
+			<button pButton icon="fa fa-chevron-circle-left" label="Last Week" (click)="onLeftBtnClick()" [disabled]="endDate === today"></button>
+			<button pButton icon="fa fa-chevron-circle-right" label="Next Week" iconPos="right" (click)="onRightBtnClick()" [disabled]="startDate === today"></button>
 			<button pButton icon="fa fa-undo" label="Today" [disabled]="startDate === null && endDate === null" (click)="onTodayBtnClick()"></button>
 		</div>
 		<div class="ui-g-8" *ngIf="startDate !== null && endDate !== null">

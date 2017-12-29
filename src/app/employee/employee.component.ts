@@ -10,12 +10,16 @@ import { EmployeeService } from './employee.service';
 import { PhoneNumber } from '../phone-number/phone-number';
 import { PhoneNumberService } from '../phone-number/phone-number.service';
 import { PhoneNumberType } from '../phone-number/phone-number.type';
+import { FileServiceService } from '../shared/file-service.service';
 import { ScheduleType } from '../schedule/scheduletype';
+import { EmployeeCSVEntry } from './employecsventry';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, AfterViewChecked, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 import * as _ from 'lodash';
+import * as Papa from 'papaparse';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 
@@ -27,12 +31,13 @@ import { Observable } from 'rxjs/Observable';
 export class EmployeeComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('employeeForm') employeeForm: NgForm;
-  employees: Employee[];
+  employees: Employee[] = [];
   selectedEmployee: Employee;
   employee: Employee;
   positions: SelectItem[] = [];
   employeeTypes: SelectItem[] = [];
   detailView = false;
+  exportedFileName = 'employees.csv';
 
   constructor(
     private employeeService: EmployeeService,
@@ -42,6 +47,8 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
     private phoneNumberService: PhoneNumberService,
     private route: ActivatedRoute,
     private router: Router,
+    private fileService: FileServiceService,
+    private datePipe: DatePipe,
     private changeDetector: ChangeDetectorRef
   ) { super(new EmployeeValidation()); }
 
@@ -164,6 +171,27 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
               })
             }
          );
+  }
+
+  exportCSV() {
+    let employeeCSVEntries = this.parseEmployees();
+    let csvData = Papa.unparse(employeeCSVEntries);
+    this.fileService.saveFile(this.exportedFileName, csvData);
+  }
+
+  parseEmployees(): EmployeeCSVEntry[] {
+    let careCompaniesCSVEntries: EmployeeCSVEntry[] = [];
+    this.employees.forEach(employee => {
+      let dateOfHire = this.datePipe.transform(employee.dateOfHire, 'shortDate');
+      let lastDayOfWork = this.datePipe.transform(employee.lastDayOfWork, 'shortDate');
+      let ebc = employee.ebc ? 'yes' : 'no';
+      let active = employee.insvc ? 'yes' : 'no';
+      let employeeCSVEntry: EmployeeCSVEntry = new EmployeeCSVEntry(
+        employee.firstName, employee.lastName, dateOfHire, lastDayOfWork, ebc, active,
+        employee.position.name, employee.employeeType.name);
+      careCompaniesCSVEntries.push(employeeCSVEntry);
+    });
+    return careCompaniesCSVEntries;
   }
 
   gotToHome() {

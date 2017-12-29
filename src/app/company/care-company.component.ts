@@ -2,9 +2,12 @@ import { InsuranceCompanyService } from '../insurance-company/insurance-company.
 import { InsuranceCompany } from '../insurance-company/insurancecompany';
 import { ScheduleType } from '../schedule/scheduletype';
 import { CommonComponent } from '../shared/common';
+import { FileServiceService } from '../shared/file-service.service';
+import { PhoneNumberPipe } from '../shared/phonenumber.pipe';
 import { CareCompany } from './care-company';
 import { CareCompanyTypeService } from './care-company-type.service';
 import { CareCompanyService } from './care-company.service';
+import { CareCompanyCSVEntry } from './carecompanycsventry';
 import { CareCompanyValidation } from './validation';
 import { Component, OnInit, ViewChild, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -12,6 +15,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { MenuItem, ConfirmationService, Message, SelectItem, LazyLoadEvent } from 'primeng/primeng';
 import * as _ from 'lodash';
+import * as Papa from 'papaparse';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -22,13 +26,14 @@ import { Observable } from 'rxjs/Observable';
 export class CareCompanyComponent extends CommonComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('companyForm') companyForm: NgForm;
-  careCompanies: CareCompany[];
+  careCompanies: CareCompany[] = [];
   selectedCompany: CareCompany;
   careCompany: CareCompany;
   careCompanyTypes: SelectItem[] = [];
 
   insuranceCompanies: SelectItem[] = [];
   editAndDeleteDisabled = true;
+  exportedFileName = 'care_companies.csv';
 
   constructor(
       public careCompanyService: CareCompanyService,
@@ -37,7 +42,10 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
       private insuranceCompanyService: InsuranceCompanyService,
       private router: Router,
       private route: ActivatedRoute,
-      private changeDetector: ChangeDetectorRef) {
+      private changeDetector: ChangeDetectorRef,
+      private fileService: FileServiceService,
+      private phoneNumberPipe: PhoneNumberPipe
+    ) {
         super(new CareCompanyValidation());
       }
 
@@ -172,6 +180,26 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
           this.insuranceCompanies.push({label: insuranceCompany.name, value: insuranceCompany.name});
         });
       });
+  }
+
+  exportCSV() {
+    let careCompaniesCSVEntries = this.parseCareCompanies();
+    let csvData = Papa.unparse(careCompaniesCSVEntries);
+    this.fileService.saveFile(this.exportedFileName, csvData);
+  }
+
+  parseCareCompanies(): CareCompanyCSVEntry[] {
+    let careCompaniesCSVEntries: CareCompanyCSVEntry[] = [];
+    this.careCompanies.forEach(careCompany => {
+      let phoneNumber: string = this.phoneNumberPipe.transform(careCompany.phoneNumber);
+      let fax: string = this.phoneNumberPipe.transform(careCompany.fax);
+      let companyType = careCompany.careCompanyType.name;
+      let insuranceCompany = careCompany.insuranceCompany.name;
+      let careCompanyCSVEntry: CareCompanyCSVEntry = new CareCompanyCSVEntry(
+        careCompany.name, careCompany.address, phoneNumber, fax, companyType, insuranceCompany);
+      careCompaniesCSVEntries.push(careCompanyCSVEntry);
+    });
+    return careCompaniesCSVEntries;
   }
 
   onRowSelect() {

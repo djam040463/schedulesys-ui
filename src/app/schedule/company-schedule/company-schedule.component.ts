@@ -3,17 +3,21 @@ import { CareCompanyService } from '../../company/care-company.service';
 import { Employee } from '../../employee/employee';
 import { EmployeeService } from '../../employee/employee.service';
 import { CommonComponent } from '../../shared/common';
+import { FileServiceService } from '../../shared/file-service.service';
 import { Schedule } from '../schedule';
 import { SchedulePostStatusService } from '../schedule-post-status.service';
 import { ScheduleStatusService } from '../schedule-status.service';
 import { ScheduleService } from '../schedule.service';
+import { ScheduleCSVEntry } from '../schedulecsventry';
 import { SchedulePostStatus } from '../schedulepoststatus';
 import { ScheduleStatus } from '../schedulestatus';
 import { ScheduleType } from '../scheduletype';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MenuItem, ConfirmationService, Message, SelectItem, LazyLoadEvent } from 'primeng/primeng';
 import * as _ from 'lodash';
+import * as Papa from 'papaparse';
 
 @Component({
   selector: 'app-company-schedule',
@@ -35,6 +39,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   dialogMsgs: Message[] = [];
   defaultDate = new Date();
   scheduleType = ScheduleType.COMPANY;
+  exportedFileName = 'schedules.csv';
 
   @ViewChild(NgForm)
   scheduleForm: NgForm;
@@ -49,7 +54,9 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
     private scheduleService: ScheduleService,
     private employeeService: EmployeeService,
     private scheduleStatusService: ScheduleStatusService,
-    private schedulePostStatusService: SchedulePostStatusService
+    private schedulePostStatusService: SchedulePostStatusService,
+    private fileService: FileServiceService,
+    private datePipe: DatePipe
   ) { super(null); }
 
   ngOnInit() {
@@ -182,6 +189,31 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   onHideArchived() {
     this.showArchived = false;
     this.getSchedules(false);
+  }
+
+  exportCSV() {
+    let scheduleCSVEntries = this.parseSchedules();
+    let csvData = Papa.unparse(scheduleCSVEntries);
+    this.fileService.saveFile(this.exportedFileName, csvData);
+  }
+
+  parseSchedules(): ScheduleCSVEntry[] {
+    let scheduleCSVEntries: ScheduleCSVEntry[] = [];
+    this.schedules.forEach(schedule => {
+      let scheduleDate = this.datePipe.transform(schedule.scheduleDate, 'shortDate');
+      let startTime = this.datePipe.transform(schedule.shiftStartTime, 'shortTime');
+      let endTime = this.datePipe.transform(schedule.shiftEndTime, 'shortTime');
+      let tsr = schedule.timeSheetReceived ? 'yes' : 'no';
+      let billed = schedule.billed ? 'yes' : 'no';
+      let paid = schedule.paid ? 'yes' : 'no';
+      let csvEntry: ScheduleCSVEntry = new ScheduleCSVEntry(
+        schedule.scheduleSysUser.username, schedule.employee.firstName, schedule.employee.lastName,
+        scheduleDate, schedule.employee.position.name, schedule.scheduleStatus.name, schedule.schedulePostStatus.name,
+        startTime, endTime, tsr, schedule.hoursWorked, schedule.overtime, billed, paid, schedule.comment
+      );
+      scheduleCSVEntries.push(csvEntry);
+    });
+    return scheduleCSVEntries;
   }
 
   searchEmployees(event) {

@@ -9,7 +9,13 @@
 			<p-dataTable [value]="careCompanies" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedCompany" [contextMenu]="cm" dataKey="name" [totalRecords]="tableItemsCount"
 				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" (onRowSelect)="onRowSelect()" [loading]="tableDataLoading" [emptyMessage]="'No care companies found'">
-			    <p-header>Care Companies</p-header>
+			    <p-header>
+					Care Companies
+			        <div class="ui-helper-clearfix">
+			            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+			            	[disabled]="careCompanies.length === 0"></button>
+			        </div>
+	        	</p-header>
 			    <p-column field="name" header="Name" filter="true" ></p-column>
 			    <p-column field="address" header="Address"></p-column>
 			    <p-column field="phoneNumber" header="Phone Number">

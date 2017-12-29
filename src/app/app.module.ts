@@ -81,6 +81,8 @@ import { InsuranceCompanyService } from './insurance-company/insurance-company.s
 import { EmployeeScheduleComponent } from './schedule/employee-schedule/employee-schedule.component';
 import { PreferenceComponent } from './preference/preference.component';
 import { PreferenceService } from './preference/preference.service';
+import { FileServiceService } from './shared/file-service.service';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -182,6 +184,9 @@ import { PreferenceService } from './preference/preference.service';
     ServiceRequestService,
     InsuranceCompanyService,
     PreferenceService,
+    FileServiceService,
+    DatePipe,
+    PhoneNumberPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

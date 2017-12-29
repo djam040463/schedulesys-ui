@@ -4,10 +4,16 @@
 		<button pButton icon="fa fa-undo" [disabled]="!showArchived" (click)="onHideArchived()"></button>
 	</div>
 	<p-messages [(value)]="msgs"></p-messages>
-	<p-dataTable [value]="schedules" [rows]="10" [paginator]="true" resizableColumns="true" [rowsPerPageOptions]="[10,20]"
+	<p-dataTable #dt [value]="schedules" [rows]="10" [paginator]="true" resizableColumns="true" [rowsPerPageOptions]="[10,20]"
 		selectionMode="single" dataKey="id" [totalRecords]="tableItemsCount" [(selection)]="selectedSchedule"
 		[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No schedules to display'" (onRowDblclick)="onRowDblClick()">
-		<p-header>Schedules for {{careCompany.name}}</p-header>
+			<p-header>
+				Schedules for {{careCompany.name}}
+		        <div class="ui-helper-clearfix">
+		            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+		            	[disabled]="schedules.length === 0"></button>
+		        </div>
+	        </p-header>
 			<p-column field="scheduleDate" header="Schedule Date">
 				<ng-template let-col let-row="rowData" pTemplate="body">
 					<span>{{row[col.field] | date: 'shortDate'}}</span>
@@ -26,11 +32,8 @@
 			 
 			<p-column field="employee.position.name" header="Job"></p-column>
 			
-			<p-column field="employee" header="Employee">
-				<ng-template let-col let-row="rowData" pTemplate="body">
-				 <span>{{row[col.field].firstName + ' ' +row[col.field].lastName}}</span>
-				</ng-template>
-			</p-column> 
+			<p-column field="employee.firstName" header="First Name"></p-column>
+			<p-column field="employee.lastName" header="Last Name"></p-column>
 			
 			<p-column field="scheduleStatus.name" header="Status"></p-column>
 			<p-column field="schedulePostStatus.name" header="Post Status"></p-column>

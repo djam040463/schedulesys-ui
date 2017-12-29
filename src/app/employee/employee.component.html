@@ -9,7 +9,13 @@
 			<p-dataTable [value]="employees" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
 				selectionMode="single" [(selection)]="selectedEmployee" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
 				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No employees found'">
-			    <p-header>Employees</p-header>
+			    <p-header>
+					Employees
+			        <div class="ui-helper-clearfix">
+			            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+			            	[disabled]="employees.length === 0"></button>
+			        </div>
+	        	</p-header>
 			    <p-column field="firstName" header="First Name" [filter]="true"></p-column>
 			    <p-column field="lastName" header="Last Name" [filter]="true"></p-column>
 			    <p-column field="dateOfHire" header="Date Of Hire">
