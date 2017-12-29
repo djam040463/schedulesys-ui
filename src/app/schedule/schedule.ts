@@ -5,11 +5,11 @@ import { SchedulePostStatus } from './schedulepoststatus';
 import { ScheduleStatus } from './schedulestatus';
 export class Schedule {
   id: number;
-  employee: Employee;
-  careCompany: CareCompany;
+  employee: Employee = new Employee();
+  careCompany: CareCompany = new CareCompany();
   scheduleStatus: ScheduleStatus = new ScheduleStatus();
   schedulePostStatus: SchedulePostStatus = new SchedulePostStatus();
-  scheduleSysUser: UserProfile;
+  scheduleSysUser: UserProfile = new UserProfile();
   shiftStartTime: Date;
   shiftEndTime: Date;
   scheduleDate: Date;

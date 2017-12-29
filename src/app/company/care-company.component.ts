@@ -93,17 +93,29 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
          if (!this.editing) {
             this.careCompanies.push(response.result);
             this.careCompanies = this.careCompanies.slice();
-            this.careCompanies.sort((a, b) => (a.name > b.name) ? 1 : -1);
-            this.changeDetector.markForCheck();
             // Update number of items so that the paginator displays the correct number of pages
             this.tableItemsCount++;
+         } else {
+           let careCompany: CareCompany = new CareCompany();
+           this.refreshOnEdit(this.careCompany, careCompany) // Refresh dataTable after company update
+           this.selectedCompany.insuranceCompany.name = this.careCompany.insuranceCompany.name === null ?
+              'None' : this.careCompany.insuranceCompany.name;
+           this.careCompanies = this.careCompanies.filter((val, i) =>  val.id !== this.selectedCompany.id);
+           this.careCompanies.push(careCompany);
+           this.careCompany = new CareCompany();
          }
+         this.sortCompanies()
+         this.changeDetector.markForCheck();
          this.hideDialog();
        },
        error => {
         this.displayMessage({severity: 'error', summary: '', detail: error});
       }
      );
+  }
+
+  sortCompanies() {
+    this.careCompanies.sort((a, b) => (a.name > b.name) ? 1 : -1);
   }
 
   deleteCareCompany () {
@@ -144,11 +156,6 @@ export class CareCompanyComponent extends CommonComponent implements OnInit, Aft
 
    hideDialog() {
     this.dialogDisplayed = false;
-    if (this.editing) {
-      this.refreshOnEdit(this.careCompany, this.selectedCompany) // Refresh dataTable after company update
-      this.selectedCompany.insuranceCompany.name = this.careCompany.insuranceCompany.name === null ?
-        'None' : this.careCompany.insuranceCompany.name;
-    }
     this.companyForm.resetForm();
   }
 

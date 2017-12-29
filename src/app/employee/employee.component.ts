@@ -75,18 +75,28 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
          if (!this.editing) {
             this.employees.push(response.result);
             this.employees = this.employees.slice();
-           this.employees.sort((a, b) => (a.lastName > b.lastName) ? 1 : -1);
             this.changeDetector.markForCheck();
             // Update number of items so that the paginator displays the correct number of pages
             this.tableItemsCount++;
+         } else {
+           let employee: Employee = new Employee();
+           this.refreshOnEdit(this.employee, employee);
+           this.employees = this.employees.filter((val, i) =>  val.id !== this.selectedEmployee.id);
+           this.employees.push(employee);
+           this.employee = new Employee();
          }
         // TODO Create/Update phone numbers
-         this.hideDialog();
+        this.sortEmployees();
+        this.hideDialog();
       },
       error => {
        this.displayMessage({severity: 'error', summary: '', detail: error});
       },
     );
+  }
+
+  sortEmployees() {
+    this.employees.sort((a, b) => (a.lastName > b.lastName) ? 1 : -1);
   }
 
   deleteOne() {
@@ -134,9 +144,6 @@ export class EmployeeComponent extends CommonComponent implements OnInit, AfterV
 
   hideDialog() {
     this.dialogDisplayed = false;
-    if (this.editing) {
-      this.refreshOnEdit(this.employee, this.selectedEmployee) // Refresh dataTable after company update
-    }
     this.employeeForm.resetForm();
   }
 

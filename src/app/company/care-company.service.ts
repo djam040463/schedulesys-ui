@@ -24,7 +24,7 @@ export class CareCompanyService extends CommonService {
   update(careCompany: CareCompany): Observable<{'result': CareCompany, 'message': string}> {
     return this.http.put(this.resourceUrl, careCompany)
           .map(response =>  {
-              return {'result': response as CareCompany, 'message': 'Care Company successfully saved'}
+              return {'result': new CareCompany(response), 'message': 'Care Company successfully saved'}
             })
   }
 

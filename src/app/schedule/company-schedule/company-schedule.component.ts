@@ -72,6 +72,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
      this.careCompanyService.getSchedules(this.careCompany.id, page, size, this.archived) // TODO Replace by an archived field
         .subscribe(response => {
           this.schedules = response.schedules;
+          this.sortSchedules();
           this.tableItemsCount = response.count
         }, error => {this.schedules = []} /* Prevent the spinner from indefinitely spinning*/ );
   }
@@ -119,14 +120,17 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
           if (!this.editing) {
             this.schedules.push(response);
             this.schedules = this.schedules.slice();
-            this.changeDetector.markForCheck();
             // Update number of items so that the paginator displays the correct number of pages
-            this.schedules.sort((a, b) => (a.scheduleDate > b.scheduleDate) ? 1 : -1);
             this.tableItemsCount++;
          } else {
-            this.refreshOnEdit(response, this.selectedSchedule);
-            this.schedule = new Schedule;
+            let schedule: Schedule = new Schedule();
+            this.refreshOnEdit(response, schedule);
+            this.schedules = this.schedules.filter((val, i) => val.id !== this.selectedSchedule.id);
+            this.schedules.push(schedule);
+            this.schedule = new Schedule();
          }
+         this.sortSchedules();
+         this.changeDetector.markForCheck();
          this.displayDialog = false;
          this.displayMessage({severity: 'success', summary: '', detail: 'Schedule successfully saved'});
         },
@@ -159,6 +163,10 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
           );
        }
     });
+  }
+
+  sortSchedules () {
+    this.schedules.sort((a, b) => (a.scheduleDate > b.scheduleDate) ? 1 : -1);
   }
 
   showOrHideDialog(editing: boolean) {
@@ -196,7 +204,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   onHideArchived() {
     this.showArchived = false;
-    this.archived = true;
+    this.archived = false;
     this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
   }
 
