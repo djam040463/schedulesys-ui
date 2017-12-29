@@ -69,7 +69,7 @@
 		   	 			<div class="ui-g-3">
 		   	 			<!-- Revise the required enabling/disabling -->
 		   	 				<p-autoComplete [(ngModel)]="schedule.employee" [suggestions]="employees" (completeMethod)="searchEmployees($event)" field="firstName"
-		   	 					 id="employee" name="employee" [required]="scheduleStatus.value === 'CONFIRMED'"></p-autoComplete>
+		   	 					 id="employee" name="employee" required></p-autoComplete>
 		   	 			</div>
 		   	 			<div class="ui-g-3">
 		   	 				<label>Schedule Date : </label>

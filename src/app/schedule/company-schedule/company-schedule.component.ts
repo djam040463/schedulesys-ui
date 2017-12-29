@@ -40,6 +40,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   defaultDate = new Date();
   scheduleType = ScheduleType.COMPANY;
   exportedFileName = 'schedules.csv';
+  archived = false;
 
   @ViewChild(NgForm)
   scheduleForm: NgForm;
@@ -60,15 +61,15 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   ) { super(null); }
 
   ngOnInit() {
-    this.getSchedules(false);
+    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
     this.schedule = new Schedule();
     this.getScheduleStatuses();
     this.getSchedulePostStatuses();
     this.defaultDate.setMinutes(0); // Reset minutes of current date so that shift times are 30 minutes apart
   }
 
-  getSchedules(archived: boolean) {
-    this.careCompanyService.getSchedules(this.careCompany.id, this.tableCurrentPage, this.tableCurrentRowCount, archived)
+  getAll(page: number, size: number, params?: any, filters?: any) {
+     this.careCompanyService.getSchedules(this.careCompany.id, page, size, this.archived) // TODO Replace by an archived field
         .subscribe(response => {
           this.schedules = response.schedules;
           this.tableItemsCount = response.count
@@ -96,9 +97,15 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
   create() {
   // TODO Add support for schedules that span on multiple days
     if (!this.validateShiftDates()) {
+      this.displayMessage({severity: 'error', summary: 'Invalid shift times',
+         detail: 'Start Time must be before End Time'}, this.dialogMsgs);
       return;
     }
-
+    if (typeof this.schedule.employee === 'string') {
+      this.displayMessage({severity: 'error', summary: 'No employee selected',
+         detail: 'Please select an employee'}, this.dialogMsgs);
+      return;
+    }
     let startTime = new Date(this.schedule.scheduleDate.getTime());
     let endTime = new Date(this.schedule.scheduleDate.getTime());
     startTime.setHours(this.schedule.shiftStartTime.getHours(), this.schedule.shiftStartTime.getMinutes(), 0, 0);
@@ -118,7 +125,7 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
             this.tableItemsCount++;
          } else {
             this.refreshOnEdit(response, this.selectedSchedule);
-            this.schedule = new Schedule
+            this.schedule = new Schedule;
          }
          this.displayDialog = false;
          this.displayMessage({severity: 'success', summary: '', detail: 'Schedule successfully saved'});
@@ -183,12 +190,14 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   onShowArchived() {
     this.showArchived = true;
-    this.getSchedules(true);
+    this.archived = true;
+    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
   }
 
   onHideArchived() {
     this.showArchived = false;
-    this.getSchedules(false);
+    this.archived = true;
+    this.getAll(this.tableCurrentPage, this.tableCurrentRowCount);
   }
 
   exportCSV() {
@@ -230,8 +239,6 @@ export class CompanyScheduleComponent extends CommonComponent implements OnInit 
 
   validateShiftDates(): boolean {
     if (this.schedule.shiftEndTime.getTime() <= this.schedule.shiftStartTime.getTime()) {
-      this.displayMessage(
-        {severity: 'error', summary: 'Invalid shift times', detail: 'Start Time must be before End Time'}, this.dialogMsgs);
       return false;
     }
     return true;
