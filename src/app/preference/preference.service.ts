@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class PreferenceService extends CommonService {
 
-  resourceUrl = environment.apiBaseUrl + '/api/preferences/';
+  resourceUrl = environment.apiBaseUrl + '/api/preferences';
 
   constructor(
     private http: HttpClient
